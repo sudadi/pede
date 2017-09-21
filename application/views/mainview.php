@@ -82,22 +82,22 @@
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="index.php" class="site_title"><img src="<?php echo base_url('assets/images/paymankecil1.png');?>"></a>
+                    <a href="index.php" class="site_title"><img src="<?php //echo base_url('assets/images/paymankecil1.png');?>"></a>
                 </div>
 
                 <div class="clearfix"></div>
 
-                <!-- menu profile quick info 
+                <!-- menu profile quick info -->
                 <div class="profile clearfix">
                   <div class="profile_pic">
-                        <img src="images/user.png" alt="..." class="img-circle profile_img">
+                        <img src="" alt="..." class="img-circle profile_img">
                   </div>
                   <div class="profile_info">
                         <span>Welcome,</span>
                         <h2><?php //echo $_SESSION['nama']; ?></h2>
                   </div>
                 </div>
-                 /menu profile quick info 
+                 
 
                 <br />
                 
@@ -106,7 +106,7 @@
                     <div class="menu_section">
                         <ul class="nav side-menu">
                             <?php 
-                            //$this->load->view('menu'); ?>
+                            $this->load->view('menu'); ?>
                         </ul>
                     </div>
                 </div>
@@ -136,12 +136,25 @@
     
         <!-- page content -->
         <div class="right_col" role="main">
-            <div class="">
-                <?php 
-                
-                //$this->load->view($page, $content); ?>
-            </div>  
-	</div>
+            <div class="clearfix"></div>
+            <div class="row">
+                <img src="<?php //echo base_url('assets/images/banner-bios.png');?>" class="img-rounded img-responsive center-block"></img>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2><?php echo $judul;?></h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <?php $this->load->view($page, $content); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       </div>
         <footer>
             <div class="pull-right">
                   <p>SIRS-RSO &copy; 2017</p>

@@ -14,9 +14,12 @@ class Main extends CI_Controller {
 
     }
 
-    public function index()
+    function index()
     {
-        $this->load->view('mainview');
+        $data['page'] = 'infopage';
+        $data['judul'] = 'Informasi';
+        $data['content']= '';
+        $this->load->view('mainview', $data);
         
     }
 }
