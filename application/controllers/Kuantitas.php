@@ -16,6 +16,7 @@ class Kuantitas extends CI_Controller {
     }
     
     public function index() {
+        $data['banner'] = false;
         $data['page'] = 'kuantitasview';
         $data['judul'] = 'Impor Data Kinerja';
         $data['content']['action'] = site_url('kuantitas/upload');

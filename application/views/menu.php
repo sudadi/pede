@@ -8,7 +8,7 @@
             <li><a href="<?=base_url('fornas');?>"><i class="fa fa-file-text"></i>Kepatuhan FORNAS</a></li>
         </ul>
     </li>
-    <li><a href="<?=base_url('perilaku');?>"><i class="fa fa-file-text"></i> Perilaku</a></li>
+    <li><a href="<?=base_url('behavior');?>"><i class="fa fa-file-text"></i> Perilaku</a></li>
     <li><a href="<?=base_url('kalkulasi');?>"><i class="fa fa-file-text"></i> Kalkulasi</a></li>
-    <li><a href="<?=base_url('laporan');?>"><i class="fa fa-file-text"></i> Laporan</a></li>
+    <li><a href="<?=base_url('report');?>"><i class="fa fa-file-text"></i> Laporan</a></li>
     

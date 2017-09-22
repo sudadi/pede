@@ -16,6 +16,7 @@ class Main extends CI_Controller {
 
     function index()
     {
+        $data['banner'] = TRUE;
         $data['page'] = 'infopage';
         $data['judul'] = 'Informasi';
         $data['content']= '';
