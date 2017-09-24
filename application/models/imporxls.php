@@ -2,10 +2,6 @@
  
 class Imporxls extends CI_Model {
  
-    public $table = 'pegawai';
-    public $id = 'id_pegawai';
-    public $order = 'DESC';
- 
     function __construct() {
         parent::__construct();
     }
@@ -14,17 +10,17 @@ class Imporxls extends CI_Model {
     function loaddata($dataarray) {
         for ($i = 0; $i < count($dataarray); $i++) {
             $data = array(
-                'barang' => $dataarray[$i]['nama'],
-                'jumlah' => $dataarray[$i]['tempat_lahir'],
-                'satuan' => $dataarray[$i]['tanggal_lahir']
+                //'id' => $i,
+                'tgl' => $dataarray[$i]['tgl'],
+                'norm' => $dataarray[$i]['norm'],
+                'nmpasien' => $dataarray[$i]['nmpasien'],
+                'crbayar' => $dataarray[$i]['crbayar'],
+                'tipelayan' => $dataarray[$i]['tipelayan'],
+                'layanan' => $dataarray[$i]['layanan'],
+                'dokter' => $dataarray[$i]['dokter']
             );
-            //ini untuk menambahkan apakah dalam tabel sudah ada data yang sama
-            //apabila data sudah ada maka data di-skip
-            // saya contohkan kalau ada data nama yang sama maka data tidak dimasukkan
-            $this->db->where('nama', $this->input->post('nama'));            
-            if ($cek) {
-                $this->db->insert($this->table, $data);
-            }
+            //$this->db->where('nama', $this->input->post('nama'));            
+            $this->db->insert('tperform', $data);
         }
     }
 }

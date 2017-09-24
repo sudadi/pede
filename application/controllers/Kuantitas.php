@@ -25,20 +25,15 @@ class Kuantitas extends CI_Controller {
     
     public function upload()
     {
-        // validasi judul
-        $this->form_validation->set_rules('judul', 'judul', 'trim|required');
- 
-        if ($this->form_validation->run() == FALSE) {
-            // jika validasi judul gagal
-            $this->index();
-        } else {
+       
             // config upload
             $config['upload_path'] = './temp_upload/';
             $config['allowed_types'] = 'xls';
             $config['max_size'] = '10000';
-            $this->load->library('upload', $config);
+            $this->load->library('upload');
+            $this->upload->initialize($config);
  
-            if ( ! $this->upload->do_upload('gambar')) {
+            if ( ! $this->upload->do_upload('userfile')) {
                 // jika validasi file gagal, kirim parameter error ke index
                 $error = array('error' => $this->upload->display_errors());
                 $this->index($error);
@@ -54,30 +49,33 @@ class Kuantitas extends CI_Controller {
               $file = $upload_data['full_path'];
               $this->excel_reader->read($file);
               error_reporting(E_ALL ^ E_NOTICE);
- 
+              print_r($file);
               // array data
               $data = $this->excel_reader->sheets[0];
               $dataexcel = Array();
-              for ($i = 1; $i <= $data['numRows']; $i++) {
+              for ($i = 2; $i <= $data['numRows']; $i++) {
                    if ($data['cells'][$i][1] == '')
                        break;
-                   $dataexcel[$i - 1]['nama'] = $data['cells'][$i][1];
-                   $dataexcel[$i - 1]['tempat_lahir'] = $data['cells'][$i][2];
-                   $dataexcel[$i - 1]['tanggal_lahir'] = $data['cells'][$i][3];
+                   $dataexcel[$i - 2]['tgl'] = $data['cells'][$i][2];
+                   $dataexcel[$i - 2]['norm'] = $data['cells'][$i][3];
+                   $dataexcel[$i - 2]['nmpasien'] = $data['cells'][$i][4];
+                   $dataexcel[$i - 2]['crbayar'] = $data['cells'][$i][5];
+                   $dataexcel[$i - 2]['tipelayan'] = $data['cells'][$i][6];
+                   $dataexcel[$i - 2]['layanan'] = $data['cells'][$i][7];
+                   $dataexcel[$i - 2]['dokter'] = $data['cells'][$i][9];
               }
               
               //load model
-              $this->load->model('Data_model');
-              $this->Data_model->loaddata($dataexcel);
+              $this->load->model('imporxls');
+              $this->imporxls->loaddata($dataexcel);
  
               //delete file
               $file = $upload_data['file_name'];
               $path = './temp_upload/' . $file;
               unlink($path);
             }
-        //redirect ke halaman awal
-        redirect(site_url('out'));
-        }
+        redirect(site_url('kuantitas'));
+        
     }
 
 }
