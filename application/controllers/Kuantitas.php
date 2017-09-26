@@ -16,10 +16,15 @@ class Kuantitas extends CI_Controller {
     }
     
     public function index() {
+        $this->load->model('modperform');
         $data['banner'] = false;
         $data['page'] = 'kuantitasview';
         $data['judul'] = 'Impor Data Kinerja';
         $data['content']['action'] = site_url('kuantitas/upload');
+        
+        $bln = date('m');
+        $thn = date('Y');
+        $data['content']['result'] = $this->modperform->showdata($bln, $thn);
         $this->load->view('mainview', $data);
     }
     
@@ -49,7 +54,7 @@ class Kuantitas extends CI_Controller {
               $file = $upload_data['full_path'];
               $this->excel_reader->read($file);
               error_reporting(E_ALL ^ E_NOTICE);
-              print_r($file);
+              //print_r($file);
               // array data
               $data = $this->excel_reader->sheets[0];
               $dataexcel = Array();
@@ -67,7 +72,7 @@ class Kuantitas extends CI_Controller {
               
               //load model
               $this->load->model('imporxls');
-              $this->imporxls->loaddata($dataexcel);
+              $this->imporxls->saveperform($dataexcel);
  
               //delete file
               $file = $upload_data['file_name'];
@@ -75,6 +80,8 @@ class Kuantitas extends CI_Controller {
               unlink($path);
             }
         redirect(site_url('kuantitas'));
+        //echo $data['cells'][2][2];
+        //echo $data['cells'][3][2];
         
     }
 

@@ -34,7 +34,24 @@
             </tr>
         </thead>
         <tbody>
-            
+        <?php 
+        $i = 0;
+        if ($result){
+            foreach ($result as $row){
+                $i++; ?>
+            <tr>
+                <td><?=$i;?></td>
+                <td><?=$row['tgl'];?></td>
+                <td><?=$row['norm'];?></td>
+                <td><?=$row['nmpasien'];?></td>
+                <td><?=$row['crbayar'];?></td>
+                <td><?=$row['tipelayan'];?></td>
+                <td><?=$row['layanan'];?></td>
+                <td><?=$row['dokter'];?></td>
+                <td></td>
+            </tr>
+        <?php   }
+        } ?>
         </tbody>
     </table>
 </div>

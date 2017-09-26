@@ -17,8 +17,14 @@ class Dokrm extends CI_Controller{
         $data['banner'] = false;
         $data['page'] = 'dokrmview';
         $data['judul'] = 'Kualitas - Kelengkapan Dokumen Rekam Medis';
-        $data['content']['action'] = site_url('');
+        $data['content']['action'] = site_url('dokrm/save');
+        
+        
         $this->load->view('mainview', $data);
+    }
+    
+    public function save() {
+        
     }
 
 }

@@ -7,11 +7,12 @@ class Imporxls extends CI_Model {
     }
  
     //ini untuk memasukkan kedalam tabel pegawai
-    function loaddata($dataarray) {
+    function saveperform($dataarray) {
         for ($i = 0; $i < count($dataarray); $i++) {
+            $tgl = (string)$dataarray[$i]['tgl'];
             $data = array(
-                //'id' => $i,
-                'tgl' => $dataarray[$i]['tgl'],
+                //'id' => $i,                
+                'tgl' => date_format(date_create($tgl),'Y/m/d'),
                 'norm' => $dataarray[$i]['norm'],
                 'nmpasien' => $dataarray[$i]['nmpasien'],
                 'crbayar' => $dataarray[$i]['crbayar'],
