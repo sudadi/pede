@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-class Modpegawai extends CI_Model {
+class Modref extends CI_Model {
     
     function __construct() {
         parent::__construct();

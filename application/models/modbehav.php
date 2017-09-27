@@ -6,21 +6,18 @@
  * and open the template in the editor.
  */
 
-class Moddokrm extends CI_Model {
+class Modbehav extends CI_Model {
 
     function __construct() {
         parent::__construct();
     }
     
-    function getdokrm($bln, $thn) {
-        $this->db->join('refpegawai', 'tresdokrm.idpeg=refpegawai.idpeg');
+    function getbehav($bln, $thn) {
+        $this->db->join('refpegawai', 'tresbehav.idpeg=refpegawai.idpeg');
         $this->db->where('bln', $bln);
         $this->db->where('thn', $thn);
-        return $this->db->get('tresdokrm')->result_array();
+        return $this->db->get('tresbehav')->result_array();
     }
 
-    function savedokrm() {
-        
-    }
 }
 ?>

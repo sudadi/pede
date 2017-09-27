@@ -17,7 +17,7 @@ class Dokrm extends CI_Controller{
     public function index() {
         $thn = date('Y');
         $bln = date('m');
-        $this->load->model('modpegawai');
+        $this->load->model('modref');
         $data['banner'] = false;
         $data['page'] = 'dokrmview';
         $data['judul'] = 'Kualitas - Kelengkapan Dokumen Rekam Medis';
@@ -30,8 +30,17 @@ class Dokrm extends CI_Controller{
     public function save() {
         if ($this->input->post()) {
             $idpeg = $this->input->post('idpeg');
-            $tahun = $this->input->post('thn');
-            $bulan = $this->input->post('bln');
+            $tahun = $this->input->post('tahun');
+            $bulan = $this->input->post('bulan');
+            $nilai = $this->input->post('nilai');
+            $this->db->insert('tresdokrm', array('tgl'=>date('Y/m/d'), 'thn'=>$tahun, 'bln'=>$bulan, 
+                'capaian'=>$nilai, 'idpeg'=>$idpeg));
+            if ($this->db->affected_rows()>0){
+                $this->session->set_flashdata('success', 'Data sudah tersimpan');
+            } else {
+                $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
+            }                
+            redirect(base_url('dokrm'));
         }
     }
 

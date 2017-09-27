@@ -13,7 +13,12 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
     <label class="control-label col-sm-2 col-xs-12" for="tahun">Tahun</label>
     <div class="col-md-3 col-sm-3 col-xs-12">
         <?php 
-        $option = array (''=>'-Tahun-', '2017'=>'2017', '2018'=>'2018', '2019'=>'2019', '2020'=>'2020');
+        $selisih = date('Y') - 2017;
+        $option[''] = '-Tahun-';
+        for ($i = 0; $i <= $selisih; $i++){
+            $thn = 2017 + $i;
+            $option[$thn] = $thn;
+        }
         echo form_dropdown('tahun', $option, '', 'class="form-control col-sm-12 col-xs-12" id="tahun" required');?>
     </div>
     <label class="control-label col-sm-2 col-sm-offset-2 col-xs-12" for="bulan">Bulan</label>
@@ -29,24 +34,36 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
     </div>
 </div>
 <div class="form-group">
-    <label class="control-label col-sm-2 col-xs-12" for="indi">Indikator</label>
+    <label class="control-label col-sm-2 col-xs-12" for="idpeg">Dokter</label>
     <div class="col-md-5 col-sm-5 col-xs-12">
         <?php 
-            /*$option='';
-            $option['']='--Pilih Indikator--';
-            $refindi = $this->mref->getrefindi();
-            foreach ($refindi as $key => $value) {
-                if ($this->session->userdata('idunit') != '1') {
-                    if ($this->session->userdata('idunit') == $value['idunit']){
-                        $option[$value['indikator']] = $value['uraian'];
-                    }
-                } else {
-                    $option[$value['indikator']] = $value['uraian'];
-                }
+            $option='';
+            $option['']='--Pilih Dokter--';
+            $dokter = $this->modref->getdokter();
+            foreach ($dokter as $key => $value) {
+                $option[$value['idpeg']] = $value['nama'];
+                
             }
-            echo form_dropdown('indi', $option, '', 'class="js-select2 form-control col-sm-12" required');
-        */?>
+            echo form_dropdown('idpeg', $option, '', 'class="js-select2 form-control col-sm-12" required');
+        ?>
     </div>
+    <label class="control-label col-sm-2 col-xs-12" for="nilai">Capaian </label>
+    <div class="col-sm-3 col-xs-12">
+        <?php $attribut = array('name'=>'nilai', 'type'=>'number', 'class'=>'form-control col-sm-12 col-xs-12', 'required'=>'required');
+        echo form_input($attribut);?>
+    </div>
+</div>
+<br>
+<div class="form-group">
+    <div class="col-md-12 col-sm-offset-4">
+        <div class="col-sm-2">
+        <?php echo form_button(array('type'=>'submit', 'class'=>'btn btn-success btn-block', 'content'=>'Simpan &nbsp;<i class="fa fa-save"></i>'));?>
+        </div>
+        <div class="col-sm-2">
+            <a href="<?=base_url('dokrm');?>" class="btn btn-warning btn-block">Batal &nbsp;<i class="fa fa-undo"></i></a>
+        </div>
+    </div>
+</div>
 <br />
 <hr />
 <div class="table-responsive">
@@ -54,32 +71,25 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
         <thead>
             <tr class="headings">
                 <th class="column-title">#</th>
-                <th class="column-title">Tgl</th>
-                <th class="column-title">Norm</th>
-                <th class="column-title">Nama Pasien</th>
-                <th class="column-title">Cara Bayar</th>
-                <th class="column-title">Tipe Layanan</th>
-                <th class="column-title">Layanan</th>
                 <th class="column-title">Dokter</th>
+                <th class="column-title">Bulan</th>
+                <th class="column-title">Tahun</th>
+                <th class="column-title">Capaian</th>
                 <th class="column-title">Opsi</th>
             </tr>
         </thead>
         <tbody>
         <?php 
         $i = 0;
-        $result=null;
         if ($result){
             foreach ($result as $row){
                 $i++; ?>
             <tr>
                 <td><?=$i;?></td>
-                <td><?=$row['tgl'];?></td>
-                <td><?=$row['norm'];?></td>
-                <td><?=$row['nmpasien'];?></td>
-                <td><?=$row['crbayar'];?></td>
-                <td><?=$row['tipelayan'];?></td>
-                <td><?=$row['layanan'];?></td>
-                <td><?=$row['dokter'];?></td>
+                <td><?=$row['nama'];?></td>
+                <td><?=$row['bln'];?></td>
+                <td><?=$row['thn'];?></td>
+                <td><?=$row['capaian'];?></td>
                 <td></td>
             </tr>
         <?php   }
