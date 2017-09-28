@@ -18,5 +18,11 @@ class Modref extends CI_Model {
         $qry = $this->db->get('refpegawai');
         if ($qry->num_rows() > 0) return $qry->result_array();
     }
+    
+    function getmenu($sub) {
+        $this->db->where('sub', $sub);
+        return $this->db->get('refmenu')->result_arraY();
+    }
+    
 }
 ?>

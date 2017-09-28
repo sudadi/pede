@@ -60,7 +60,7 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
         <?php echo form_button(array('type'=>'submit', 'class'=>'btn btn-success btn-block', 'content'=>'Simpan &nbsp;<i class="fa fa-save"></i>'));?>
         </div>
         <div class="col-sm-2">
-            <a href="<?=base_url('dokrm');?>" class="btn btn-warning btn-block">Batal &nbsp;<i class="fa fa-undo"></i></a>
+            <a href="<?=current_url();?>" class="btn btn-warning btn-block">Batal &nbsp;<i class="fa fa-undo"></i></a>
         </div>
     </div>
 </div>

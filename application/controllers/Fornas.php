@@ -19,7 +19,7 @@ class Fornas extends CI_Controller{
         $thn = date('Y');
         $this->load->model('modref');
         $data['banner'] = false;
-        $data['page'] = 'fornasview';
+        $data['page'] = 'entryview';
         $data['judul'] = 'Kualitas - Kepatuhan FORNAS';
         $data['content']['action'] = site_url('fornas/save');
         $data['content']['result'] = $this->modfornas->getfornas($bln, $thn);

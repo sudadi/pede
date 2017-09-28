@@ -1,22 +1,22 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 
-    <li><a href="<?=base_url();?>"><i class="fa fa-home"></i> Home </a> </li>
-    <li><a href="<?=base_url('kuantitas');?>"><i class="fa fa-file-text"></i> Kuantitas Pelayanan</a></li>
-    <li><a><i class="fa fa-file-text"></i> Kualitas Pelayanan <span class="fa fa-chevron-down"></span></a>
-        <ul class="nav child_menu">
-            <li><a href="<?=base_url('dokrm');?>"><i class="fa fa-file-text"></i>Kelengkapan Dok.</a></li>
-            <li><a href="<?=base_url('fornas');?>"><i class="fa fa-file-text"></i>Kepatuhan FORNAS</a></li>
-        </ul>
-    </li>
-    <li><a href="<?=base_url('behavior');?>"><i class="fa fa-file-text"></i> Perilaku</a></li>
-    <li><a href="<?=base_url('kalkulasi');?>"><i class="fa fa-file-text"></i> Kalkulasi</a></li>
-    <li><a href="<?=base_url('report');?>"><i class="fa fa-file-text"></i> Laporan</a></li>
-    <li><a><i class="fa fa-cogs"></i> Setting <span class="fa fa-chevron-down"></span></a>
-        <ul class="nav child_menu">
-            <li><a href="<?=base_url('dokrm');?>"><i class="fa fa-user"></i>Kelola User</a></li>
-            <li><a href="<?=base_url('fornas');?>"><i class="fa fa-users"></i>Ref. Data Pegawai</a></li>
-            <li><a href="<?=base_url('dokrm');?>"><i class="fa fa-user"></i>Ref. Group Layanan</a></li>
-            <li><a href="<?=base_url('dokrm');?>"><i class="fa fa-user"></i>Ref. Layanan</a></li>
-            <li><a href="<?=base_url('dokrm');?>"><i class="fa fa-user"></i>Target per Pegawai</a></li>
-        </ul>
-    </li>
+<li><a href="<?=base_url();?>"><i class="fa fa-home"></i> Home </a> </li>
+<?php
+$main = $this->modref->getmenu(0);
+foreach ($main as $row) {
+    if ($row['link']) {
+        echo '<li><a href="'.$row['link'].'"><i class="'.$row['icon'].'"></i> '.$row['menu'].'</a></li>';
+    } else {
+        echo '<li><a><i class="'.$row['icon'].'"></i> '.$row['menu'].'<span class="fa fa-chevron-down"></span></a>';
+        echo '<ul class="nav child_menu">';
+        $sub = $this->modref->getmenu($row['idmenu']);
+        foreach ($sub as $value) {
+            echo '<li><a href="'.$value['link'].'"><i class="'.$value['icon'].'"></i> '.$value['menu'].'</a></li>';
+        }
+        echo '</ul>';
+        echo '</li>';
+    }
+}
+?>
+
+  

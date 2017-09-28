@@ -18,7 +18,7 @@ class Behavior extends CI_Controller{
         $bln = date('m');
         $thn = date('Y');
         $data['banner'] = false;
-        $data['page'] = 'behaviorview';
+        $data['page'] = 'entryview';
         $data['judul'] = 'Penilaian Perilaku';
         $data['content']['action'] = site_url('behavior/save');
         $data['content']['result'] = $this->modbehav->getbehav($bln, $thn);

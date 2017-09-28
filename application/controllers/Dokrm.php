@@ -19,7 +19,7 @@ class Dokrm extends CI_Controller{
         $bln = date('m');
         $this->load->model('modref');
         $data['banner'] = false;
-        $data['page'] = 'dokrmview';
+        $data['page'] = 'entryview';
         $data['judul'] = 'Kualitas - Kelengkapan Dokumen Rekam Medis';
         $data['content']['action'] = site_url('dokrm/save');
         $data['content']['result'] = $this->moddokrm->getdokrm($bln, $thn);
