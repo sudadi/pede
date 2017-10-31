@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 06, 2017 at 04:02 PM
+-- Generation Time: Oct 31, 2017 at 05:49 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `refakses` (
-  `iduser` int(11) NOT NULL,
+  `level` int(11) NOT NULL,
   `idmenu` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -55,7 +55,7 @@ CREATE TABLE `refjabatan` (
   `idjabatan` int(50) NOT NULL,
   `jabatan` varchar(100) NOT NULL,
   `level` varchar(50) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
 --
 -- Dumping data for table `refjabatan`
@@ -276,6 +276,7 @@ CREATE TABLE `refuser` (
   `realname` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `idsat` int(11) NOT NULL,
+  `level` tinyint(2) NOT NULL,
   `active` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -283,8 +284,8 @@ CREATE TABLE `refuser` (
 -- Dumping data for table `refuser`
 --
 
-INSERT INTO `refuser` (`iduser`, `username`, `password`, `realname`, `email`, `idsat`, `active`) VALUES
-(1, 'admin', '2ff4f43c3a5eb50b52bb2b70863aaad4e5a89cac', 'Administrator', '-', 0, 1);
+INSERT INTO `refuser` (`iduser`, `username`, `password`, `realname`, `email`, `idsat`, `level`, `active`) VALUES
+(1, 'admin', '2ff4f43c3a5eb50b52bb2b70863aaad4e5a89cac', 'Administrator', '-', 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -317,6 +318,7 @@ CREATE TABLE `tperform` (
   `crbayar` varchar(50) NOT NULL,
   `tipelayan` varchar(50) NOT NULL,
   `layanan` varchar(200) NOT NULL,
+  `idgrplayan` int(11) NOT NULL,
   `dokter` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -324,9 +326,9 @@ CREATE TABLE `tperform` (
 -- Dumping data for table `tperform`
 --
 
-INSERT INTO `tperform` (`id`, `tgl`, `norm`, `nmpasien`, `crbayar`, `tipelayan`, `layanan`, `dokter`) VALUES
-(29, '2017-09-26', '308777', 'kampret', 'JKN', 'reguler', 'pasang infus', 'paijo'),
-(30, '2017-09-09', '308777', 'kampret', 'JKN', 'reguler', 'pasang infus', 'paijo');
+INSERT INTO `tperform` (`id`, `tgl`, `norm`, `nmpasien`, `crbayar`, `tipelayan`, `layanan`, `idgrplayan`, `dokter`) VALUES
+(29, '2017-09-26', '308777', 'kampret', 'JKN', 'reguler', 'pasang infus', 0, 'paijo'),
+(30, '2017-09-09', '308777', 'kampret', 'JKN', 'reguler', 'pasang infus', 0, 'paijo');
 
 -- --------------------------------------------------------
 
