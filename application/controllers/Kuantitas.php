@@ -16,7 +16,7 @@ class Kuantitas extends CI_Controller {
     }
     
     public function index() {
-        $this->load->model('modperform');
+        $this->load->model('modtindakan');
         $data['banner'] = false;
         $data['page'] = 'kuantitasview';
         $data['judul'] = 'Impor Data Kinerja';
@@ -24,7 +24,7 @@ class Kuantitas extends CI_Controller {
         
         $bln = date('m');
         $thn = date('Y');
-        $data['content']['result'] = $this->modperform->showdata($bln, $thn);
+        $data['content']['result'] = $this->modtindakan->showdata($bln, $thn);
         $this->load->view('mainview', $data);
     }
     
@@ -67,12 +67,15 @@ class Kuantitas extends CI_Controller {
                    $dataexcel[$i - 2]['crbayar'] = $data['cells'][$i][5];
                    $dataexcel[$i - 2]['tipelayan'] = $data['cells'][$i][6];
                    $dataexcel[$i - 2]['layanan'] = $data['cells'][$i][7];
-                   $dataexcel[$i - 2]['dokter'] = $data['cells'][$i][9];
+                   $dataexcel[$i - 2]['idgrplayan'] = $data['cells'][$i][8];
+                   $dataexcel[$i - 2]['grplayan'] = $data['cells'][$i][9];
+                   $dataexcel[$i - 2]['iddokter'] = $this->input->post('idpeg');
+                   $dataexcel[$i - 2]['dokter'] = $data['cells'][$i][11];
               }
               
               //load model
               $this->load->model('imporxls');
-              $this->imporxls->saveperform($dataexcel);
+              $this->imporxls->savetindakan($dataexcel);
  
               //delete file
               $file = $upload_data['file_name'];

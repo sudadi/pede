@@ -7,7 +7,7 @@ class Imporxls extends CI_Model {
     }
  
     //ini untuk memasukkan kedalam tabel pegawai
-    function saveperform($dataarray) {
+    function savetindakan($dataarray) {
         for ($i = 0; $i < count($dataarray); $i++) {
             $tgl = (string)$dataarray[$i]['tgl'];
             $data = array(
@@ -18,6 +18,9 @@ class Imporxls extends CI_Model {
                 'crbayar' => $dataarray[$i]['crbayar'],
                 'tipelayan' => $dataarray[$i]['tipelayan'],
                 'layanan' => $dataarray[$i]['layanan'],
+                'idgrplayan' => $dataarray[$i]['idgrplayan'],
+                'grplayan' => $dataarray[$i]['grplayan'],
+                'iddokter' => $dataarray[$i]['iddokter'],
                 'dokter' => $dataarray[$i]['dokter']
             );
             //$this->db->where('nama', $this->input->post('nama'));            

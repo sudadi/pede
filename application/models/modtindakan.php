@@ -6,14 +6,14 @@
  * and open the template in the editor.
  */
 
-class Modperform extends CI_Model {
+class Modtindakan extends CI_Model {
 
     function __construct() {
         parent::__construct();
     }
 
     public function showdata ($bln, $thn) {
-        $this->db->from('tperform');
+        $this->db->from('ttindakan');
         $this->db->where('month(tgl)', $bln);
         $this->db->where('year(tgl)', $thn);
         $qry = $this->db->get();

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 31, 2017 at 05:49 PM
+-- Generation Time: Nov 01, 2017 at 06:22 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -44,6 +44,13 @@ CREATE TABLE `refgrplayan` (
   `point` int(11) NOT NULL,
   `target` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `refgrplayan`
+--
+
+INSERT INTO `refgrplayan` (`idgrp`, `grouplayan`, `point`, `target`) VALUES
+(1, 'gsdfgzd', 2, 0);
 
 -- --------------------------------------------------------
 
@@ -307,32 +314,6 @@ CREATE TABLE `tlastresult` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tperform`
---
-
-CREATE TABLE `tperform` (
-  `id` int(11) NOT NULL,
-  `tgl` date NOT NULL,
-  `norm` varchar(8) NOT NULL,
-  `nmpasien` varchar(150) NOT NULL,
-  `crbayar` varchar(50) NOT NULL,
-  `tipelayan` varchar(50) NOT NULL,
-  `layanan` varchar(200) NOT NULL,
-  `idgrplayan` int(11) NOT NULL,
-  `dokter` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tperform`
---
-
-INSERT INTO `tperform` (`id`, `tgl`, `norm`, `nmpasien`, `crbayar`, `tipelayan`, `layanan`, `idgrplayan`, `dokter`) VALUES
-(29, '2017-09-26', '308777', 'kampret', 'JKN', 'reguler', 'pasang infus', 0, 'paijo'),
-(30, '2017-09-09', '308777', 'kampret', 'JKN', 'reguler', 'pasang infus', 0, 'paijo');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `tresbehav`
 --
 
@@ -403,19 +384,103 @@ INSERT INTO `tresfornas` (`idfornas`, `tgl`, `bln`, `thn`, `idpeg`, `capaian`) V
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tresperform`
+-- Table structure for table `trkptindakan`
 --
 
-CREATE TABLE `tresperform` (
+CREATE TABLE `trkptindakan` (
   `id` int(11) NOT NULL,
-  `tgl` date NOT NULL,
-  `idgrp` int(11) NOT NULL,
+  `bln` smallint(2) NOT NULL,
+  `thn` smallint(4) NOT NULL,
+  `idgrplayan` int(11) NOT NULL,
+  `grplayan` varchar(100) NOT NULL,
   `idpeg` int(100) NOT NULL,
   `point` int(11) NOT NULL,
   `capaian` int(11) NOT NULL,
-  `jmla` int(11) NOT NULL,
-  `targeta` int(11) NOT NULL
+  `jml` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `trkptindakan`
+--
+
+INSERT INTO `trkptindakan` (`id`, `bln`, `thn`, `idgrplayan`, `grplayan`, `idpeg`, `point`, `capaian`, `jml`) VALUES
+(21, 11, 2017, 1, 'group', 1, 2, 7, 14);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ttarget`
+--
+
+CREATE TABLE `ttarget` (
+  `idtarget` tinyint(1) NOT NULL,
+  `bln` smallint(2) NOT NULL,
+  `thn` smallint(4) NOT NULL,
+  `iddokter` smallint(6) NOT NULL,
+  `target` smallint(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ttindakan`
+--
+
+CREATE TABLE `ttindakan` (
+  `id` int(11) NOT NULL,
+  `tgl` date NOT NULL,
+  `norm` varchar(8) NOT NULL,
+  `nmpasien` varchar(150) NOT NULL,
+  `crbayar` varchar(50) NOT NULL,
+  `tipelayan` varchar(50) NOT NULL,
+  `layanan` varchar(200) NOT NULL,
+  `idgrplayan` int(11) NOT NULL,
+  `grplayan` varchar(150) NOT NULL,
+  `iddokter` smallint(6) NOT NULL,
+  `dokter` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `ttindakan`
+--
+
+INSERT INTO `ttindakan` (`id`, `tgl`, `norm`, `nmpasien`, `crbayar`, `tipelayan`, `layanan`, `idgrplayan`, `grplayan`, `iddokter`, `dokter`) VALUES
+(58, '2017-11-01', '34345', 'paijo', 'mbuh', 'yo mbuh', 'sak karepmu', 1, 'group', 1, 'kampret'),
+(59, '2017-11-01', '34345', 'paijo', 'mbuh', 'yo mbuh', 'sak karepmu', 1, 'group', 1, 'kampret'),
+(60, '2017-11-01', '34345', 'paijo', 'mbuh', 'yo mbuh', 'sak karepmu', 1, 'group', 1, 'kampret'),
+(61, '2017-11-01', '34345', 'paijo', 'mbuh', 'yo mbuh', 'sak karepmu', 1, 'group', 1, 'kampret'),
+(62, '2017-11-01', '34345', 'paijo', 'mbuh', 'yo mbuh', 'sak karepmu', 1, 'group', 1, 'kampret'),
+(63, '2017-11-01', '34345', 'paijo', 'mbuh', 'yo mbuh', 'sak karepmu', 1, 'group', 1, 'kampret'),
+(64, '2017-11-01', '34345', 'paijo', 'mbuh', 'yo mbuh', 'sak karepmu', 1, 'group', 1, 'kampret');
+
+--
+-- Triggers `ttindakan`
+--
+DELIMITER $$
+CREATE TRIGGER `rekap_grp_tindakan` AFTER INSERT ON `ttindakan` FOR EACH ROW BEGIN
+SET @idgrp = NEW.idgrplayan;
+SET @grp = NEW.grplayan;
+SET @iddr = NEW.iddokter;
+SET @bln = month(NEW.tgl);
+SET @thn = year(NEW.tgl);
+SET  @point = (SELECT point FROM refgrplayan
+WHERE refgrplayan.idgrp = @idgrp OR refgrplayan.grouplayan = @grp);
+if (@point) THEN
+	SELECT capaian, id  INTO @capaian, @idrkp FROM trkptindakan
+    WHERE (bln = @bln) AND (thn = @thn) AND (idpeg = @iddr) AND 
+    (grplayan = @grp OR idgrplayan = @idgrp);
+    IF (@capaian) THEN
+    	SET @jml = (@capaian+1) * @point;
+    	UPDATE trkptindakan SET trkptindakan.capaian = @capaian+1, trkptindakan.jml = @jml
+        WHERE trkptindakan.id = @idrkp;
+    ELSE 
+    	INSERT INTO trkptindakan (bln, thn, idgrplayan, grplayan, idpeg, capaian, point, jml)
+        VALUES (@bln, @thn, @idgrp, @grp, @iddr, 1, @point, @point);
+    END IF;
+END IF;
+END
+$$
+DELIMITER ;
 
 --
 -- Indexes for dumped tables
@@ -452,12 +517,6 @@ ALTER TABLE `refuser`
   ADD PRIMARY KEY (`iduser`);
 
 --
--- Indexes for table `tperform`
---
-ALTER TABLE `tperform`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `tresbehav`
 --
 ALTER TABLE `tresbehav`
@@ -476,9 +535,15 @@ ALTER TABLE `tresfornas`
   ADD PRIMARY KEY (`idfornas`);
 
 --
--- Indexes for table `tresperform`
+-- Indexes for table `trkptindakan`
 --
-ALTER TABLE `tresperform`
+ALTER TABLE `trkptindakan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `ttindakan`
+--
+ALTER TABLE `ttindakan`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -489,7 +554,7 @@ ALTER TABLE `tresperform`
 -- AUTO_INCREMENT for table `refgrplayan`
 --
 ALTER TABLE `refgrplayan`
-  MODIFY `idgrp` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idgrp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `refjabatan`
 --
@@ -506,11 +571,6 @@ ALTER TABLE `refmenu`
 ALTER TABLE `refuser`
   MODIFY `iduser` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT for table `tperform`
---
-ALTER TABLE `tperform`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
---
 -- AUTO_INCREMENT for table `tresbehav`
 --
 ALTER TABLE `tresbehav`
@@ -525,6 +585,16 @@ ALTER TABLE `tresdokrm`
 --
 ALTER TABLE `tresfornas`
   MODIFY `idfornas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `trkptindakan`
+--
+ALTER TABLE `trkptindakan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+--
+-- AUTO_INCREMENT for table `ttindakan`
+--
+ALTER TABLE `ttindakan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
