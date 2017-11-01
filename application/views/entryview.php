@@ -57,7 +57,9 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
 <div class="form-group">
     <div class="col-md-12 col-sm-offset-4">
         <div class="col-sm-2">
-        <?php echo form_button(array('type'=>'submit', 'class'=>'btn btn-success btn-block', 'content'=>'Simpan &nbsp;<i class="fa fa-save"></i>'));?>
+        <?php 
+        echo form_hidden('jns', $jns);
+        echo form_button(array('type'=>'submit', 'class'=>'btn btn-success btn-block', 'content'=>'Simpan &nbsp;<i class="fa fa-save"></i>'));?>
         </div>
         <div class="col-sm-2">
             <a href="<?=current_url();?>" class="btn btn-warning btn-block">Batal &nbsp;<i class="fa fa-undo"></i></a>
