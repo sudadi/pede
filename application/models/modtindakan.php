@@ -15,8 +15,8 @@ class Modtindakan extends CI_Model {
 
     public function showdata ($start, $stop) {
         $this->db->from('ttindakan');
-        $this->db->where('month(tgl)', $bln);
-        $this->db->where('year(tgl)', $thn);
+        $this->db->where('tgl >=', $start);
+        $this->db->where('tgl <=', $stop);
         $qry = $this->db->get();
         if ($qry->num_rows() > 0) return $qry->result_array();
     }

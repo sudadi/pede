@@ -31,7 +31,7 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
         <div class="col-md-9 col-sm-9 col-xs-12">
             <div class="input-prepend input-group">
               <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-              <input style="width: 200px;" name="daterange" id="reservation" class="form-control" value="<?=$mulai.' - '.$selesai;?>" required="required">
+              <input type="text" style="width: 200px;" name="daterange" class="form-control" value="<?=$mulai.' - '.$selesai;?>" required="required" />
             </div>
         </div>
         <input type="hidden" name="mulai" id="mulai" value="<?=$mulai;?>">
@@ -44,7 +44,7 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
         </div>
     </div>
 <?=form_close();?>
-<br/><hr />
+<hr />
 <div class="table-responsive">
     <table id="dtables" class="table table-striped table-bordered jambo_table bulk_action">
         <thead>

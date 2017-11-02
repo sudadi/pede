@@ -21,7 +21,7 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
                 echo form_dropdown('idpeg', $option, '', 'class="js-select2 form-control col-sm-12" required');
             ?>
         </div>
-    <label class="control-label col-sm-2 col-xs-12" for="nilai">Capaian </label>
+    <label class="control-label col-sm-2 col-xs-12" for="nilai">File Upload</label>
         <div class="col-sm-4 col-xs-12">
             <?php //$attribut = array('name'=>'filexls', 'type'=>'file', 'class'=>'form-control col-sm-12 col-xs-12', 'required'=>'required');
             //echo form_upload($attribut);?>

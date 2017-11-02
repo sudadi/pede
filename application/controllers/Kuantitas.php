@@ -15,17 +15,17 @@ class Kuantitas extends CI_Controller {
         $this->load->library('form_validation');
     }
     
-    public function index($bln=null, $thn=null) {
+    public function index($start=null, $stop=null) {
         $this->load->model('modtindakan');
         $data['banner'] = false;
         $data['page'] = 'kuantitasview';
         $data['judul'] = 'Impor Data Kinerja';
         $data['content']['action'] = site_url('kuantitas/upload');        
-        if (!$bln || !$thn) {
-            $bln = date('m');
-            $thn = date('Y');
+        if ($start == NULL || $stop == NULL) {
+            $start = date("01/m/Y");
+            $stop = date("t/m/Y");
         }
-        $data['content']['result'] = $this->modtindakan->showdata($bln, $thn);
+        $data['content']['result'] = $this->modtindakan->showdata($start, $stop);
         $this->load->view('mainview', $data);
     }
     
@@ -36,8 +36,8 @@ class Kuantitas extends CI_Controller {
         $data['judul'] = 'Rekap Data Kinerja';
         $data['content']['action'] = site_url('kuantitas/saverekapku');        
         if ($start == NULL || $stop == NULL) {
-            $start = date("Y/m/01");
-            $stop = date("Y/m/t");
+            $start = date("01/m/Y");
+            $stop = date("t/m/Y");
         }
         $data['content']['mulai']  = $start;
         $data['content']['selesai'] = $stop;
