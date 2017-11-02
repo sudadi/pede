@@ -44,10 +44,9 @@ class Entry extends CI_Controller{
         $data['banner'] = false;
         $data['page'] = 'entryview';
         $data['judul'] = 'Kualitas - Kelengkapan Dokumen Rekam Medis';
-        $data['content']['action'] = site_url('kualitas/save');
+        $data['content']['action'] = site_url('entry/save');
         $data['content']['jns'] = 1;
-        $data['content']['result'] = $this->modentry->getdokrm($this->bln, $this->thn);
-        
+        $data['content']['result'] = $this->modentry->getdokrm($this->bln, $this->thn);        
         $this->load->view('mainview', $data);
     }
     

@@ -10,12 +10,21 @@ class Modtindakan extends CI_Model {
 
     function __construct() {
         parent::__construct();
+        
     }
 
-    public function showdata ($bln, $thn) {
+    public function showdata ($start, $stop) {
         $this->db->from('ttindakan');
         $this->db->where('month(tgl)', $bln);
         $this->db->where('year(tgl)', $thn);
+        $qry = $this->db->get();
+        if ($qry->num_rows() > 0) return $qry->result_array();
+    }
+    
+    public function showrekap ($start, $stop) {
+        $this->db->from('trkptindakan');
+        $this->db->where('start', $start);
+        $this->db->where('stop', $stop);
         $qry = $this->db->get();
         if ($qry->num_rows() > 0) return $qry->result_array();
     }

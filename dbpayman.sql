@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 01, 2017 at 06:22 PM
+-- Generation Time: Nov 02, 2017 at 05:37 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -231,19 +231,21 @@ CREATE TABLE `refmenu` (
 --
 
 INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`) VALUES
-(1, 'Kuantitas Pelayanan', 'kuantitas', 'fa fa-file-text', 0, 1),
-(2, 'Kualitas Pelayanan', '', '	\r\nfa fa-file-text', 0, 1),
-(3, 'Kelengkapan Dok.', 'dokrm', 'fa fa-file-text', 2, 1),
-(4, 'Kepatuhan FORNAS', 'fornas', 'fa fa-file-text', 2, 1),
-(5, 'Perilaku', 'behavior', 'fa fa-file-text', 0, 1),
-(6, 'Kalkulasi', 'kalkulasi', 'fa fa-file-text', 0, 1),
+(1, 'Kuantitas Pelayanan', '', 'fa fa-dollar', 0, 1),
+(2, 'Kualitas Pelayanan', '', 'fa fa-thumbs-o-up', 0, 1),
+(3, 'Kelengkapan Dok.', 'entry/dokrm', '', 2, 1),
+(4, 'Kepatuhan FORNAS', 'entry/fornas', '', 2, 1),
+(5, 'Perilaku', 'entry/perilaku', 'fa fa-heart-o', 0, 1),
+(6, 'Kalkulasi', 'kalkulasi', 'fa fa-calculator', 0, 1),
 (7, 'Laporan', 'report', 'fa fa-file-text', 0, 1),
-(8, 'Setting', '', '	\r\nfa fa-file-text', 0, 1),
+(8, 'Setting', '', 'fa fa-cogs', 0, 1),
 (9, 'Kelola User', 'user', 'fa fa-user', 8, 1),
 (10, 'Ref. Data Pegawai', 'pegawai', 'fa fa-users', 8, 1),
 (11, 'Ref. Group Layanan', 'grouplayan', 'fa fa-users', 8, 1),
 (12, 'Ref. Layanan', 'layanan', 'fa fa-user', 8, 1),
-(13, 'Target per Pegawai', 'target', 'fa fa-user', 8, 1);
+(13, 'Target per Pegawai', 'target', 'fa fa-user', 8, 1),
+(14, 'Upload Data', 'kuantitas', '', 1, 1),
+(15, 'Rekap Data', 'kuantitas/rekap', '', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -297,6 +299,21 @@ INSERT INTO `refuser` (`iduser`, `username`, `password`, `realname`, `email`, `i
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tcapaian`
+--
+
+CREATE TABLE `tcapaian` (
+  `idcp` int(11) NOT NULL,
+  `jenis` smallint(2) NOT NULL,
+  `start` date NOT NULL,
+  `stop` date NOT NULL,
+  `idpeg` int(6) NOT NULL,
+  `capaian` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tlastresult`
 --
 
@@ -310,30 +327,6 @@ CREATE TABLE `tlastresult` (
   `iku` int(11) NOT NULL,
   `jmllast` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tresbehav`
---
-
-CREATE TABLE `tresbehav` (
-  `idbehav` int(11) NOT NULL,
-  `tgl` date NOT NULL,
-  `bln` int(11) NOT NULL,
-  `thn` int(11) NOT NULL,
-  `idpeg` int(6) NOT NULL,
-  `capaian` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
-
---
--- Dumping data for table `tresbehav`
---
-
-INSERT INTO `tresbehav` (`idbehav`, `tgl`, `bln`, `thn`, `idpeg`, `capaian`) VALUES
-(1, '2017-09-27', 9, 2017, 1, 0.9),
-(2, '2017-09-27', 9, 2017, 1, 20),
-(3, '2017-09-28', 9, 2017, 1, 32);
 
 -- --------------------------------------------------------
 
@@ -389,8 +382,8 @@ INSERT INTO `tresfornas` (`idfornas`, `tgl`, `bln`, `thn`, `idpeg`, `capaian`) V
 
 CREATE TABLE `trkptindakan` (
   `id` int(11) NOT NULL,
-  `bln` smallint(2) NOT NULL,
-  `thn` smallint(4) NOT NULL,
+  `start` date NOT NULL,
+  `stop` date NOT NULL,
   `idgrplayan` int(11) NOT NULL,
   `grplayan` varchar(100) NOT NULL,
   `idpeg` int(100) NOT NULL,
@@ -398,13 +391,6 @@ CREATE TABLE `trkptindakan` (
   `capaian` int(11) NOT NULL,
   `jml` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
-
---
--- Dumping data for table `trkptindakan`
---
-
-INSERT INTO `trkptindakan` (`id`, `bln`, `thn`, `idgrplayan`, `grplayan`, `idpeg`, `point`, `capaian`, `jml`) VALUES
-(21, 11, 2017, 1, 'group', 1, 2, 7, 14);
 
 -- --------------------------------------------------------
 
@@ -439,19 +425,6 @@ CREATE TABLE `ttindakan` (
   `iddokter` smallint(6) NOT NULL,
   `dokter` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
-
---
--- Dumping data for table `ttindakan`
---
-
-INSERT INTO `ttindakan` (`id`, `tgl`, `norm`, `nmpasien`, `crbayar`, `tipelayan`, `layanan`, `idgrplayan`, `grplayan`, `iddokter`, `dokter`) VALUES
-(58, '2017-11-01', '34345', 'paijo', 'mbuh', 'yo mbuh', 'sak karepmu', 1, 'group', 1, 'kampret'),
-(59, '2017-11-01', '34345', 'paijo', 'mbuh', 'yo mbuh', 'sak karepmu', 1, 'group', 1, 'kampret'),
-(60, '2017-11-01', '34345', 'paijo', 'mbuh', 'yo mbuh', 'sak karepmu', 1, 'group', 1, 'kampret'),
-(61, '2017-11-01', '34345', 'paijo', 'mbuh', 'yo mbuh', 'sak karepmu', 1, 'group', 1, 'kampret'),
-(62, '2017-11-01', '34345', 'paijo', 'mbuh', 'yo mbuh', 'sak karepmu', 1, 'group', 1, 'kampret'),
-(63, '2017-11-01', '34345', 'paijo', 'mbuh', 'yo mbuh', 'sak karepmu', 1, 'group', 1, 'kampret'),
-(64, '2017-11-01', '34345', 'paijo', 'mbuh', 'yo mbuh', 'sak karepmu', 1, 'group', 1, 'kampret');
 
 --
 -- Triggers `ttindakan`
@@ -517,10 +490,10 @@ ALTER TABLE `refuser`
   ADD PRIMARY KEY (`iduser`);
 
 --
--- Indexes for table `tresbehav`
+-- Indexes for table `tcapaian`
 --
-ALTER TABLE `tresbehav`
-  ADD PRIMARY KEY (`idbehav`);
+ALTER TABLE `tcapaian`
+  ADD PRIMARY KEY (`idcp`);
 
 --
 -- Indexes for table `tresdokrm`
@@ -564,17 +537,17 @@ ALTER TABLE `refjabatan`
 -- AUTO_INCREMENT for table `refmenu`
 --
 ALTER TABLE `refmenu`
-  MODIFY `idmenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `idmenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `refuser`
 --
 ALTER TABLE `refuser`
   MODIFY `iduser` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT for table `tresbehav`
+-- AUTO_INCREMENT for table `tcapaian`
 --
-ALTER TABLE `tresbehav`
-  MODIFY `idbehav` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `tcapaian`
+  MODIFY `idcp` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `tresdokrm`
 --
@@ -589,12 +562,12 @@ ALTER TABLE `tresfornas`
 -- AUTO_INCREMENT for table `trkptindakan`
 --
 ALTER TABLE `trkptindakan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `ttindakan`
 --
 ALTER TABLE `ttindakan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

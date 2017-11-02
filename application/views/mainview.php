@@ -54,6 +54,17 @@
         <link href="<?=base_url('assets/vendors/toastr/build/toastr.min.css');?>" rel="stylesheet" type="text/css">
         <!-- Select2 -->
         <link href="<?=base_url('assets/vendors/select2/dist/css/select2.min.css');?>" rel="stylesheet" type="text/css"/>
+        <!-- date picker -->
+        <link href="<?=base_url('assets/vendors/datepicker/css/bootstrap-datepicker.min.css');?>" rel="stylesheet" type="text/css"/>
+        <!-- bootstrap-daterangepicker -->
+        <link href="<?=base_url('assets/vendors/daterangepicker/daterangepicker.css');?>" rel="stylesheet">
+        <!-- jQuery -->
+        <script src="<?=base_url('assets/vendors/jquery/dist/jquery.min.js');?>"></script>
+        <script src="<?=base_url('assets/vendors/jquery/dist/jquery-ui-1.12.1.min.js');?>"></script>
+        <!-- Bootstrap -->
+        <script src="<?=base_url('assets/vendors/bootstrap/dist/js/bootstrap.min.js');?>"></script>
+        <script src="<?=base_url('assets/vendors/moment/min/moment.js');?>"></script>
+<script src="<?=base_url('assets/vendors/daterangepicker/daterangepicker.js');?>"></script>
    
   </head>
 

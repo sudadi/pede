@@ -1,9 +1,4 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
-<!-- jQuery -->
-<script src="<?=base_url('assets/vendors/jquery/dist/jquery.min.js');?>"></script>
-<script src="<?=base_url('assets/vendors/jquery/dist/jquery-ui-1.12.1.min.js');?>"></script>
-<!-- Bootstrap -->
-<script src="<?=base_url('assets/vendors/bootstrap/dist/js/bootstrap.min.js');?>"></script>
 <!-- Datatables -->
 <script type="text/javascript" src="<?=base_url('assets/vendors/datatables/js/jszip.min.js');?>"></script>
 <script type="text/javascript" src="<?=base_url('assets/vendors/datatables/js/pdfmake.min.js');?>"></script>
@@ -21,9 +16,32 @@
 <script src="<?=base_url('assets/js/auto.js');?>"></script>
 <script src="<?=base_url('assets/vendors/toastr/build/toastr.min.js');?>"></script>
 <script src="<?=base_url('assets/vendors/select2/dist/js/select2.min.js');?>" type="text/javascript"></script>
+<script src="<?=base_url('assets/vendors/datepicker/js/bootstrap-datepicker.min.js');?>" type="text/javascript"></script>
 
 <script>
+    
 $(document).ready(function() {
+
+    //$(document).ready(function() {
+     //   $('.input-daterange input').each(function() {
+    //    $(this).datepicker('clearDates');
+   // });
+    //});
+ 
+    $('input[name="daterange"]').daterangepicker(
+    {
+        locale: {
+          format: 'YYYY-MM-DD'
+        }
+    }, 
+    function(start, end, label) {
+        
+        $('#mulai').val(start.format('YYYY-MM-DD'));
+        $('#selesai').val(end.format('YYYY-MM-DD'));
+        //alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD')+ ' '+$('#selesai').val());
+    });
+
+    
     $('#dtables').DataTable({
        "dom": 'lBfrtip',
 		 "buttons": [
