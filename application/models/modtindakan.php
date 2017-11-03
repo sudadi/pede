@@ -24,8 +24,8 @@ class Modtindakan extends CI_Model {
     
     public function showrekap ($start, $stop) {
         $this->db->from('trkptindakan');
-        $this->db->where('start', $start);
-        $this->db->where('stop', $stop);
+        $this->db->where('dari', $start);
+        $this->db->where('sampai', $stop);
         $qry = $this->db->get();
         if ($qry->num_rows() > 0) return $qry->result_array();
     }

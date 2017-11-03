@@ -11,13 +11,12 @@ class Kuantitas extends CI_Controller {
     
     function __construct() {
         parent::__construct(); 
-        $this->load->helper(array('form', 'url'));
+        $this->load->helper(array('form', 'url', 'date'));
         $this->load->library('form_validation');
-        $this->load->helper('date');
+        $this->load->model('modtindakan');
     }
     
     public function index($dari=null, $sampai=null) {
-        $this->load->model('modtindakan');
         $data['banner'] = false;
         $data['page'] = 'kuantitasview';
         $data['judul'] = 'Impor Data Kinerja';
@@ -38,24 +37,37 @@ class Kuantitas extends CI_Controller {
         $this->load->view('mainview', $data);
     }
     
-    public function rekap($start=null, $stop=null) {
-        $this->load->model('modtindakan');
+    public function rekap($dari=null, $sampai=null) {
         $data['banner'] = false;
         $data['page'] = 'rekapkuview';
         $data['judul'] = 'Rekap Data Kinerja';
         $data['content']['action'] = site_url('kuantitas/saverekapku');        
         if ($this->input->post()) {
-            $start = $this->input->post('filstart');
-            $stop = $this->input->post('filstop');
-        } else if ($start == NULL || $stop == NULL) {
-            $start = date("Y/m/01", strtotime("-1 month"));
-            $stop = date("Y/m/t", strtotime("-1 month"));
+            $dari = $this->input->post('filstart');
+            $sampai = $this->input->post('filstop');
+        } else if (!$dari || !$sampai) {
+            $dari = date("Y/m/01", strtotime("-1 month"));
+            $sampai = date("Y/m/t", strtotime("-1 month"));
         }
         $data['content']['filaction'] = site_url('kuantitas/rekap'); 
-        $data['content']['dari']  = $start;
-        $data['content']['sampai'] = $stop;
-        $data['content']['result'] = $this->modtindakan->showrekap($start, $stop);
+        $data['content']['dari']  = $dari;
+        $data['content']['sampai'] = $sampai;
+        $data['content']['result'] = $this->modtindakan->showrekap($dari, $sampai);
         $this->load->view('mainview', $data);
+    }
+    
+    public function saverekapku() {
+        if ($this->input->post()) {
+            $dari = $this->input->post('mulai');
+            $sampai = $this->input->post('selesai');
+            $this->db->query("CALL rekap_tindakan('$dari', '$sampai')");
+            if ($this->db->affected_rows()>0) {
+                $this->session->set_flashdata('success', 'Rekap Data Berhasil');
+            }else {
+                $this->session->set_flashdata('error', 'Rekap Data GAGAL');
+            }
+        }
+        redirect('kuantitas/rekap');
     }
     
     public function upload() {       

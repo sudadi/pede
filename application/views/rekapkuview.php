@@ -64,31 +64,31 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
         <thead>
             <tr class="headings">
                 <th class="column-title">#</th>
-                <th class="column-title">Tgl</th>
-                <th class="column-title">Norm</th>
-                <th class="column-title">Nama Pasien</th>
-                <th class="column-title">Cara Bayar</th>
-                <th class="column-title">Tipe Layanan</th>
-                <th class="column-title">Layanan</th>
-                <th class="column-title">Dokter</th>
+                <th class="column-title">Dari</th>
+                <th class="column-title">Sampai</th>
+                <th class="column-title">Group Layanan</th>
+                <th class="column-title">ID Dokter</th>
+                <th class="column-title">Nilai</th>
+                <th class="column-title">Capaian</th>
+                <th class="column-title">Jml</th>
                 <th class="column-title">Opsi</th>
             </tr>
         </thead>
         <tbody>
         <?php 
-        $i =$result= 0;
+        $i = 0;
         if ($result){
             foreach ($result as $row){
                 $i++; ?>
             <tr>
                 <td><?=$i;?></td>
-                <td><?=$row['tgl'];?></td>
-                <td><?=$row['norm'];?></td>
-                <td><?=$row['nmpasien'];?></td>
-                <td><?=$row['crbayar'];?></td>
-                <td><?=$row['tipelayan'];?></td>
-                <td><?=$row['layanan'];?></td>
-                <td><?=$row['dokter'];?></td>
+                <td><?=$row['dari'];?></td>
+                <td><?=$row['sampai'];?></td>
+                <td><?=$row['grplayan'];?></td>
+                <td><?=$row['idpeg'];?></td>
+                <td><?=$row['point'];?></td>
+                <td><?=$row['capaian'];?></td>
+                <td><?=$row['jml'];?></td>
                 <td></td>
             </tr>
         <?php   }
