@@ -7,7 +7,7 @@
  */
 
 
-echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-validate');?>
+echo form_open_multipart($action, 'class="form-horizontal form-label-left" data-parsley-validate');?>
 <div class="form-group">
     <label class="control-label col-sm-2 col-xs-12" for="idpeg">Dokter</label>
         <div class="col-md-4 col-sm-4 col-xs-12">
@@ -34,7 +34,23 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
        <a href="<?=current_url();?>" class="btn btn-warning">Batal &nbsp;<i class="fa fa-undo"></i></a>
     </div>
 </div>
+<?=form_close();?>
 <br/><hr />
+<?=form_open($filaction, 'class="form-horizontal form-label-left"');?>
+<div class="form-group">
+    <label class="control-label col-sm-1 col-xs-12" for="ragefilter">Filter </label>
+    <div class="col-md-4 col-sm-4 col-lg-3 col-xs-12">
+        <div class="input-prepend input-group">
+          <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+          <input type="text"  name="rangefilter" id="rangefilter" class="form-control" value="<?=$dari.' - '.$sampai;?>" required="required" />
+        </div>
+    </div>&nbsp;    
+    <?php echo form_hidden('filstart', $dari);
+        echo form_hidden('filstop', $sampai);         
+        echo form_button(array('type'=>'submit', 'class'=>'btn btn-default', 'content'=>'Tampil &nbsp;<i class="fa fa-eye"></i>'));?>
+</div>
+<?=form_close();?>
+<br />
 <div class="table-responsive">
     <table id="dtables" class="table table-striped table-bordered jambo_table bulk_action">
         <thead>

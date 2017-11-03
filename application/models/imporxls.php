@@ -21,10 +21,13 @@ class Imporxls extends CI_Model {
                 'idgrplayan' => $dataarray[$i]['idgrplayan'],
                 'grplayan' => $dataarray[$i]['grplayan'],
                 'iddokter' => $dataarray[$i]['iddokter'],
-                'dokter' => $dataarray[$i]['dokter']
+                'dokter' => $dataarray[$i]['dokter'],
+                'updlog' => date('Y/m/d h:i:s')
             );
-            //$this->db->where('nama', $this->input->post('nama'));            
-            $this->db->insert('tperform', $data);
+            //$this->db->where('nama', $this->input->post('nama')); 
+            $sql = $this->db->insert_string('ttindakan', $data) . ' ON DUPLICATE KEY UPDATE updlog=NOW()';
+            $this->db->query($sql);
+            //$this->db->insert('ttindakan', $data);
         }
     }
 }

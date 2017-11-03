@@ -34,16 +34,29 @@ $(document).ready(function() {
    // });
     //});
  
-    $('input[name="daterange"]').daterangepicker(
+    $('input[id="rentang"]').daterangepicker(
     {
         locale: {
-          format: 'DD/MM/YYYY'
+          format: 'YYYY/MM/DD'
         }
     }, 
     function(start, end, label) {
         
-        $('#mulai').val(start.format('DD/MM/YYYY'));
-        $('#selesai').val(end.format('DD/MM/YYYY'));
+        $('#mulai').val(start.format('YYYY/MM/DD'));
+        $('#selesai').val(end.format('YYYY/MM/DD'));
+        //alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD')+ ' '+$('#selesai').val());
+    });
+    
+     $('input[id="rangefilter"]').daterangepicker(
+    {
+        locale: {
+          format: 'YYYY/MM/DD'
+        }
+    }, 
+    function(start, end, label) {
+        
+        $('input[name="filstart"]').val(start.format('YYYY/MM/DD'));
+        $('input[name="filstop"]').val(end.format('YYYY/MM/DD'));
         //alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD')+ ' '+$('#selesai').val());
     });
 

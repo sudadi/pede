@@ -27,24 +27,38 @@
 
 echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-validate');?>
     <div class="form-group">
-        <label class="control-label col-sm-3 col-xs-12" for="daterange">Range Tindakan</label>
+        <label class="control-label col-sm-3 col-xs-12" for="daterange">Rentang Data Tindakan</label>
         <div class="col-md-9 col-sm-9 col-xs-12">
             <div class="input-prepend input-group">
               <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-              <input type="text" style="width: 200px;" name="daterange" class="form-control" value="<?=$mulai.' - '.$selesai;?>" required="required" />
+              <input type="text" style="width: 200px;" name="daterange1" id="rentang" class="form-control" value="<?=$dari.' - '.$sampai;?>" required="required" />
             </div>
         </div>
-        <input type="hidden" name="mulai" id="mulai" value="<?=$mulai;?>">
-        <input type="hidden" name="selesai" id="selesai" value="<?=$selesai;?>">
+        <input type="hidden" name="mulai" id="mulai" value="<?=$dari;?>">
+        <input type="hidden" name="selesai" id="selesai" value="<?=$sampai;?>">
     </div><br/>
     <div class="form-group">
         <div class="col-md-12 col-sm-offset-4">
-           <?php echo form_button(array('type'=>'submit', 'class'=>'btn btn-success', 'content'=>'Upload &nbsp;<i class="fa fa-upload"></i>'));?>
+           <?php echo form_button(array('type'=>'submit', 'class'=>'btn btn-success', 'content'=>'Rekap &nbsp;<i class="fa fa-clone"></i>'));?>
            <a href="<?=current_url();?>" class="btn btn-warning">Batal &nbsp;<i class="fa fa-undo"></i></a>
         </div>
     </div>
 <?=form_close();?>
 <hr />
+<?=form_open($filaction, 'class="form-horizontal form-label-left"');?>
+<div class="form-group">
+    <label class="control-label col-sm-1 col-xs-12" for="ragefilter">Filter </label>
+    <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="input-prepend input-group">
+          <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+          <input type="text" style="width: 250px;" name="rangefilter" id="rangefilter" class="form-control" value="<?=$dari.' - '.$sampai;?>" required="required" />
+        </div>
+    </div>&nbsp;    
+    <?php echo form_hidden('filstart', $dari);
+        echo form_hidden('filstop', $sampai);         
+        echo form_button(array('type'=>'submit', 'class'=>'btn btn-default', 'content'=>'Tampil &nbsp;<i class="fa fa-eye"></i>'));?>
+</div>
+<?=form_close();?>
 <div class="table-responsive">
     <table id="dtables" class="table table-striped table-bordered jambo_table bulk_action">
         <thead>

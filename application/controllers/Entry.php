@@ -32,40 +32,51 @@ class Entry extends CI_Controller{
         parent:: __construct();
         $this->load->model('modentry');
         $this->load->model('modref');
-        $this->thn = date('Y');
-        $this->bln = date('m');                
     }
     
     function index() {
         redirect('main');
     }
     
-    public function dokrm() {
+    public function dokrm($start=null, $stop=null) {
         $data['banner'] = false;
         $data['page'] = 'entryview';
         $data['judul'] = 'Kualitas - Kelengkapan Dokumen Rekam Medis';
         $data['content']['action'] = site_url('entry/save');
         $data['content']['jns'] = 1;
-        $data['content']['result'] = $this->modentry->getdokrm($this->bln, $this->thn);        
+        if ($start == NULL || $stop == NULL) {
+            $start = date("01/m/Y");
+            $stop = date("t/m/Y");
+        }
+        $data['content']['result'] = $this->modentry->getdokrm($start, $stop);        
         $this->load->view('mainview', $data);
     }
     
-    public function fornas() {
+    public function fornas($start=null, $stop=null) {
         $data['banner'] = false;
         $data['page'] = 'entryview';
         $data['judul'] = 'Kualitas - Kepatuhan FORNAS';
-        $data['content']['jns'] = 1;
+        if ($start == NULL || $stop == NULL) {
+            $start = date("01/m/Y");
+            $stop = date("t/m/Y");
+        }
+        $data['content']['jns'] = 2;
         $data['content']['action'] = site_url('entry/save');
-        $data['content']['result'] = $this->modentry->getfornas($this->bln, $this->thn);
+        $data['content']['result'] = $this->modentry->getfornas($start, $stop);
         $this->load->view('mainview', $data);
     }
     
-    public function perilaku() {
+    public function behavior($start=null, $stop=null) {
         $data['banner'] = false;
         $data['page'] = 'entryview';
         $data['judul'] = 'Penilaian Perilaku';
+        if ($start == NULL || $stop == NULL) {
+            $start = date("01/m/Y");
+            $stop = date("t/m/Y");
+        }
+        $data['content']['jns'] = 3;
         $data['content']['action'] = site_url('entry/save');
-        $data['content']['result'] = $this->modentry->getbehav($bln, $thn);
+        $data['content']['result'] = $this->modentry->getbehav($start, $stop);
         $this->load->view('mainview', $data);
     }
     
