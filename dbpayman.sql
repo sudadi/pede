@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 02, 2017 at 07:05 PM
+-- Generation Time: Nov 03, 2017 at 07:06 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -235,7 +235,7 @@ INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`) VALUES
 (2, 'Kualitas Pelayanan', '', 'fa fa-thumbs-o-up', 0, 1),
 (3, 'Kelengkapan Dok.', 'entry/dokrm', '', 2, 1),
 (4, 'Kepatuhan FORNAS', 'entry/fornas', '', 2, 1),
-(5, 'Perilaku', 'entry/perilaku', 'fa fa-heart-o', 0, 1),
+(5, 'Perilaku', 'entry/behavior', 'fa fa-heart-o', 0, 1),
 (6, 'Kalkulasi', 'kalkulasi', 'fa fa-calculator', 0, 1),
 (7, 'Laporan', 'report', 'fa fa-file-text', 0, 1),
 (8, 'Setting', '', 'fa fa-cogs', 0, 1),
@@ -423,37 +423,17 @@ CREATE TABLE `ttindakan` (
   `idgrplayan` int(11) NOT NULL,
   `grplayan` varchar(150) NOT NULL,
   `iddokter` smallint(6) NOT NULL,
-  `dokter` varchar(100) NOT NULL
+  `dokter` varchar(100) NOT NULL,
+  `updlog` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 --
--- Triggers `ttindakan`
+-- Dumping data for table `ttindakan`
 --
-DELIMITER $$
-CREATE TRIGGER `rekap_grp_tindakan` AFTER INSERT ON `ttindakan` FOR EACH ROW BEGIN
-SET @idgrp = NEW.idgrplayan;
-SET @grp = NEW.grplayan;
-SET @iddr = NEW.iddokter;
-SET @bln = month(NEW.tgl);
-SET @thn = year(NEW.tgl);
-SET  @point = (SELECT point FROM refgrplayan
-WHERE refgrplayan.idgrp = @idgrp OR refgrplayan.grouplayan = @grp);
-if (@point) THEN
-	SELECT capaian, id  INTO @capaian, @idrkp FROM trkptindakan
-    WHERE (bln = @bln) AND (thn = @thn) AND (idpeg = @iddr) AND 
-    (grplayan = @grp OR idgrplayan = @idgrp);
-    IF (@capaian) THEN
-    	SET @jml = (@capaian+1) * @point;
-    	UPDATE trkptindakan SET trkptindakan.capaian = @capaian+1, trkptindakan.jml = @jml
-        WHERE trkptindakan.id = @idrkp;
-    ELSE 
-    	INSERT INTO trkptindakan (bln, thn, idgrplayan, grplayan, idpeg, capaian, point, jml)
-        VALUES (@bln, @thn, @idgrp, @grp, @iddr, 1, @point, @point);
-    END IF;
-END IF;
-END
-$$
-DELIMITER ;
+
+INSERT INTO `ttindakan` (`id`, `tgl`, `norm`, `nmpasien`, `crbayar`, `tipelayan`, `layanan`, `idgrplayan`, `grplayan`, `iddokter`, `dokter`, `updlog`) VALUES
+(44, '2017-05-09', '308777', 'kampret', 'JKN', 'reguler', 'pasang infus', 0, 'khusus', 1, 'paijo', '2017-11-03 18:24:14'),
+(46, '2017-05-09', '308778', 'sukro', 'JKN', 'reguler', 'pasang infus', 0, 'khusus I', 1, 'paijo', '2017-11-03 06:24:14');
 
 --
 -- Indexes for dumped tables
@@ -517,7 +497,8 @@ ALTER TABLE `trkptindakan`
 -- Indexes for table `ttindakan`
 --
 ALTER TABLE `ttindakan`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `tgl` (`tgl`,`norm`,`layanan`,`iddokter`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -567,7 +548,7 @@ ALTER TABLE `trkptindakan`
 -- AUTO_INCREMENT for table `ttindakan`
 --
 ALTER TABLE `ttindakan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
