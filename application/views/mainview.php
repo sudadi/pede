@@ -75,7 +75,7 @@
                   </div>
                   <ul class="nav navbar-nav navbar-right">
                       <?php 
-                      //$this->load->view('topnav'); ?>
+                      $this->load->view('topnav'); ?>
                   </ul>
 
               </nav>

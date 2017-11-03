@@ -78,7 +78,7 @@ class Kuantitas extends CI_Controller {
             $this->load->library('Excel_reader');
 
             //tentukan file
-            $this->excel_reader->setOutputEncoding('230787');
+            $this->excel_reader->setOutputEncoding('210678'); //230787
             $file = $upload_data['full_path'];
             $this->excel_reader->read($file);
             error_reporting(E_ALL ^ E_NOTICE);
@@ -109,7 +109,7 @@ class Kuantitas extends CI_Controller {
             $file = $upload_data['file_name'];
             $path = './temp_upload/' . $file;
             unlink($path);
-            $this->session->set_flashdata('success'. $path);
+            $this->session->set_flashdata('success', 'Upload data BERHASIL.');
         }
         redirect(site_url('kuantitas'));
         //echo $data['cells'][2][2];
