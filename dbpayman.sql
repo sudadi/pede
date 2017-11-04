@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
--- https://www.phpmyadmin.net/
+-- version 4.5.1
+-- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 03, 2017 at 07:06 PM
--- Server version: 10.1.21-MariaDB
--- PHP Version: 5.6.30
+-- Generation Time: Nov 04, 2017 at 09:07 AM
+-- Server version: 10.1.9-MariaDB
+-- PHP Version: 5.6.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -19,6 +19,29 @@ SET time_zone = "+00:00";
 --
 -- Database: `dbpayman`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `rekap_tindakan` (IN `_from` DATE, IN `_to` DATE)  NO SQL
+BEGIN
+DECLARE n INT DEFAULT 0;
+DECLARE i INT DEFAULT 0;
+
+SELECT COUNT(*) INTO n FROM ttindakan WHERE tgl BETWEEN _from AND _to;
+SET i = 0;
+WHILE i < n DO
+	SELECT ttindakan.idgrplayan, ttindakan.grplayan, ttindakan.iddokter INTO @idgrp, @grp, @iddr FROM ttindakan WHERE ttindakan.tgl BETWEEN _from AND _to LIMIT i,1;
+	SET  @point = (SELECT point FROM refgrplayan WHERE refgrplayan.idgrp = @idgrp OR refgrplayan.grouplayan = @grp);
+IF (@point) THEN
+	INSERT INTO trkptindakan (dari, sampai, idgrplayan, grplayan, idpeg, capaian, point, jml) VALUES (_from, _to, @idgrp, @grp, @iddr, 1, @point, @point) ON duplicate KEY UPDATE capaian=capaian+1, jml=capaian*point;
+    END IF;
+    SET i = i+1;
+END WHILE;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -50,7 +73,7 @@ CREATE TABLE `refgrplayan` (
 --
 
 INSERT INTO `refgrplayan` (`idgrp`, `grouplayan`, `point`, `target`) VALUES
-(1, 'gsdfgzd', 2, 0);
+(1, 'khusus I', 2, 0);
 
 -- --------------------------------------------------------
 
@@ -382,8 +405,8 @@ INSERT INTO `tresfornas` (`idfornas`, `tgl`, `bln`, `thn`, `idpeg`, `capaian`) V
 
 CREATE TABLE `trkptindakan` (
   `id` int(11) NOT NULL,
-  `start` date NOT NULL,
-  `stop` date NOT NULL,
+  `dari` date NOT NULL,
+  `sampai` date NOT NULL,
   `idgrplayan` int(11) NOT NULL,
   `grplayan` varchar(100) NOT NULL,
   `idpeg` int(100) NOT NULL,
@@ -391,6 +414,16 @@ CREATE TABLE `trkptindakan` (
   `capaian` int(11) NOT NULL,
   `jml` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `trkptindakan`
+--
+
+INSERT INTO `trkptindakan` (`id`, `dari`, `sampai`, `idgrplayan`, `grplayan`, `idpeg`, `point`, `capaian`, `jml`) VALUES
+(11, '2017-05-01', '2017-05-30', 1, 'khusus', 1, 2, 5, 10),
+(12, '2017-05-01', '2017-05-30', 0, 'khusus I', 1, 2, 5, 10),
+(19, '2017-05-01', '2017-05-31', 1, 'khusus', 1, 2, 2, 4),
+(20, '2017-05-01', '2017-05-31', 0, 'khusus I', 1, 2, 2, 4);
 
 -- --------------------------------------------------------
 
@@ -432,7 +465,7 @@ CREATE TABLE `ttindakan` (
 --
 
 INSERT INTO `ttindakan` (`id`, `tgl`, `norm`, `nmpasien`, `crbayar`, `tipelayan`, `layanan`, `idgrplayan`, `grplayan`, `iddokter`, `dokter`, `updlog`) VALUES
-(44, '2017-05-09', '308777', 'kampret', 'JKN', 'reguler', 'pasang infus', 0, 'khusus', 1, 'paijo', '2017-11-03 18:24:14'),
+(44, '2017-05-09', '308777', 'kampret', 'JKN', 'reguler', 'pasang infus', 1, 'khusus', 1, 'paijo', '2017-11-03 18:24:14'),
 (46, '2017-05-09', '308778', 'sukro', 'JKN', 'reguler', 'pasang infus', 0, 'khusus I', 1, 'paijo', '2017-11-03 06:24:14');
 
 --
@@ -491,7 +524,8 @@ ALTER TABLE `tresfornas`
 -- Indexes for table `trkptindakan`
 --
 ALTER TABLE `trkptindakan`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `dari` (`dari`,`sampai`,`idgrplayan`,`grplayan`,`idpeg`);
 
 --
 -- Indexes for table `ttindakan`
@@ -543,7 +577,7 @@ ALTER TABLE `tresfornas`
 -- AUTO_INCREMENT for table `trkptindakan`
 --
 ALTER TABLE `trkptindakan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT for table `ttindakan`
 --
