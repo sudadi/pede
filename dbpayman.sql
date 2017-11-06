@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 04, 2017 at 09:07 AM
--- Server version: 10.1.9-MariaDB
--- PHP Version: 5.6.15
+-- Generation Time: Nov 06, 2017 at 04:16 PM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -225,6 +225,18 @@ INSERT INTO `refjabatan` (`idjabatan`, `jabatan`, `level`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `refkualitas`
+--
+
+CREATE TABLE `refkualitas` (
+  `idrefkw` int(11) NOT NULL,
+  `nmkw` int(11) NOT NULL,
+  `point` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `reflayanan`
 --
 
@@ -322,80 +334,49 @@ INSERT INTO `refuser` (`iduser`, `username`, `password`, `realname`, `email`, `i
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tcapaian`
+-- Table structure for table `tbobot`
 --
 
-CREATE TABLE `tcapaian` (
-  `idcp` int(11) NOT NULL,
-  `jenis` smallint(2) NOT NULL,
-  `start` date NOT NULL,
-  `stop` date NOT NULL,
-  `idpeg` int(6) NOT NULL,
-  `capaian` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tlastresult`
---
-
-CREATE TABLE `tlastresult` (
-  `idlast` int(11) NOT NULL,
-  `tgl` date NOT NULL,
-  `dokter` int(11) NOT NULL,
-  `grade` int(11) NOT NULL,
-  `point` float NOT NULL,
-  `iki` decimal(10,0) NOT NULL,
-  `iku` int(11) NOT NULL,
-  `jmllast` double NOT NULL
+CREATE TABLE `tbobot` (
+  `id` smallint(6) NOT NULL,
+  `jnsnilai` smallint(2) NOT NULL,
+  `berlaku` date NOT NULL,
+  `bobot` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tresdokrm`
+-- Table structure for table `trkpbehavior`
 --
 
-CREATE TABLE `tresdokrm` (
-  `idrm` int(11) NOT NULL,
-  `tgl` date NOT NULL,
-  `bln` int(11) NOT NULL,
-  `thn` int(11) NOT NULL,
-  `idpeg` int(6) NOT NULL,
-  `capaian` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
-
---
--- Dumping data for table `tresdokrm`
---
-
-INSERT INTO `tresdokrm` (`idrm`, `tgl`, `bln`, `thn`, `idpeg`, `capaian`) VALUES
-(1, '2017-09-27', 9, 2017, 1, 0.9),
-(2, '2017-09-27', 9, 2017, 1, 50);
+CREATE TABLE `trkpbehavior` (
+  `idrkpbhv` int(11) NOT NULL,
+  `idbhv` int(11) NOT NULL,
+  `dari` date NOT NULL,
+  `sampai` date NOT NULL,
+  `idpeg` int(11) NOT NULL,
+  `capaian` float NOT NULL,
+  `point` float NOT NULL,
+  `jml` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tresfornas`
+-- Table structure for table `trkpkualitas`
 --
 
-CREATE TABLE `tresfornas` (
-  `idfornas` int(11) NOT NULL,
-  `tgl` date NOT NULL,
-  `bln` int(11) NOT NULL,
-  `thn` int(11) NOT NULL,
+CREATE TABLE `trkpkualitas` (
+  `idrkpkw` int(11) NOT NULL,
+  `idkw` int(11) NOT NULL,
+  `start` date NOT NULL,
+  `stop` date NOT NULL,
   `idpeg` int(6) NOT NULL,
-  `capaian` double NOT NULL
+  `capaian` double NOT NULL,
+  `point` float NOT NULL,
+  `jml` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
-
---
--- Dumping data for table `tresfornas`
---
-
-INSERT INTO `tresfornas` (`idfornas`, `tgl`, `bln`, `thn`, `idpeg`, `capaian`) VALUES
-(1, '2017-09-27', 9, 2017, 1, 0.9),
-(2, '2017-09-27', 9, 2017, 1, 20);
 
 -- --------------------------------------------------------
 
@@ -424,20 +405,6 @@ INSERT INTO `trkptindakan` (`id`, `dari`, `sampai`, `idgrplayan`, `grplayan`, `i
 (12, '2017-05-01', '2017-05-30', 0, 'khusus I', 1, 2, 5, 10),
 (19, '2017-05-01', '2017-05-31', 1, 'khusus', 1, 2, 2, 4),
 (20, '2017-05-01', '2017-05-31', 0, 'khusus I', 1, 2, 2, 4);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ttarget`
---
-
-CREATE TABLE `ttarget` (
-  `idtarget` tinyint(1) NOT NULL,
-  `bln` smallint(2) NOT NULL,
-  `thn` smallint(4) NOT NULL,
-  `iddokter` smallint(6) NOT NULL,
-  `target` smallint(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -485,6 +452,12 @@ ALTER TABLE `refjabatan`
   ADD PRIMARY KEY (`idjabatan`);
 
 --
+-- Indexes for table `refkualitas`
+--
+ALTER TABLE `refkualitas`
+  ADD PRIMARY KEY (`idrefkw`);
+
+--
 -- Indexes for table `reflayanan`
 --
 ALTER TABLE `reflayanan`
@@ -503,22 +476,22 @@ ALTER TABLE `refuser`
   ADD PRIMARY KEY (`iduser`);
 
 --
--- Indexes for table `tcapaian`
+-- Indexes for table `tbobot`
 --
-ALTER TABLE `tcapaian`
-  ADD PRIMARY KEY (`idcp`);
+ALTER TABLE `tbobot`
+  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `tresdokrm`
+-- Indexes for table `trkpbehavior`
 --
-ALTER TABLE `tresdokrm`
-  ADD PRIMARY KEY (`idrm`);
+ALTER TABLE `trkpbehavior`
+  ADD PRIMARY KEY (`idrkpbhv`);
 
 --
--- Indexes for table `tresfornas`
+-- Indexes for table `trkpkualitas`
 --
-ALTER TABLE `tresfornas`
-  ADD PRIMARY KEY (`idfornas`);
+ALTER TABLE `trkpkualitas`
+  ADD PRIMARY KEY (`idrkpkw`);
 
 --
 -- Indexes for table `trkptindakan`
@@ -549,6 +522,11 @@ ALTER TABLE `refgrplayan`
 ALTER TABLE `refjabatan`
   MODIFY `idjabatan` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 --
+-- AUTO_INCREMENT for table `refkualitas`
+--
+ALTER TABLE `refkualitas`
+  MODIFY `idrefkw` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `refmenu`
 --
 ALTER TABLE `refmenu`
@@ -559,25 +537,25 @@ ALTER TABLE `refmenu`
 ALTER TABLE `refuser`
   MODIFY `iduser` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT for table `tcapaian`
+-- AUTO_INCREMENT for table `tbobot`
 --
-ALTER TABLE `tcapaian`
-  MODIFY `idcp` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `tbobot`
+  MODIFY `id` smallint(6) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `tresdokrm`
+-- AUTO_INCREMENT for table `trkpbehavior`
 --
-ALTER TABLE `tresdokrm`
-  MODIFY `idrm` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `trkpbehavior`
+  MODIFY `idrkpbhv` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `tresfornas`
+-- AUTO_INCREMENT for table `trkpkualitas`
 --
-ALTER TABLE `tresfornas`
-  MODIFY `idfornas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `trkpkualitas`
+  MODIFY `idrkpkw` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `trkptindakan`
 --
 ALTER TABLE `trkptindakan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT for table `ttindakan`
 --

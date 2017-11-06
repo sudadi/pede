@@ -30,10 +30,9 @@ class Modentry extends CI_Model {
         parent::__construct();
     }
     
-    function getdokrm($bln, $thn) {
-        $this->db->join('refpegawai', 'tresdokrm.idpeg=refpegawai.idpeg');
-        $this->db->where('bln', $bln);
-        $this->db->where('thn', $thn);
+    function getkw($jns, $bln, $thn) {
+        $this->db->join('refpegawai', 'trkpkualitas.idpeg=refpegawai.idpeg');
+        $this->db->where('', $bln);
         return $this->db->get('tresdokrm')->result_array();
     }
     
