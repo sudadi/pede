@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
--- https://www.phpmyadmin.net/
+-- version 4.5.1
+-- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2017 at 04:16 PM
--- Server version: 10.1.21-MariaDB
--- PHP Version: 5.6.30
+-- Generation Time: Nov 07, 2017 at 02:19 AM
+-- Server version: 10.1.9-MariaDB
+-- PHP Version: 5.6.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -268,8 +268,8 @@ CREATE TABLE `refmenu` (
 INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`) VALUES
 (1, 'Kuantitas Pelayanan', '', 'fa fa-dollar', 0, 1),
 (2, 'Kualitas Pelayanan', '', 'fa fa-thumbs-o-up', 0, 1),
-(3, 'Kelengkapan Dok.', 'entry/dokrm', '', 2, 1),
-(4, 'Kepatuhan FORNAS', 'entry/fornas', '', 2, 1),
+(3, 'Kelengkapan Dok.', 'kualitas/dokrm', '', 2, 1),
+(4, 'Kepatuhan FORNAS', 'kualitas/fornas', '', 2, 1),
 (5, 'Perilaku', 'entry/behavior', 'fa fa-heart-o', 0, 1),
 (6, 'Kalkulasi', 'kalkulasi', 'fa fa-calculator', 0, 1),
 (7, 'Laporan', 'report', 'fa fa-file-text', 0, 1),
@@ -370,8 +370,8 @@ CREATE TABLE `trkpbehavior` (
 CREATE TABLE `trkpkualitas` (
   `idrkpkw` int(11) NOT NULL,
   `idkw` int(11) NOT NULL,
-  `start` date NOT NULL,
-  `stop` date NOT NULL,
+  `dari` date NOT NULL,
+  `sampai` date NOT NULL,
   `idpeg` int(6) NOT NULL,
   `capaian` double NOT NULL,
   `point` float NOT NULL,
