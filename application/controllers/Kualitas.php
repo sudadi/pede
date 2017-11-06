@@ -24,13 +24,13 @@
  * THE SOFTWARE.
  */
 
-class Entry extends CI_Controller{
+class Kualitas extends CI_Controller{
     
     private $thn, $bln;
             
     function __construct() {
         parent:: __construct();
-        $this->load->model('modentry');
+        $this->load->model('modkualitas');
         $this->load->model('modref');
     }
     
@@ -38,17 +38,20 @@ class Entry extends CI_Controller{
         redirect('main');
     }
     
-    public function dokrm($start=null, $stop=null) {
+    public function dokrm($bln=null, $thn=null) {
         $data['banner'] = false;
-        $data['page'] = 'entryview';
+        $data['page'] = 'kualitasview';
         $data['judul'] = 'Kualitas - Kelengkapan Dokumen Rekam Medis';
-        $data['content']['action'] = site_url('entry/save');
-        $data['content']['jns'] = 1;
-        if ($start == NULL || $stop == NULL) {
-            $start = date("01/m/Y");
-            $stop = date("t/m/Y");
+        $data['content']['action'] = site_url('kualitas/save');
+        $data['content']['idkw'] = 1;
+        
+        if (!$bln || !$thn) {
+            $bln = date("m");
+            $thn = date("Y");
         }
-        $data['content']['result'] = $this->modentry->getdokrm($start, $stop);        
+        $start = date("$thn/$bln/01");
+        $stop = date("$thn/$bln/t");
+        $data['content']['result'] = $this->modkualitas->getkw(1, $start, $stop);        
         $this->load->view('mainview', $data);
     }
     

@@ -24,16 +24,16 @@
  * THE SOFTWARE.
  */
 
-class Modentry extends CI_Model {
+class Modkualitas extends CI_Model {
 
     function __construct() {
         parent::__construct();
     }
     
-    function getkw($jns, $bln, $thn) {
+    function getkw($idkw, $start, $stop) {
         $this->db->join('refpegawai', 'trkpkualitas.idpeg=refpegawai.idpeg');
-        $this->db->where('', $bln);
-        return $this->db->get('tresdokrm')->result_array();
+        $this->db->where("dari = '$start' and sampai = '$stop'");
+        return $this->db->get('trkpkualitas')->result_array();
     }
     
     function getfornas($bln, $thn) {
