@@ -43,29 +43,39 @@ class Kualitas extends CI_Controller{
         $data['page'] = 'kualitasview';
         $data['judul'] = 'Kualitas - Kelengkapan Dokumen Rekam Medis';
         $data['content']['action'] = site_url('kualitas/save');
+        $data['content']['filaction'] = site_url('kualitas/dokrm');
         $data['content']['idkw'] = 1;
-        
+        if ($this->input->post()){
+            $bln = $this->input->post('bulan');
+            $thn = $this->input->post('tahun');
+        }
+        $data['content']['bln'] = $bln;
+        $data['content']['thn'] = $thn;
+        $data['content']['result'] = $this->modkualitas->getkw(1, $bln, $thn);        
+        $this->load->view('mainview', $data);
+        //echo $this->db->last_query();
+    }
+    
+    public function fornas($bln=null, $thn=null) {
+        $data['banner'] = false;
+        $data['page'] = 'kualitasview';
+        $data['judul'] = 'Kualitas - Kepatuhan FORNAS';
+        $data['content']['filaction'] = site_url('kualitas/fornas');
+        $data['content']['idkw'] = 2;
+        if ($this->input->post()){
+            $bln = $this->input->post('bulan');
+            $thn = $this->input->post('tahun');
+        }
         if (!$bln || !$thn) {
             $bln = date("m");
             $thn = date("Y");
         }
         $start = date("$thn/$bln/01");
         $stop = date("$thn/$bln/t");
-        $data['content']['result'] = $this->modkualitas->getkw(1, $start, $stop);        
-        $this->load->view('mainview', $data);
-    }
-    
-    public function fornas($start=null, $stop=null) {
-        $data['banner'] = false;
-        $data['page'] = 'entryview';
-        $data['judul'] = 'Kualitas - Kepatuhan FORNAS';
-        if ($start == NULL || $stop == NULL) {
-            $start = date("01/m/Y");
-            $stop = date("t/m/Y");
-        }
-        $data['content']['jns'] = 2;
-        $data['content']['action'] = site_url('entry/save');
-        $data['content']['result'] = $this->modentry->getfornas($start, $stop);
+        $data['content']['bln'] = $bln;
+        $data['content']['thn'] = $thn;
+        $data['content']['action'] = site_url('kualitas/save');
+        $data['content']['result'] = $this->modkualitas->getkw(2, $start, $stop);
         $this->load->view('mainview', $data);
     }
     
@@ -86,18 +96,24 @@ class Kualitas extends CI_Controller{
     public function save() {
         if ($this->input->post()) {
             $idpeg = $this->input->post('idpeg');
-            $tahun = $this->input->post('tahun');
-            $bulan = $this->input->post('bulan');
-            $nilai = $this->input->post('nilai');
-            $jns = $this->input->post('jns');
-            $this->db->insert('tresdokrm', array('tgl'=>date('Y/m/d'), 'thn'=>$tahun, 'bln'=>$bulan, 
-                'capaian'=>$nilai, 'idpeg'=>$idpeg));
+            $thn = $this->input->post('tahun');
+            $bln = $this->input->post('bulan');
+            $capaian = $this->input->post('nilai');
+            $idkw = $this->input->post('idkw');
+            $start = date("$thn/$bln/01");
+            $stop = date("$thn/$bln/t");
+            $this->db->insert('trkpkualitas', array('dari'=>$start, 'sampai'=>$stop, 'idkw'=>$idkw, 
+                'capaian'=>$capaian, 'idpeg'=>$idpeg));
             if ($this->db->affected_rows()>0){
                 $this->session->set_flashdata('success', 'Data sudah tersimpan');
             } else {
                 $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
             }                
-            redirect(base_url('dokrm'));
+            if($idkw == 1){
+                redirect(base_url("kualitas/dokrm/$bln/$thn"));
+            } else {
+                redirect('kualitas/fornas');
+            }
         }
     }
     

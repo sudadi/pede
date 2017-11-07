@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2017 at 02:19 AM
--- Server version: 10.1.9-MariaDB
--- PHP Version: 5.6.15
+-- Generation Time: Nov 07, 2017 at 05:26 PM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -24,6 +24,7 @@ DELIMITER $$
 --
 -- Procedures
 --
+DROP PROCEDURE IF EXISTS `rekap_tindakan`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `rekap_tindakan` (IN `_from` DATE, IN `_to` DATE)  NO SQL
 BEGIN
 DECLARE n INT DEFAULT 0;
@@ -49,6 +50,7 @@ DELIMITER ;
 -- Table structure for table `refakses`
 --
 
+DROP TABLE IF EXISTS `refakses`;
 CREATE TABLE `refakses` (
   `level` int(11) NOT NULL,
   `idmenu` int(11) NOT NULL,
@@ -61,6 +63,7 @@ CREATE TABLE `refakses` (
 -- Table structure for table `refgrplayan`
 --
 
+DROP TABLE IF EXISTS `refgrplayan`;
 CREATE TABLE `refgrplayan` (
   `idgrp` int(11) NOT NULL,
   `grouplayan` varchar(150) NOT NULL,
@@ -81,6 +84,7 @@ INSERT INTO `refgrplayan` (`idgrp`, `grouplayan`, `point`, `target`) VALUES
 -- Table structure for table `refjabatan`
 --
 
+DROP TABLE IF EXISTS `refjabatan`;
 CREATE TABLE `refjabatan` (
   `idjabatan` int(50) NOT NULL,
   `jabatan` varchar(100) NOT NULL,
@@ -228,6 +232,7 @@ INSERT INTO `refjabatan` (`idjabatan`, `jabatan`, `level`) VALUES
 -- Table structure for table `refkualitas`
 --
 
+DROP TABLE IF EXISTS `refkualitas`;
 CREATE TABLE `refkualitas` (
   `idrefkw` int(11) NOT NULL,
   `nmkw` int(11) NOT NULL,
@@ -240,6 +245,7 @@ CREATE TABLE `refkualitas` (
 -- Table structure for table `reflayanan`
 --
 
+DROP TABLE IF EXISTS `reflayanan`;
 CREATE TABLE `reflayanan` (
   `idlayan` varchar(100) NOT NULL,
   `idgrp` int(11) NOT NULL,
@@ -252,6 +258,7 @@ CREATE TABLE `reflayanan` (
 -- Table structure for table `refmenu`
 --
 
+DROP TABLE IF EXISTS `refmenu`;
 CREATE TABLE `refmenu` (
   `idmenu` int(11) NOT NULL,
   `menu` varchar(100) NOT NULL,
@@ -288,6 +295,7 @@ INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`) VALUES
 -- Table structure for table `refpegawai`
 --
 
+DROP TABLE IF EXISTS `refpegawai`;
 CREATE TABLE `refpegawai` (
   `idpeg` int(11) NOT NULL,
   `nip` varchar(20) NOT NULL,
@@ -313,6 +321,7 @@ INSERT INTO `refpegawai` (`idpeg`, `nip`, `nama`, `jk`, `alamat`, `tempatlhr`, `
 -- Table structure for table `refuser`
 --
 
+DROP TABLE IF EXISTS `refuser`;
 CREATE TABLE `refuser` (
   `iduser` int(3) NOT NULL,
   `username` varchar(50) NOT NULL,
@@ -337,6 +346,7 @@ INSERT INTO `refuser` (`iduser`, `username`, `password`, `realname`, `email`, `i
 -- Table structure for table `tbobot`
 --
 
+DROP TABLE IF EXISTS `tbobot`;
 CREATE TABLE `tbobot` (
   `id` smallint(6) NOT NULL,
   `jnsnilai` smallint(2) NOT NULL,
@@ -350,6 +360,7 @@ CREATE TABLE `tbobot` (
 -- Table structure for table `trkpbehavior`
 --
 
+DROP TABLE IF EXISTS `trkpbehavior`;
 CREATE TABLE `trkpbehavior` (
   `idrkpbhv` int(11) NOT NULL,
   `idbhv` int(11) NOT NULL,
@@ -367,6 +378,7 @@ CREATE TABLE `trkpbehavior` (
 -- Table structure for table `trkpkualitas`
 --
 
+DROP TABLE IF EXISTS `trkpkualitas`;
 CREATE TABLE `trkpkualitas` (
   `idrkpkw` int(11) NOT NULL,
   `idkw` int(11) NOT NULL,
@@ -378,12 +390,22 @@ CREATE TABLE `trkpkualitas` (
   `jml` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
+--
+-- Dumping data for table `trkpkualitas`
+--
+
+INSERT INTO `trkpkualitas` (`idrkpkw`, `idkw`, `dari`, `sampai`, `idpeg`, `capaian`, `point`, `jml`) VALUES
+(1, 1, '2017-10-01', '2017-10-30', 1, 10, 0, 0),
+(2, 1, '2017-09-01', '2017-09-30', 1, 12, 0, 0),
+(3, 1, '2017-08-01', '2017-08-30', 1, 34, 0, 0);
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `trkptindakan`
 --
 
+DROP TABLE IF EXISTS `trkptindakan`;
 CREATE TABLE `trkptindakan` (
   `id` int(11) NOT NULL,
   `dari` date NOT NULL,
@@ -412,6 +434,7 @@ INSERT INTO `trkptindakan` (`id`, `dari`, `sampai`, `idgrplayan`, `grplayan`, `i
 -- Table structure for table `ttindakan`
 --
 
+DROP TABLE IF EXISTS `ttindakan`;
 CREATE TABLE `ttindakan` (
   `id` int(11) NOT NULL,
   `tgl` date NOT NULL,
@@ -550,7 +573,7 @@ ALTER TABLE `trkpbehavior`
 -- AUTO_INCREMENT for table `trkpkualitas`
 --
 ALTER TABLE `trkpkualitas`
-  MODIFY `idrkpkw` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idrkpkw` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `trkptindakan`
 --

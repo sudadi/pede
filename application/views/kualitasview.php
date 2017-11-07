@@ -19,7 +19,7 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
             $thn = 2017 + $i;
             $option[$thn] = $thn;
         }
-        echo form_dropdown('tahun', $option, '', 'class="form-control col-sm-12 col-xs-12" id="tahun" required');?>
+        echo form_dropdown('tahun', $option, $thn, 'class="form-control col-sm-12 col-xs-12" id="tahun" required');?>
     </div>
     <label class="control-label col-sm-2 col-sm-offset-2 col-xs-12" for="bulan">Bulan</label>
     <div class="col-md-3 col-sm-3 col-xs-12">
@@ -27,10 +27,10 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
         $option = '';
         $option[''] = '-Bulan-';
         for ($i = 0; $i <= 11; ++$i) {
-             $time = strtotime(sprintf('+%d months', $i));
+             $time = strtotime(sprintf('+%d months', $i-1));
              $option[date('m', $time)] = date('F', $time);
         }
-        echo form_dropdown('bulan', $option, NULL, 'class="form-control col-sm-12 col-xs-12" required');?>
+        echo form_dropdown('bulan', $option, $bln, 'class="form-control col-sm-12 col-xs-12" required');?>
     </div>
 </div>
 <div class="form-group">
@@ -66,8 +66,38 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
         </div>
     </div>
 </div>
+<?=form_close();?>
 <br />
 <hr />
+<?=form_open($filaction, 'class="form-horizontal form-label-left"');?>
+<div class="form-group">
+    <label class="control-label col-sm-2 col-xs-12" for="tahun">Filter</label>
+    <div class="col-md-2 col-sm-2 col-xs-12">
+        <?php 
+        $selisih = date('Y') - 2017;
+        unset($option);
+        $option[''] = '-Tahun-';
+        for ($i = 0; $i <= $selisih; $i++){
+            $thn = 2017 + $i;
+            $option[$thn] = $thn;
+        }
+        echo form_dropdown('tahun', $option, $thn, 'class="form-control col-sm-12 col-xs-12" id="tahun" required');?>
+    </div>
+    <div class="col-md-2 col-sm-3 col-xs-12">
+        <?php 
+        $option = '';
+        $option[''] = '-Bulan-';
+        for ($i = 0; $i <= 11; ++$i) {
+             $time = strtotime(sprintf('+%d months', $i-1));
+             $option[date('m', $time)] = date('F', $time);
+        }
+        echo form_dropdown('bulan', $option, $bln, 'class="form-control col-sm-12 col-xs-12" required');?>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-default">Tampil <i class="fa fa-eye"></i></button>
+    </div>
+</div>
+<?=form_close();?>
 <div class="table-responsive">
     <table id="dtables" class="table table-striped table-bordered jambo_table bulk_action">
         <thead>
