@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2017 at 05:26 PM
+-- Generation Time: Nov 09, 2017 at 06:51 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -56,6 +56,33 @@ CREATE TABLE `refakses` (
   `idmenu` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `refbehavior`
+--
+
+DROP TABLE IF EXISTS `refbehavior`;
+CREATE TABLE `refbehavior` (
+  `idbhv` int(11) NOT NULL,
+  `nmbhv` varchar(100) NOT NULL,
+  `point` smallint(6) NOT NULL DEFAULT '1',
+  `target` smallint(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `refbehavior`
+--
+
+INSERT INTO `refbehavior` (`idbhv`, `nmbhv`, `point`, `target`) VALUES
+(1, 'Keberadaan', 1, 80),
+(2, 'Integritas', 1, 80),
+(3, 'Inisiatif', 1, 80),
+(4, 'Kehandalan', 1, 80),
+(5, 'Kepatuhan', 1, 80),
+(6, 'Kerjasama', 1, 80),
+(7, 'Sikap perilaku', 1, 80);
 
 -- --------------------------------------------------------
 
@@ -235,8 +262,9 @@ INSERT INTO `refjabatan` (`idjabatan`, `jabatan`, `level`) VALUES
 DROP TABLE IF EXISTS `refkualitas`;
 CREATE TABLE `refkualitas` (
   `idrefkw` int(11) NOT NULL,
-  `nmkw` int(11) NOT NULL,
-  `point` int(11) NOT NULL
+  `nmkw` varchar(100) NOT NULL,
+  `point` int(11) NOT NULL,
+  `target` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -277,7 +305,7 @@ INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`) VALUES
 (2, 'Kualitas Pelayanan', '', 'fa fa-thumbs-o-up', 0, 1),
 (3, 'Kelengkapan Dok.', 'kualitas/dokrm', '', 2, 1),
 (4, 'Kepatuhan FORNAS', 'kualitas/fornas', '', 2, 1),
-(5, 'Perilaku', 'entry/behavior', 'fa fa-heart-o', 0, 1),
+(5, 'Perilaku', 'behavior', 'fa fa-heart-o', 0, 1),
 (6, 'Kalkulasi', 'kalkulasi', 'fa fa-calculator', 0, 1),
 (7, 'Laporan', 'report', 'fa fa-file-text', 0, 1),
 (8, 'Setting', '', 'fa fa-cogs', 0, 1),
@@ -463,6 +491,12 @@ INSERT INTO `ttindakan` (`id`, `tgl`, `norm`, `nmpasien`, `crbayar`, `tipelayan`
 --
 
 --
+-- Indexes for table `refbehavior`
+--
+ALTER TABLE `refbehavior`
+  ADD PRIMARY KEY (`idbhv`);
+
+--
 -- Indexes for table `refgrplayan`
 --
 ALTER TABLE `refgrplayan`
@@ -534,6 +568,11 @@ ALTER TABLE `ttindakan`
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `refbehavior`
+--
+ALTER TABLE `refbehavior`
+  MODIFY `idbhv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `refgrplayan`
 --
