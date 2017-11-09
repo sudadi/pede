@@ -25,8 +25,7 @@
  */
 
 class Kualitas extends CI_Controller{
-    
-    private $thn, $bln;
+
             
     function __construct() {
         parent:: __construct();
@@ -66,16 +65,10 @@ class Kualitas extends CI_Controller{
             $bln = $this->input->post('bulan');
             $thn = $this->input->post('tahun');
         }
-        if (!$bln || !$thn) {
-            $bln = date("m");
-            $thn = date("Y");
-        }
-        $start = date("$thn/$bln/01");
-        $stop = date("$thn/$bln/t");
         $data['content']['bln'] = $bln;
         $data['content']['thn'] = $thn;
         $data['content']['action'] = site_url('kualitas/save');
-        $data['content']['result'] = $this->modkualitas->getkw(2, $start, $stop);
+        $data['content']['result'] = $this->modkualitas->getkw(2, $bln, $thn);
         $this->load->view('mainview', $data);
     }
     
@@ -112,7 +105,25 @@ class Kualitas extends CI_Controller{
             if($idkw == 1){
                 redirect(base_url("kualitas/dokrm/$bln/$thn"));
             } else {
-                redirect('kualitas/fornas');
+                redirect("kualitas/fornas/$bln/$thn");
+            }
+        }
+    }
+    
+    public function hapus($idkw, $idrkp, $bln=null, $thn=null) {
+        if ($idkw && $idrkp) {
+            $this->db->where("idrkpkw='$idrkp' and idkw='$idkw'");
+            $this->db->delete("trkpkualitas");
+            if ($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('success', 'Data sudah dihapus');
+            } else {
+                $this->session->set_flashdata('error', 'Hapus data GAGAL');
+            }
+            switch ($idkw) {
+                case 1 : redirect("kualitas/dokrm/$bln/$thn");
+                    break;
+                case 2 : redirect("kualitas/fornas/$bln/$thn");
+                    break;
             }
         }
     }

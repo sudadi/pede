@@ -30,9 +30,11 @@ class Modkualitas extends CI_Model {
         parent::__construct();
     }
     
-    function getkw($idkw, $start, $stop) {
+    function getkw($idkw, $bln, $thn) {
+        $dari = date("$thn/$bln/01");
+        $sampai = date("$thn/$bln/t");
         $this->db->join('refpegawai', 'trkpkualitas.idpeg=refpegawai.idpeg');
-        $this->db->where("dari = '$start' and sampai = '$stop'");
+        $this->db->where("dari = '$dari' and sampai = '$sampai' and idkw='$idkw'");
         return $this->db->get('trkpkualitas')->result_array();
     }
     

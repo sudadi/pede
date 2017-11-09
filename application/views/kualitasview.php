@@ -103,10 +103,12 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
         <thead>
             <tr class="headings">
                 <th class="column-title">#</th>
-                <th class="column-title">Dokter</th>
-                <th class="column-title">Bulan</th>
-                <th class="column-title">Tahun</th>
+                <th class="column-title">NIP</th>
+                <th class="column-title">Pegawai</th>
+                <th class="column-title">Periode</th>
                 <th class="column-title">Capaian</th>
+                <th class="column-title">Index</th>
+                <th class="column-title">Jumlah</th>
                 <th class="column-title">Opsi</th>
             </tr>
         </thead>
@@ -118,11 +120,17 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
                 $i++; ?>
             <tr>
                 <td><?=$i;?></td>
+                <td><?=$row['nip'];?></td>
                 <td><?=$row['nama'];?></td>
-                <td><?=$row['bln'];?></td>
-                <td><?=$row['thn'];?></td>
+                <td><?=$row['dari'].' - '.$row['sampai'];?></td>
                 <td><?=$row['capaian'];?></td>
-                <td></td>
+                <td><?=$row['point'];?></td>
+                <td><?=$row['jml'];?></td>
+                <td class="text-center">
+                    <a href="<?=base_url().'kualitas/hapus/'.$idkw.'/'.$row['idrkpkw'].'/'.$bln.'/'.$thn;?>" 
+                       class="btn btn-xs btn-danger" onclick="return confirm('Yakin hapus data tersebut..?')">
+                        <i class="fa fa-trash-o"></i> Hapus</a>
+                </td>
             </tr>
         <?php   }
         } ?>
