@@ -33,8 +33,21 @@ class Behavior extends CI_Controller{
         $this->load->model('modref');
     }
     
-    function index() {
-        redirect('main');
+    public function index($idbhv=null, $bln=null, $thn=null) {
+        $data['banner'] = false;
+        $data['page'] = 'behaviorview';
+        $data['judul'] = 'Behavior - Penilaian Perilaku Pegawai';
+        $data['content']['action'] = site_url('behavior/save');
+        $data['content']['filaction'] = site_url('behavior');
+        $data['content']['idbhv'] = 1;
+        if ($this->input->post()){
+            $bln = $this->input->post('bulan');
+            $thn = $this->input->post('tahun');
+        }
+        $data['content']['bln'] = $bln;
+        $data['content']['thn'] = $thn;
+        $data['content']['result'] = $this->modbehavior->getbhv($idbhv, $bln, $thn);        
+        $this->load->view('mainview', $data);
     }
     
 }

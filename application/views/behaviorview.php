@@ -29,7 +29,7 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
 ?>
 <div class="form-group">
     <label class="control-label col-sm-2 col-xs-12" for="tahun">Tahun</label>
-    <div class="col-md-3 col-sm-3 col-xs-12">
+    <div class="col-md-2 col-sm-2 col-xs-12">
         <?php 
         $selisih = date('Y') - 2017;
         $option[''] = '-Tahun-';
@@ -39,8 +39,8 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
         }
         echo form_dropdown('tahun', $option, $thn, 'class="form-control col-sm-12 col-xs-12" id="tahun" required');?>
     </div>
-    <label class="control-label col-sm-2 col-sm-offset-2 col-xs-12" for="bulan">Bulan</label>
-    <div class="col-md-3 col-sm-3 col-xs-12">
+    <label class="control-label col-sm-1 col-xs-12" for="bulan">Bulan</label>
+    <div class="col-md-2 col-sm-2 col-xs-12">
         <?php 
         $option = '';
         $option[''] = '-Bulan-';
@@ -49,6 +49,19 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
              $option[date('m', $time)] = date('F', $time);
         }
         echo form_dropdown('bulan', $option, $bln, 'class="form-control col-sm-12 col-xs-12" required');?>
+    </div>
+    <label class="control-label col-sm-2 col-xs-12" for="idpeg">Items</label>
+    <div class="col-md-3 col-sm-3 col-xs-12">
+        <?php 
+            $option='';
+            $option['']='--Pilih Dokter--';
+            $dokter = $this->modref->getdokter();
+            foreach ($dokter as $key => $value) {
+                $option[$value['idpeg']] = $value['nama'];
+                
+            }
+            echo form_dropdown('idpeg', $option, '', 'class="js-select2 form-control" required');
+        ?>
     </div>
 </div>
 <div class="form-group">
@@ -76,7 +89,7 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
     <div class="col-md-12 col-sm-offset-4">
         <div class="col-sm-2">
         <?php 
-        echo form_hidden('idkw', $idkw);
+        echo form_hidden('idbhv', $idbhv);
         echo form_button(array('type'=>'submit', 'class'=>'btn btn-success btn-block', 'content'=>'Simpan &nbsp;<i class="fa fa-save"></i>'));?>
         </div>
         <div class="col-sm-2">

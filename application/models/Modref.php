@@ -24,5 +24,9 @@ class Modref extends CI_Model {
         return $this->db->get('refmenu')->result_arraY();
     }
     
+    function getrefbh() {
+        return $this->db->get('refbehavior')->result_array();
+    }
+    
 }
 ?>
