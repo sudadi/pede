@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 09, 2017 at 06:51 PM
+-- Generation Time: Nov 10, 2017 at 06:37 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -607,7 +607,7 @@ ALTER TABLE `tbobot`
 -- AUTO_INCREMENT for table `trkpbehavior`
 --
 ALTER TABLE `trkpbehavior`
-  MODIFY `idrkpbhv` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idrkpbhv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `trkpkualitas`
 --

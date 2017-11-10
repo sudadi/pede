@@ -33,7 +33,7 @@ class Modbehavior extends CI_Model {
         $dari = date("$thn/$bln/01");
         $sampai = date("$thn/$bln/t");
         $this->db->join('refpegawai', 'trkpbehavior.idpeg=refpegawai.idpeg');
-        $this->db->where("dari = '$dari' and sampai = '$sampai' and idbhv='$idbhv'");
+        $this->db->where("dari = '$dari' and sampai = '$sampai'");
         return $this->db->get('trkpbehavior')->result_array();
     }
 }

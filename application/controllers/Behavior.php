@@ -33,22 +33,58 @@ class Behavior extends CI_Controller{
         $this->load->model('modref');
     }
     
-    public function index($idbhv=null, $bln=null, $thn=null) {
+    public function index($bln=null, $thn=null) {
         $data['banner'] = false;
         $data['page'] = 'behaviorview';
         $data['judul'] = 'Behavior - Penilaian Perilaku Pegawai';
         $data['content']['action'] = site_url('behavior/save');
         $data['content']['filaction'] = site_url('behavior');
-        $data['content']['idbhv'] = 1;
+        //$data['content']['idbhv'] = 1;
         if ($this->input->post()){
             $bln = $this->input->post('bulan');
             $thn = $this->input->post('tahun');
         }
         $data['content']['bln'] = $bln;
         $data['content']['thn'] = $thn;
-        $data['content']['result'] = $this->modbehavior->getbhv($idbhv, $bln, $thn);        
+        $data['content']['result'] = $this->modbehavior->getbhv(null, $bln, $thn);        
         $this->load->view('mainview', $data);
     }
     
+    public function save() {
+        if ($this->input->post()) {
+            $idpeg = $this->input->post('idpeg');
+            $thn = $this->input->post('tahun');
+            $bln = $this->input->post('bulan');
+            $capaian = $this->input->post('nilai');
+            $idbhv = $this->input->post('idbhv');
+            $start = date("$thn/$bln/01");
+            $stop = date("$thn/$bln/t");
+            $this->db->insert('trkpbehavior', array('dari'=>$start, 'sampai'=>$stop, 'idbhv'=>$idbhv, 
+                'capaian'=>$capaian, 'idpeg'=>$idpeg));
+            if ($this->db->affected_rows()>0){
+                $this->session->set_flashdata('success', 'Data sudah tersimpan');
+            } else {
+                $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
+            }
+            redirect(base_url("behavior/index/$bln/$thn"));
+            
+        }
+    }
+    
+    public function hapus($idrkpbhv, $bln, $thn) {
+        if ($idrkpbhv && $bln && $thn) {
+            $this->db->where("idrkpbhv='$idrkpbhv'");
+            $this->db->delete("trkpbehavior");
+            if ($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('success', 'Data sudah dihapus');
+            } else {
+                $this->session->set_flashdata('error', 'Hapus data GAGAL');
+            }
+            redirect("behavior/index/$bln/$thn");
+        } else {
+            redirect('main');
+        }
+        
+    }
 }
 

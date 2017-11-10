@@ -50,17 +50,17 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
         }
         echo form_dropdown('bulan', $option, $bln, 'class="form-control col-sm-12 col-xs-12" required');?>
     </div>
-    <label class="control-label col-sm-2 col-xs-12" for="idpeg">Items</label>
+    <label class="control-label col-sm-2 col-xs-12" for="idbhv">Items</label>
     <div class="col-md-3 col-sm-3 col-xs-12">
         <?php 
             $option='';
-            $option['']='--Pilih Dokter--';
-            $dokter = $this->modref->getdokter();
-            foreach ($dokter as $key => $value) {
-                $option[$value['idpeg']] = $value['nama'];
+            $option['']='--Pilih Items--';
+            $bhv = $this->modref->getrefbhv();
+            foreach ($bhv as $key => $value) {
+                $option[$value['idbhv']] = $value['nmbhv'];
                 
             }
-            echo form_dropdown('idpeg', $option, '', 'class="js-select2 form-control" required');
+            echo form_dropdown('idbhv', $option, '', 'class="js-select2 form-control" required');
         ?>
     </div>
 </div>
@@ -89,7 +89,7 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
     <div class="col-md-12 col-sm-offset-4">
         <div class="col-sm-2">
         <?php 
-        echo form_hidden('idbhv', $idbhv);
+        //echo form_hidden('idbhv', $idbhv);
         echo form_button(array('type'=>'submit', 'class'=>'btn btn-success btn-block', 'content'=>'Simpan &nbsp;<i class="fa fa-save"></i>'));?>
         </div>
         <div class="col-sm-2">
@@ -158,7 +158,7 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
                 <td><?=$row['point'];?></td>
                 <td><?=$row['jml'];?></td>
                 <td class="text-center">
-                    <a href="<?=base_url().'kualitas/hapus/'.$idkw.'/'.$row['idrkpkw'].'/'.$bln.'/'.$thn;?>" 
+                    <a href="<?=base_url().'behavior/hapus/'.$row['idrkpbhv'].'/'.$bln.'/'.$thn;?>" 
                        class="btn btn-xs btn-danger" onclick="return confirm('Yakin hapus data tersebut..?')">
                         <i class="fa fa-trash-o"></i> Hapus</a>
                 </td>
