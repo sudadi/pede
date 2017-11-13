@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 10, 2017 at 06:37 PM
+-- Generation Time: Nov 13, 2017 at 06:48 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -24,6 +24,44 @@ DELIMITER $$
 --
 -- Procedures
 --
+DROP PROCEDURE IF EXISTS `calc_result`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `calc_result` ()  NO SQL
+BEGIN
+DECLARE n INT DEFAULT 0;
+DECLARE i INT DEFAULT 0;
+SELECT COUNT(*) INTO n FROM refpegawai;
+SELECT tbobot.bobot into @bobotk1 FROM tbobot WHERE tbobot.jnsnilai=1 and tbobot.berlaku <= date(now());
+SELECT tbobot.bobot into @bobotk2 FROM tbobot WHERE tbobot.jnsnilai=2 and tbobot.berlaku <= date(now());
+SELECT tbobot.bobot into @bobotk3 FROM tbobot WHERE tbobot.jnsnilai=3 and tbobot.berlaku <= date(now());
+SET i = 0;
+WHILE i < n DO
+SET @nilaik1 = 0;
+SET @nilaik2 = 0;
+SET @nilaik3 = 0;
+	SELECT idpeg, targetk1, targetk2, targetk3 INTO @idpeg, @targetk1, @targetk2, @targetk3 FROM refpegawai LIMIT i,1;
+	SELECT COUNT(jml) INTO @jmlk1 from trkptindakan WHERE idpeg=@idpeg GROUP BY idpeg;
+    IF (@targetk1 and @bobotk1 AND @jmlki) THEN
+    	SET @nilaik1 = (@jmlk1/@targetk1)*@bobotk1;
+    ELSEIF (@jmlk1 and @bobotk1) THEN
+    	SET @nilaik1 = @jmlk1*@bobotk1;
+    END IF;
+	SELECT COUNT(jml) INTO @jmlk2 from trkpkualitas WHERE idpeg=@idpeg GROUP BY idpeg;
+    IF (@targetk2 and @bobotk2 AND @jmlk2) THEN
+    	SET @nilaik2 = (@jmlk2/@targetk2)*@bobotk2;
+    ELSEIF (@jmlk2 and @bobotk2) THEN
+    	SET @nilaik2 = @jmlk2*@bobotk2;
+    END IF;
+    SELECT COUNT(jml) INTO @jmlk3 from trkpbehavior WHERE idpeg=@idpeg GROUP BY idpeg;
+    IF (@targetk3 and @bobotk3 AND @jmlk3) THEN
+    	SET @nilaik3 = (@jmlk3/@targetk3)*@bobotk3;
+    ELSEIF (@jmlk3 and @bobotk3) THEN
+    	SET @nilaik3 = @jmlk3*@bobotk3;
+    END IF;
+    
+    SET i = i+1;
+END WHILE;
+END$$
+
 DROP PROCEDURE IF EXISTS `rekap_tindakan`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `rekap_tindakan` (IN `_from` DATE, IN `_to` DATE)  NO SQL
 BEGIN
@@ -306,7 +344,7 @@ INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`) VALUES
 (3, 'Kelengkapan Dok.', 'kualitas/dokrm', '', 2, 1),
 (4, 'Kepatuhan FORNAS', 'kualitas/fornas', '', 2, 1),
 (5, 'Perilaku', 'behavior', 'fa fa-heart-o', 0, 1),
-(6, 'Kalkulasi', 'kalkulasi', 'fa fa-calculator', 0, 1),
+(6, 'Kalkulasi', '', 'fa fa-calculator', 0, 1),
 (7, 'Laporan', 'report', 'fa fa-file-text', 0, 1),
 (8, 'Setting', '', 'fa fa-cogs', 0, 1),
 (9, 'Kelola User', 'user', 'fa fa-user', 8, 1),
@@ -315,7 +353,9 @@ INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`) VALUES
 (12, 'Ref. Layanan', 'layanan', 'fa fa-user', 8, 1),
 (13, 'Target per Pegawai', 'target', 'fa fa-user', 8, 1),
 (14, 'Upload Data', 'kuantitas', '', 1, 1),
-(15, 'Rekap Data', 'kuantitas/rekap', '', 1, 1);
+(15, 'Rekap Data', 'kuantitas/rekap', '', 1, 1),
+(16, 'Kalkulasi IKI', 'hitung/iki', '', 6, 1),
+(17, 'Remunerasi', 'hitung/remun', '', 6, 1);
 
 -- --------------------------------------------------------
 
@@ -333,15 +373,18 @@ CREATE TABLE `refpegawai` (
   `tempatlhr` varchar(100) NOT NULL,
   `tgllhr` date NOT NULL,
   `idjabatan` int(11) NOT NULL,
-  `dokter` tinyint(1) NOT NULL
+  `dokter` tinyint(1) NOT NULL,
+  `targetk1` float NOT NULL,
+  `targetk2` float NOT NULL,
+  `targetk3` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `refpegawai`
 --
 
-INSERT INTO `refpegawai` (`idpeg`, `nip`, `nama`, `jk`, `alamat`, `tempatlhr`, `tgllhr`, `idjabatan`, `dokter`) VALUES
-(1, '342536', 'kampret', 'L', 'solo', 'solo', '1970-08-27', 2, 1);
+INSERT INTO `refpegawai` (`idpeg`, `nip`, `nama`, `jk`, `alamat`, `tempatlhr`, `tgllhr`, `idjabatan`, `dokter`, `targetk1`, `targetk2`, `targetk3`) VALUES
+(1, '342536', 'kampret', 'L', 'solo', 'solo', '1970-08-27', 2, 1, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -385,6 +428,21 @@ CREATE TABLE `tbobot` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tresult`
+--
+
+DROP TABLE IF EXISTS `tresult`;
+CREATE TABLE `tresult` (
+  `idresult` int(11) NOT NULL,
+  `idpeg` int(11) NOT NULL,
+  `rppoin` float NOT NULL,
+  `resiki` float NOT NULL,
+  `resjp` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `trkpbehavior`
 --
 
@@ -423,7 +481,6 @@ CREATE TABLE `trkpkualitas` (
 --
 
 INSERT INTO `trkpkualitas` (`idrkpkw`, `idkw`, `dari`, `sampai`, `idpeg`, `capaian`, `point`, `jml`) VALUES
-(1, 1, '2017-10-01', '2017-10-30', 1, 10, 0, 0),
 (2, 1, '2017-09-01', '2017-09-30', 1, 12, 0, 0),
 (3, 1, '2017-08-01', '2017-08-30', 1, 34, 0, 0);
 
@@ -539,6 +596,12 @@ ALTER TABLE `tbobot`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tresult`
+--
+ALTER TABLE `tresult`
+  ADD PRIMARY KEY (`idresult`);
+
+--
 -- Indexes for table `trkpbehavior`
 --
 ALTER TABLE `trkpbehavior`
@@ -592,7 +655,7 @@ ALTER TABLE `refkualitas`
 -- AUTO_INCREMENT for table `refmenu`
 --
 ALTER TABLE `refmenu`
-  MODIFY `idmenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `idmenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `refuser`
 --
@@ -604,10 +667,15 @@ ALTER TABLE `refuser`
 ALTER TABLE `tbobot`
   MODIFY `id` smallint(6) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `tresult`
+--
+ALTER TABLE `tresult`
+  MODIFY `idresult` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `trkpbehavior`
 --
 ALTER TABLE `trkpbehavior`
-  MODIFY `idrkpbhv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idrkpbhv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `trkpkualitas`
 --
