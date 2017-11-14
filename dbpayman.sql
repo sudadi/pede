@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 13, 2017 at 06:48 PM
+-- Generation Time: Nov 14, 2017 at 06:39 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -25,10 +25,12 @@ DELIMITER $$
 -- Procedures
 --
 DROP PROCEDURE IF EXISTS `calc_result`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `calc_result` ()  NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `calc_result` (IN `_nmjp` DATE, IN `_idxk1` INT, IN `_idxk2` INT, IN `_idxk3` INT)  NO SQL
 BEGIN
 DECLARE n INT DEFAULT 0;
 DECLARE i INT DEFAULT 0;
+INSERT INTO tidjp (nmjp) VALUES (_nmjp);
+SET @idjp = (SELECT LAST_INSERT_ID());
 SELECT COUNT(*) INTO n FROM refpegawai;
 SELECT tbobot.bobot into @bobotk1 FROM tbobot WHERE tbobot.jnsnilai=1 and tbobot.berlaku <= date(now());
 SELECT tbobot.bobot into @bobotk2 FROM tbobot WHERE tbobot.jnsnilai=2 and tbobot.berlaku <= date(now());
@@ -39,25 +41,28 @@ SET @nilaik1 = 0;
 SET @nilaik2 = 0;
 SET @nilaik3 = 0;
 	SELECT idpeg, targetk1, targetk2, targetk3 INTO @idpeg, @targetk1, @targetk2, @targetk3 FROM refpegawai LIMIT i,1;
-	SELECT COUNT(jml) INTO @jmlk1 from trkptindakan WHERE idpeg=@idpeg GROUP BY idpeg;
+	SELECT COUNT(jml) INTO @jmlk1 from trkptindakan WHERE idpeg=@idpeg and idxk1=_idxk1 GROUP BY idpeg;
     IF (@targetk1 and @bobotk1 AND @jmlki) THEN
     	SET @nilaik1 = (@jmlk1/@targetk1)*@bobotk1;
     ELSEIF (@jmlk1 and @bobotk1) THEN
     	SET @nilaik1 = @jmlk1*@bobotk1;
     END IF;
-	SELECT COUNT(jml) INTO @jmlk2 from trkpkualitas WHERE idpeg=@idpeg GROUP BY idpeg;
+	SELECT COUNT(jml) INTO @jmlk2 from trkpkualitas WHERE idpeg=@idpeg and idxk2=_idxk2  GROUP BY idpeg;
     IF (@targetk2 and @bobotk2 AND @jmlk2) THEN
     	SET @nilaik2 = (@jmlk2/@targetk2)*@bobotk2;
     ELSEIF (@jmlk2 and @bobotk2) THEN
     	SET @nilaik2 = @jmlk2*@bobotk2;
     END IF;
-    SELECT COUNT(jml) INTO @jmlk3 from trkpbehavior WHERE idpeg=@idpeg GROUP BY idpeg;
+    SELECT COUNT(jml) INTO @jmlk3 from trkpbehavior WHERE idpeg=@idpeg and idxk3=_idxk3 GROUP BY idpeg;
     IF (@targetk3 and @bobotk3 AND @jmlk3) THEN
     	SET @nilaik3 = (@jmlk3/@targetk3)*@bobotk3;
     ELSEIF (@jmlk3 and @bobotk3) THEN
     	SET @nilaik3 = @jmlk3*@bobotk3;
     END IF;
-    
+    SET @totnilai = @nilai1+@nilai2+@nilai3;
+    SELECT iki into @iki FROM reftiki where bawah<=@totnilai AND atas>=@totnilai;
+    SELECT rupiah INTO @rppoin FROM trppoin WHERE tglberlaku <= _tglrp;
+    INSERT INTO tresult (idjp, idpeg, respoin, resiki, rppoin, resjp) VALUES (@idjp, @idpeg, @totnilai, @iki, @rppoin, @rppoin*@iki);
     SET i = i+1;
 END WHILE;
 END$$
@@ -389,6 +394,20 @@ INSERT INTO `refpegawai` (`idpeg`, `nip`, `nama`, `jk`, `alamat`, `tempatlhr`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `reftiki`
+--
+
+DROP TABLE IF EXISTS `reftiki`;
+CREATE TABLE `reftiki` (
+  `idiki` int(11) NOT NULL,
+  `bawah` float NOT NULL,
+  `atas` float NOT NULL,
+  `iki` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `refuser`
 --
 
@@ -428,6 +447,68 @@ CREATE TABLE `tbobot` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tidjp`
+--
+
+DROP TABLE IF EXISTS `tidjp`;
+CREATE TABLE `tidjp` (
+  `idjp` int(11) NOT NULL,
+  `nmjp` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tidxk1`
+--
+
+DROP TABLE IF EXISTS `tidxk1`;
+CREATE TABLE `tidxk1` (
+  `idxk1` int(11) NOT NULL,
+  `dari` date NOT NULL,
+  `sampai` date NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tidxk2`
+--
+
+DROP TABLE IF EXISTS `tidxk2`;
+CREATE TABLE `tidxk2` (
+  `idxk2` int(11) NOT NULL,
+  `dari` date NOT NULL,
+  `sampai` date NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tidxk2`
+--
+
+INSERT INTO `tidxk2` (`idxk2`, `dari`, `sampai`, `created`) VALUES
+(1, '2017-11-01', '2017-11-30', '2017-11-14 11:31:39'),
+(2, '2017-11-01', '2017-11-30', '2017-11-14 11:32:51');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tidxk3`
+--
+
+DROP TABLE IF EXISTS `tidxk3`;
+CREATE TABLE `tidxk3` (
+  `idxk3` int(11) NOT NULL,
+  `dari` date NOT NULL,
+  `sampai` date NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tresult`
 --
 
@@ -436,6 +517,7 @@ CREATE TABLE `tresult` (
   `idresult` int(11) NOT NULL,
   `idpeg` int(11) NOT NULL,
   `rppoin` float NOT NULL,
+  `respoin` float NOT NULL,
   `resiki` float NOT NULL,
   `resjp` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -468,6 +550,7 @@ DROP TABLE IF EXISTS `trkpkualitas`;
 CREATE TABLE `trkpkualitas` (
   `idrkpkw` int(11) NOT NULL,
   `idkw` int(11) NOT NULL,
+  `idxk1` int(11) NOT NULL,
   `dari` date NOT NULL,
   `sampai` date NOT NULL,
   `idpeg` int(6) NOT NULL,
@@ -480,9 +563,8 @@ CREATE TABLE `trkpkualitas` (
 -- Dumping data for table `trkpkualitas`
 --
 
-INSERT INTO `trkpkualitas` (`idrkpkw`, `idkw`, `dari`, `sampai`, `idpeg`, `capaian`, `point`, `jml`) VALUES
-(2, 1, '2017-09-01', '2017-09-30', 1, 12, 0, 0),
-(3, 1, '2017-08-01', '2017-08-30', 1, 34, 0, 0);
+INSERT INTO `trkpkualitas` (`idrkpkw`, `idkw`, `idxk1`, `dari`, `sampai`, `idpeg`, `capaian`, `point`, `jml`) VALUES
+(4, 1, 2, '2017-11-01', '2017-11-30', 1, 34, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -512,6 +594,18 @@ INSERT INTO `trkptindakan` (`id`, `dari`, `sampai`, `idgrplayan`, `grplayan`, `i
 (12, '2017-05-01', '2017-05-30', 0, 'khusus I', 1, 2, 5, 10),
 (19, '2017-05-01', '2017-05-31', 1, 'khusus', 1, 2, 2, 4),
 (20, '2017-05-01', '2017-05-31', 0, 'khusus I', 1, 2, 2, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trppoin`
+--
+
+DROP TABLE IF EXISTS `trppoin`;
+CREATE TABLE `trppoin` (
+  `tglberlaku` date NOT NULL,
+  `rupiah` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -584,6 +678,12 @@ ALTER TABLE `refmenu`
   ADD PRIMARY KEY (`idmenu`);
 
 --
+-- Indexes for table `reftiki`
+--
+ALTER TABLE `reftiki`
+  ADD PRIMARY KEY (`idiki`);
+
+--
 -- Indexes for table `refuser`
 --
 ALTER TABLE `refuser`
@@ -594,6 +694,30 @@ ALTER TABLE `refuser`
 --
 ALTER TABLE `tbobot`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tidjp`
+--
+ALTER TABLE `tidjp`
+  ADD PRIMARY KEY (`idjp`);
+
+--
+-- Indexes for table `tidxk1`
+--
+ALTER TABLE `tidxk1`
+  ADD PRIMARY KEY (`idxk1`);
+
+--
+-- Indexes for table `tidxk2`
+--
+ALTER TABLE `tidxk2`
+  ADD PRIMARY KEY (`idxk2`);
+
+--
+-- Indexes for table `tidxk3`
+--
+ALTER TABLE `tidxk3`
+  ADD PRIMARY KEY (`idxk3`);
 
 --
 -- Indexes for table `tresult`
@@ -619,6 +743,12 @@ ALTER TABLE `trkpkualitas`
 ALTER TABLE `trkptindakan`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `dari` (`dari`,`sampai`,`idgrplayan`,`grplayan`,`idpeg`);
+
+--
+-- Indexes for table `trppoin`
+--
+ALTER TABLE `trppoin`
+  ADD PRIMARY KEY (`tglberlaku`);
 
 --
 -- Indexes for table `ttindakan`
@@ -667,6 +797,26 @@ ALTER TABLE `refuser`
 ALTER TABLE `tbobot`
   MODIFY `id` smallint(6) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `tidjp`
+--
+ALTER TABLE `tidjp`
+  MODIFY `idjp` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `tidxk1`
+--
+ALTER TABLE `tidxk1`
+  MODIFY `idxk1` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `tidxk2`
+--
+ALTER TABLE `tidxk2`
+  MODIFY `idxk2` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `tidxk3`
+--
+ALTER TABLE `tidxk3`
+  MODIFY `idxk3` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `tresult`
 --
 ALTER TABLE `tresult`
@@ -675,12 +825,12 @@ ALTER TABLE `tresult`
 -- AUTO_INCREMENT for table `trkpbehavior`
 --
 ALTER TABLE `trkpbehavior`
-  MODIFY `idrkpbhv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idrkpbhv` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `trkpkualitas`
 --
 ALTER TABLE `trkpkualitas`
-  MODIFY `idrkpkw` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idrkpkw` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `trkptindakan`
 --

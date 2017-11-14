@@ -95,13 +95,17 @@ class Kualitas extends CI_Controller{
             $idkw = $this->input->post('idkw');
             $start = date("$thn/$bln/01");
             $stop = date("$thn/$bln/t");
-            $this->db->insert('trkpkualitas', array('dari'=>$start, 'sampai'=>$stop, 'idkw'=>$idkw, 
-                'capaian'=>$capaian, 'idpeg'=>$idpeg));
-            if ($this->db->affected_rows()>0){
-                $this->session->set_flashdata('success', 'Data sudah tersimpan');
-            } else {
-                $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
-            }                
+            $this->db->insert('tidxk2', array('dari'=>$start, 'sampai'=>$stop));
+            $idxk1 = $this->db->insert_id();
+            if ($idxk1){
+                $this->db->insert('trkpkualitas', array('dari'=>$start, 'sampai'=>$stop, 'idkw'=>$idkw, 
+                    'capaian'=>$capaian, 'idpeg'=>$idpeg, 'idxk1'=>$idxk1));
+                if ($this->db->affected_rows()>0){
+                    $this->session->set_flashdata('success', 'Data sudah tersimpan');
+                } else {
+                    $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
+                }
+            }
             if($idkw == 1){
                 redirect(base_url("kualitas/dokrm/$bln/$thn"));
             } else {
