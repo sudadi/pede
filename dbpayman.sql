@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2017 at 06:39 PM
+-- Generation Time: Nov 15, 2017 at 07:36 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `dbpayman`
 --
+CREATE DATABASE IF NOT EXISTS `dbpayman` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `dbpayman`;
 
 DELIMITER $$
 --
@@ -72,14 +74,15 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `rekap_tindakan` (IN `_from` DATE, I
 BEGIN
 DECLARE n INT DEFAULT 0;
 DECLARE i INT DEFAULT 0;
-
+INSERT INTO tidxk1 (dari, sampai) VALUES (_from, _to);
+SET @idxk1 = (SELECT LAST_INSERT_ID());
 SELECT COUNT(*) INTO n FROM ttindakan WHERE tgl BETWEEN _from AND _to;
 SET i = 0;
 WHILE i < n DO
 	SELECT ttindakan.idgrplayan, ttindakan.grplayan, ttindakan.iddokter INTO @idgrp, @grp, @iddr FROM ttindakan WHERE ttindakan.tgl BETWEEN _from AND _to LIMIT i,1;
 	SET  @point = (SELECT point FROM refgrplayan WHERE refgrplayan.idgrp = @idgrp OR refgrplayan.grouplayan = @grp);
 IF (@point) THEN
-	INSERT INTO trkptindakan (dari, sampai, idgrplayan, grplayan, idpeg, capaian, point, jml) VALUES (_from, _to, @idgrp, @grp, @iddr, 1, @point, @point) ON duplicate KEY UPDATE capaian=capaian+1, jml=capaian*point;
+	INSERT INTO trkptindakan (idxk1, dari, sampai, idgrplayan, grplayan, idpeg, capaian, point, jml) VALUES (@idxk1, _from, _to, @idgrp, @grp, @iddr, 1, @point, @point) ON duplicate KEY UPDATE capaian=capaian+1, jml=capaian*point;
     END IF;
     SET i = i+1;
 END WHILE;
@@ -575,6 +578,7 @@ INSERT INTO `trkpkualitas` (`idrkpkw`, `idkw`, `idxk1`, `dari`, `sampai`, `idpeg
 DROP TABLE IF EXISTS `trkptindakan`;
 CREATE TABLE `trkptindakan` (
   `id` int(11) NOT NULL,
+  `idxk1` int(11) NOT NULL,
   `dari` date NOT NULL,
   `sampai` date NOT NULL,
   `idgrplayan` int(11) NOT NULL,
@@ -584,16 +588,6 @@ CREATE TABLE `trkptindakan` (
   `capaian` int(11) NOT NULL,
   `jml` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
-
---
--- Dumping data for table `trkptindakan`
---
-
-INSERT INTO `trkptindakan` (`id`, `dari`, `sampai`, `idgrplayan`, `grplayan`, `idpeg`, `point`, `capaian`, `jml`) VALUES
-(11, '2017-05-01', '2017-05-30', 1, 'khusus', 1, 2, 5, 10),
-(12, '2017-05-01', '2017-05-30', 0, 'khusus I', 1, 2, 5, 10),
-(19, '2017-05-01', '2017-05-31', 1, 'khusus', 1, 2, 2, 4),
-(20, '2017-05-01', '2017-05-31', 0, 'khusus I', 1, 2, 2, 4);
 
 -- --------------------------------------------------------
 
@@ -634,8 +628,13 @@ CREATE TABLE `ttindakan` (
 --
 
 INSERT INTO `ttindakan` (`id`, `tgl`, `norm`, `nmpasien`, `crbayar`, `tipelayan`, `layanan`, `idgrplayan`, `grplayan`, `iddokter`, `dokter`, `updlog`) VALUES
-(44, '2017-05-09', '308777', 'kampret', 'JKN', 'reguler', 'pasang infus', 1, 'khusus', 1, 'paijo', '2017-11-03 18:24:14'),
-(46, '2017-05-09', '308778', 'sukro', 'JKN', 'reguler', 'pasang infus', 0, 'khusus I', 1, 'paijo', '2017-11-03 06:24:14');
+(77, '2017-08-15', '308075', 'JOKO SUDARSONO, TN', 'JKN-NON PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 0, '0', 1, '0', '2017-11-15 07:33:28'),
+(78, '2017-08-31', '135560', 'YOHANES SUTOPO, SPD', 'JKN-NON PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 0, '0', 1, '0', '2017-11-15 07:33:28'),
+(79, '2017-08-21', '307463', 'WARNO SUMARTO, TN', 'JKN-PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 0, '0', 1, '0', '2017-11-15 07:33:28'),
+(80, '2017-08-08', '304744', 'DIKI DESMAWAN, SDR', 'JKN-PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 0, '0', 1, '0', '2017-11-15 07:33:29'),
+(81, '2017-08-22', '308075', 'JOKO SUDARSONO, TN', 'JKN-NON PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 0, '0', 1, '0', '2017-11-15 07:33:29'),
+(82, '2017-08-14', '304363', 'HADI PRAYITNO R BP', 'JKN-PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 0, '0', 1, '0', '2017-11-15 07:33:29'),
+(83, '2017-08-18', '291460', 'RUSMINI BINTI TUKIMIN. NY', 'JKN-NON PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 0, '0', 1, '0', '2017-11-15 07:33:29');
 
 --
 -- Indexes for dumped tables
@@ -742,7 +741,7 @@ ALTER TABLE `trkpkualitas`
 --
 ALTER TABLE `trkptindakan`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `dari` (`dari`,`sampai`,`idgrplayan`,`grplayan`,`idpeg`);
+  ADD UNIQUE KEY `dari` (`idxk1`,`idgrplayan`,`grplayan`,`idpeg`) USING BTREE;
 
 --
 -- Indexes for table `trppoin`
@@ -805,7 +804,7 @@ ALTER TABLE `tidjp`
 -- AUTO_INCREMENT for table `tidxk1`
 --
 ALTER TABLE `tidxk1`
-  MODIFY `idxk1` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idxk1` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `tidxk2`
 --
@@ -840,7 +839,7 @@ ALTER TABLE `trkptindakan`
 -- AUTO_INCREMENT for table `ttindakan`
 --
 ALTER TABLE `ttindakan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

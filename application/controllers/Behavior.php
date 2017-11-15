@@ -59,10 +59,17 @@ class Behavior extends CI_Controller{
             $idbhv = $this->input->post('idbhv');
             $start = date("$thn/$bln/01");
             $stop = date("$thn/$bln/t");
-            $this->db->insert('trkpbehavior', array('dari'=>$start, 'sampai'=>$stop, 'idbhv'=>$idbhv, 
-                'capaian'=>$capaian, 'idpeg'=>$idpeg));
-            if ($this->db->affected_rows()>0){
-                $this->session->set_flashdata('success', 'Data sudah tersimpan');
+            $this->db->insert('tidxk3', array('dari'=>$start, 'sampai'=>$stop));
+            $idxk3 = $this->db->insert_id();
+            if ($idxk3){
+                $this->db->insert('trkpbehavior', array('dari'=>$start, 'sampai'=>$stop, 'idbhv'=>$idbhv, 
+                    'capaian'=>$capaian, 'idpeg'=>$idpeg, 'idxk3'=>$idxk3));
+                if ($this->db->affected_rows()>0){
+                    $this->session->set_flashdata('success', 'Data sudah tersimpan');
+                } else {
+                    $this->db->delete('tidxk3', array('idxk3'=>$idxk3));
+                    $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
+                }
             } else {
                 $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
             }

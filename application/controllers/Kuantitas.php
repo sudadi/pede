@@ -16,6 +16,15 @@ class Kuantitas extends CI_Controller {
         $this->load->model('modtindakan');
     }
     
+    function validateDate($date) {
+        $d = DateTime::createFromFormat('Y/m/d', $date);
+        if ($d && ($d->format('Y/m/d') === $date || $d->format('Y-m-d') === $date)) {
+            return $d->format('Y/m/d');
+        } else {
+            return FALSE;
+        }
+    }
+    
     public function index($dari=null, $sampai=null) {
         $data['banner'] = false;
         $data['page'] = 'kuantitasview';
@@ -99,29 +108,40 @@ class Kuantitas extends CI_Controller {
             $data = $this->excel_reader->sheets[0];
             $dataexcel = Array();
             for ($i = 2; $i <= $data['numRows']; $i++) {
+                $cektgl = $this->validateDate($data['cells'][$i][2]);
                 if ($data['cells'][$i][1] == '')
                     break;
-                $dataexcel[$i - 2]['tgl'] = $data['cells'][$i][2];
-                $dataexcel[$i - 2]['norm'] = $data['cells'][$i][3];
-                $dataexcel[$i - 2]['nmpasien'] = $data['cells'][$i][4];
-                $dataexcel[$i - 2]['crbayar'] = $data['cells'][$i][5];
-                $dataexcel[$i - 2]['tipelayan'] = $data['cells'][$i][6];
-                $dataexcel[$i - 2]['layanan'] = $data['cells'][$i][7];
-                $dataexcel[$i - 2]['idgrplayan'] = $data['cells'][$i][8];
-                $dataexcel[$i - 2]['grplayan'] = $data['cells'][$i][9];
-                $dataexcel[$i - 2]['iddokter'] = $this->input->post('idpeg');
-                $dataexcel[$i - 2]['dokter'] = $data['cells'][$i][11];
+                if ($cektgl) {
+                    $dataexcel[$i - 2]['tgl'] = $data['cells'][$i][2];
+                    $dataexcel[$i - 2]['norm'] = $data['cells'][$i][3];
+                    $dataexcel[$i - 2]['nmpasien'] = $data['cells'][$i][4];
+                    $dataexcel[$i - 2]['crbayar'] = $data['cells'][$i][5];
+                    $dataexcel[$i - 2]['tipelayan'] = $data['cells'][$i][6];
+                    $dataexcel[$i - 2]['layanan'] = $data['cells'][$i][7];
+                    $dataexcel[$i - 2]['idgrplayan'] = $data['cells'][$i][8];
+                    $dataexcel[$i - 2]['grplayan'] = $data['cells'][$i][9];
+                    $dataexcel[$i - 2]['iddokter'] = $this->input->post('idpeg');
+                    $dataexcel[$i - 2]['dokter'] = $data['cells'][$i][11];
+                    $cektgl = FALSE;
+                } else {
+                    $cektgl = 'Error Line Number: '.$i;
+                    break;
+                }
             }
+            
+            if ($cektgl) {
+                $this->session->set_flashdata('error', $cektgl);
+            } else {
+                //load model
+                $this->load->model('imporxls');
+                $this->imporxls->savetindakan($dataexcel);
 
-            //load model
-            $this->load->model('imporxls');
-            $this->imporxls->savetindakan($dataexcel);
-
-            //delete file
-            $file = $upload_data['file_name'];
-            $path = './temp_upload/' . $file;
-            unlink($path);
-            $this->session->set_flashdata('success', 'Upload data BERHASIL.');
+                //delete file
+                $file = $upload_data['file_name'];
+                $path = './temp_upload/' . $file;
+                unlink($path);
+                $this->session->set_flashdata('success', 'Upload data BERHASIL.');
+            }
         }
         redirect(site_url('kuantitas'));
         //echo $data['cells'][2][2];
