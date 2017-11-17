@@ -17,7 +17,8 @@ class Kalkulasi extends CI_Controller{
         $data['banner'] = false;
         $data['page'] = 'kalkulasiview';
         $data['judul'] = 'Kalkulasi - Proses Peritungan Kinerja';
-        $data['content']['action'] = site_url('');
+        $data['content']['action'] = site_url('kalkulasi/proses');
+        $data['content']['filtahun']=date('Y');
         $this->load->view('mainview', $data);
     }
 }
