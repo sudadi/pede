@@ -59,8 +59,8 @@ echo form_open_multipart($action, 'class="form-horizontal form-label-left" data-
                 <th class="column-title">Tgl</th>
                 <th class="column-title">Norm</th>
                 <th class="column-title">Nama Pasien</th>
-                <th class="column-title">Cara Bayar</th>
                 <th class="column-title">Tipe Layanan</th>
+                <th class="column-title">Kel. Layanan</th>
                 <th class="column-title">Layanan</th>
                 <th class="column-title">Dokter</th>
                 <th class="column-title">Opsi</th>
@@ -77,11 +77,15 @@ echo form_open_multipart($action, 'class="form-horizontal form-label-left" data-
                 <td><?=$row['tgl'];?></td>
                 <td><?=$row['norm'];?></td>
                 <td><?=$row['nmpasien'];?></td>
-                <td><?=$row['crbayar'];?></td>
                 <td><?=$row['tipelayan'];?></td>
+                <td><?=$row['grplayan'];?></td>
                 <td><?=$row['layanan'];?></td>
                 <td><?=$row['dokter'];?></td>
-                <td></td>
+                <td class="text-center">
+                    <a href="<?=base_url().'kuantitas/hapuslyn/'.$row['id'].'/'.$dari.'/'.$sampai;?>" 
+                       class="btn btn-xs btn-danger" onclick="return confirm('Yakin hapus data tersebut..?')">
+                        <i class="fa fa-trash-o"></i> Hapus</a>
+                </td>
             </tr>
         <?php   }
         } ?>

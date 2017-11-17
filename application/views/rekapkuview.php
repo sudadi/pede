@@ -89,7 +89,11 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
                 <td><?=$row['point'];?></td>
                 <td><?=$row['capaian'];?></td>
                 <td><?=$row['jml'];?></td>
-                <td></td>
+                <td class="text-center">
+                    <a href="<?=base_url().'kuantitas/hapusrkp/'.$row['id'].'/'.date_format(date_create($dari), 'Y-m-d').'/'.date_format(date_create($sampai), 'Y-m-d');?>" 
+                       class="btn btn-xs btn-danger" onclick="return confirm('Yakin hapus data tersebut..?')">
+                        <i class="fa fa-trash-o"></i> Hapus</a>
+                </td>
             </tr>
         <?php   }
         } ?>

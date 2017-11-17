@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 15, 2017 at 07:36 PM
+-- Generation Time: Nov 17, 2017 at 07:02 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `dbpayman`
 --
-CREATE DATABASE IF NOT EXISTS `dbpayman` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `dbpayman`;
 
 DELIMITER $$
 --
@@ -352,7 +350,7 @@ INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`) VALUES
 (3, 'Kelengkapan Dok.', 'kualitas/dokrm', '', 2, 1),
 (4, 'Kepatuhan FORNAS', 'kualitas/fornas', '', 2, 1),
 (5, 'Perilaku', 'behavior', 'fa fa-heart-o', 0, 1),
-(6, 'Kalkulasi', '', 'fa fa-calculator', 0, 1),
+(6, 'Kalkulasi', 'kalkulasi', 'fa fa-calculator', 0, 1),
 (7, 'Laporan', 'report', 'fa fa-file-text', 0, 1),
 (8, 'Setting', '', 'fa fa-cogs', 0, 1),
 (9, 'Kelola User', 'user', 'fa fa-user', 8, 1),
@@ -362,8 +360,8 @@ INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`) VALUES
 (13, 'Target per Pegawai', 'target', 'fa fa-user', 8, 1),
 (14, 'Upload Data', 'kuantitas', '', 1, 1),
 (15, 'Rekap Data', 'kuantitas/rekap', '', 1, 1),
-(16, 'Kalkulasi IKI', 'hitung/iki', '', 6, 1),
-(17, 'Remunerasi', 'hitung/remun', '', 6, 1);
+(16, 'Kalkulasi IKI', 'hitung/iki', '', 6, 0),
+(17, 'Remunerasi', 'hitung/remun', '', 6, 0);
 
 -- --------------------------------------------------------
 
@@ -473,6 +471,19 @@ CREATE TABLE `tidxk1` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `tidxk1`
+--
+
+INSERT INTO `tidxk1` (`idxk1`, `dari`, `sampai`, `created`) VALUES
+(4, '2017-08-01', '2017-08-31', '2017-11-17 07:24:31'),
+(5, '2017-10-01', '2017-10-31', '2017-11-17 07:24:37'),
+(6, '2017-10-01', '2017-10-31', '2017-11-17 07:37:19'),
+(7, '2017-10-01', '2017-10-31', '2017-11-17 07:37:22'),
+(8, '2017-10-01', '2017-10-31', '2017-11-17 07:39:18'),
+(9, '2017-10-01', '2017-10-31', '2017-11-17 07:43:54'),
+(10, '2017-10-01', '2017-10-31', '2017-11-17 07:43:55');
+
 -- --------------------------------------------------------
 
 --
@@ -493,7 +504,8 @@ CREATE TABLE `tidxk2` (
 
 INSERT INTO `tidxk2` (`idxk2`, `dari`, `sampai`, `created`) VALUES
 (1, '2017-11-01', '2017-11-30', '2017-11-14 11:31:39'),
-(2, '2017-11-01', '2017-11-30', '2017-11-14 11:32:51');
+(2, '2017-11-01', '2017-11-30', '2017-11-14 11:32:51'),
+(3, '2017-10-01', '2017-10-30', '2017-11-17 03:32:55');
 
 -- --------------------------------------------------------
 
@@ -535,6 +547,7 @@ DROP TABLE IF EXISTS `trkpbehavior`;
 CREATE TABLE `trkpbehavior` (
   `idrkpbhv` int(11) NOT NULL,
   `idbhv` int(11) NOT NULL,
+  `idxk3` int(11) NOT NULL,
   `dari` date NOT NULL,
   `sampai` date NOT NULL,
   `idpeg` int(11) NOT NULL,
@@ -553,7 +566,7 @@ DROP TABLE IF EXISTS `trkpkualitas`;
 CREATE TABLE `trkpkualitas` (
   `idrkpkw` int(11) NOT NULL,
   `idkw` int(11) NOT NULL,
-  `idxk1` int(11) NOT NULL,
+  `idxk2` int(11) NOT NULL,
   `dari` date NOT NULL,
   `sampai` date NOT NULL,
   `idpeg` int(6) NOT NULL,
@@ -566,8 +579,24 @@ CREATE TABLE `trkpkualitas` (
 -- Dumping data for table `trkpkualitas`
 --
 
-INSERT INTO `trkpkualitas` (`idrkpkw`, `idkw`, `idxk1`, `dari`, `sampai`, `idpeg`, `capaian`, `point`, `jml`) VALUES
-(4, 1, 2, '2017-11-01', '2017-11-30', 1, 34, 0, 0);
+INSERT INTO `trkpkualitas` (`idrkpkw`, `idkw`, `idxk2`, `dari`, `sampai`, `idpeg`, `capaian`, `point`, `jml`) VALUES
+(4, 1, 2, '2017-11-01', '2017-11-30', 1, 34, 0, 0),
+(5, 1, 3, '2017-10-01', '2017-10-30', 1, 12, 0, 0);
+
+--
+-- Triggers `trkpkualitas`
+--
+DROP TRIGGER IF EXISTS `del_tidxk2`;
+DELIMITER $$
+CREATE TRIGGER `del_tidxk2` AFTER DELETE ON `trkpkualitas` FOR EACH ROW BEGIN
+SET @idxk2 = OLD.idxk2;
+SET @row = (SELECT COUNT(*) FROM trkpkualitas WHERE idxk2=@idxk2);
+IF (!@row) THEN
+	DELETE FROM tidxk2 WHERE tidxk2.idxk2=@idxk2;
+END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -588,6 +617,31 @@ CREATE TABLE `trkptindakan` (
   `capaian` int(11) NOT NULL,
   `jml` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `trkptindakan`
+--
+
+INSERT INTO `trkptindakan` (`id`, `idxk1`, `dari`, `sampai`, `idgrplayan`, `grplayan`, `idpeg`, `point`, `capaian`, `jml`) VALUES
+(37, 4, '2017-08-01', '2017-08-31', 1, 'gfg', 1, 2, 1, 2),
+(38, 4, '2017-08-01', '2017-08-31', 1, 'fgfg', 1, 2, 4, 8),
+(39, 4, '2017-08-01', '2017-08-31', 1, 'abd', 1, 2, 1, 2),
+(41, 4, '2017-08-01', '2017-08-31', 1, 'gfr', 1, 2, 1, 2);
+
+--
+-- Triggers `trkptindakan`
+--
+DROP TRIGGER IF EXISTS `del_tidxk1`;
+DELIMITER $$
+CREATE TRIGGER `del_tidxk1` AFTER DELETE ON `trkptindakan` FOR EACH ROW BEGIN
+SET @idxk1 = OLD.idxk1;
+SET @row = (SELECT COUNT(*) FROM trkptindakan WHERE idxk1=@idxk1);
+IF (!@row) THEN
+	DELETE FROM tidxk1 WHERE tidxk1.idxk1=@idxk1;
+END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -628,13 +682,13 @@ CREATE TABLE `ttindakan` (
 --
 
 INSERT INTO `ttindakan` (`id`, `tgl`, `norm`, `nmpasien`, `crbayar`, `tipelayan`, `layanan`, `idgrplayan`, `grplayan`, `iddokter`, `dokter`, `updlog`) VALUES
-(77, '2017-08-15', '308075', 'JOKO SUDARSONO, TN', 'JKN-NON PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 0, '0', 1, '0', '2017-11-15 07:33:28'),
-(78, '2017-08-31', '135560', 'YOHANES SUTOPO, SPD', 'JKN-NON PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 0, '0', 1, '0', '2017-11-15 07:33:28'),
-(79, '2017-08-21', '307463', 'WARNO SUMARTO, TN', 'JKN-PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 0, '0', 1, '0', '2017-11-15 07:33:28'),
-(80, '2017-08-08', '304744', 'DIKI DESMAWAN, SDR', 'JKN-PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 0, '0', 1, '0', '2017-11-15 07:33:29'),
-(81, '2017-08-22', '308075', 'JOKO SUDARSONO, TN', 'JKN-NON PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 0, '0', 1, '0', '2017-11-15 07:33:29'),
-(82, '2017-08-14', '304363', 'HADI PRAYITNO R BP', 'JKN-PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 0, '0', 1, '0', '2017-11-15 07:33:29'),
-(83, '2017-08-18', '291460', 'RUSMINI BINTI TUKIMIN. NY', 'JKN-NON PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 0, '0', 1, '0', '2017-11-15 07:33:29');
+(119, '2017-08-15', '308075', 'JOKO SUDARSONO, TN', 'JKN-NON PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 1, 'abd', 1, 'dr. Hitaputra Agung Wardhana, Sp.B', '2017-11-16 06:29:09'),
+(120, '2017-08-31', '135560', 'YOHANES SUTOPO, SPD', 'JKN-NON PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 1, 'dsfd', 1, 'dr. Hitaputra Agung Wardhana, Sp.B', '2017-11-16 06:29:09'),
+(121, '2017-08-21', '307463', 'WARNO SUMARTO, TN', 'JKN-PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 1, 'gfr', 1, 'dr. Hitaputra Agung Wardhana, Sp.B', '2017-11-16 06:29:09'),
+(122, '2017-08-08', '304744', 'DIKI DESMAWAN, SDR', 'JKN-PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 1, 'gfg', 1, 'dr. Hitaputra Agung Wardhana, Sp.B', '2017-11-16 06:29:10'),
+(123, '2017-08-22', '308075', 'JOKO SUDARSONO, TN', 'JKN-NON PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 1, 'fgfg', 1, 'dr. Hitaputra Agung Wardhana, Sp.B', '2017-11-16 06:29:10'),
+(124, '2017-08-14', '304363', 'HADI PRAYITNO R BP', 'JKN-PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 1, 'fgfg', 1, 'dr. Hitaputra Agung Wardhana, Sp.B', '2017-11-16 06:29:10'),
+(125, '2017-08-18', '291460', 'RUSMINI BINTI TUKIMIN. NY', 'JKN-NON PBI', 'REGULER', 'Pemeriksaan Dokter Spesialis', 1, 'fgfg', 1, 'dr. Hitaputra Agung Wardhana, Sp.B', '2017-11-16 06:29:10');
 
 --
 -- Indexes for dumped tables
@@ -728,13 +782,15 @@ ALTER TABLE `tresult`
 -- Indexes for table `trkpbehavior`
 --
 ALTER TABLE `trkpbehavior`
-  ADD PRIMARY KEY (`idrkpbhv`);
+  ADD PRIMARY KEY (`idrkpbhv`),
+  ADD UNIQUE KEY `idbhv` (`idbhv`,`idxk3`,`idpeg`);
 
 --
 -- Indexes for table `trkpkualitas`
 --
 ALTER TABLE `trkpkualitas`
-  ADD PRIMARY KEY (`idrkpkw`);
+  ADD PRIMARY KEY (`idrkpkw`),
+  ADD UNIQUE KEY `idkw` (`idkw`,`idxk2`,`idpeg`);
 
 --
 -- Indexes for table `trkptindakan`
@@ -804,12 +860,12 @@ ALTER TABLE `tidjp`
 -- AUTO_INCREMENT for table `tidxk1`
 --
 ALTER TABLE `tidxk1`
-  MODIFY `idxk1` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idxk1` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `tidxk2`
 --
 ALTER TABLE `tidxk2`
-  MODIFY `idxk2` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idxk2` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `tidxk3`
 --
@@ -829,17 +885,17 @@ ALTER TABLE `trkpbehavior`
 -- AUTO_INCREMENT for table `trkpkualitas`
 --
 ALTER TABLE `trkpkualitas`
-  MODIFY `idrkpkw` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idrkpkw` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `trkptindakan`
 --
 ALTER TABLE `trkptindakan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 --
 -- AUTO_INCREMENT for table `ttindakan`
 --
 ALTER TABLE `ttindakan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

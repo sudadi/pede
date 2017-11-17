@@ -69,13 +69,19 @@ class Kuantitas extends CI_Controller {
         if ($this->input->post()) {
             $dari = $this->input->post('mulai');
             $sampai = $this->input->post('selesai');
-            $this->db->query("CALL rekap_tindakan('$dari', '$sampai')");
-            if ($this->db->affected_rows()>0) {
-                $this->session->set_flashdata('success', 'Rekap Data Berhasil');
+            $row = $this->db->get_where('ttindakan', "tgl between '$dari' and '$sampai'")->result_array();
+            if ($row){
+                $this->db->query("CALL rekap_tindakan('$dari', '$sampai')");
+                if ($this->db->affected_rows()>0) {
+                    $this->session->set_flashdata('success', 'Rekap Data Berhasil');
+                }else {
+                    $this->session->set_flashdata('error', 'Rekap Data GAGAL');
+                }
             }else {
-                $this->session->set_flashdata('error', 'Rekap Data GAGAL');
+                $this->session->set_flashdata('error', 'Data pada rentang tersebut tidak ditemukan');
             }
         }
+        //print_r($row);
         redirect('kuantitas/rekap');
     }
     
@@ -147,6 +153,34 @@ class Kuantitas extends CI_Controller {
         //echo $data['cells'][2][2];
         //echo $data['cells'][3][2];
         
+    }
+    
+    public function hapuslyn($id, $dari, $sampai) {
+        if ($id && $dari && $sampai) {
+            $this->db->delete('ttindakan', array('id'=>$id, 'dari'=>$dari, 'sampai'=>$sampai));
+            if ($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('success', 'Data di hapus');
+            } else {
+                $this->session->set_flashdata('error', 'Hapus data GAGAL');
+            }
+        } else {
+            $this->session->set_flashdata('error', 'Parameter tidak lengkap');
+        }
+        redirect("kuantitas/index/$dari/$sampai");
+    }
+    
+    public function hapusrkp($id, $dari, $sampai) {
+        if ($id && $dari && $sampai) {
+            $this->db->delete('trkptindakan', array('id'=>$id, 'dari'=>$dari, 'sampai'=>$sampai));
+            if ($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('success', 'Data di hapus');
+            } else {
+                $this->session->set_flashdata('error', 'Hapus data GAGAL');
+            }
+        } else {
+            $this->session->set_flashdata('error', 'Parameter tidak lengkap');
+        }
+        redirect("kuantitas/rekap/$dari/$sampai");
     }
 
 }

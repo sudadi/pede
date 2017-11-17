@@ -79,7 +79,7 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
         ?>
     </div>
     <label class="control-label col-sm-2 col-xs-12" for="nilai">Capaian </label>
-    <div class="col-sm-3 col-xs-12">
+    <div class="col-sm-2 col-xs-12">
         <?php $attribut = array('name'=>'nilai', 'type'=>'number', 'class'=>'form-control col-sm-12 col-xs-12', 'required'=>'required');
         echo form_input($attribut);?>
     </div>
