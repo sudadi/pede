@@ -25,7 +25,6 @@
  * THE SOFTWARE.
  */
 
-$dari = $sampai = NULL;
 echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-validate');?>
 <div class="form-group">
     <label class="control-label col-sm-2 col-xs-12" for="daterange">Rentang Tindakan</label>
@@ -54,13 +53,14 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
              $time = strtotime(sprintf('+%d months', $i-1));
              $option[date('m', $time)] = date('F', $time);
         }
-        echo form_dropdown('bulan1', $option, date('F', $time), 'class="form-control col-sm-12 col-xs-12" required');?>
+        echo form_dropdown('bulan1', $option, date('m', time()), 'class="form-control col-sm-12 col-xs-12" required');?>
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-sm-2 col-xs-12" for="tahun2">Perilaku</label>
     <div class="col-md-2 col-sm-2 col-xs-12">
         <?php 
+        $option = '';
         $selisih = date('Y') - 2017;
         $option[''] = '-Tahun-';
         for ($i = 0; $i <= $selisih; $i++){
@@ -77,7 +77,7 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
              $time = strtotime(sprintf('+%d months', $i-1));
              $option[date('m', $time)] = date('F', $time);
         }
-        echo form_dropdown('bulan2', $option, date('F', $time), 'class="form-control col-sm-12 col-xs-12" required');?>
+        echo form_dropdown('bulan2', $option, date('m', time()), 'class="form-control col-sm-12 col-xs-12" required');?>
     </div>
     <label class="control-label col-sm-2" for="ket">Keterangan</label>
     <div class="col-sm-4">
@@ -103,7 +103,7 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
     <table id="dtables" class="table table-striped table-bordered jambo_table bulk_action">
         <thead>
             <tr class="headings">
-                <th class="column-title">#</th>
+                <th class="column-title" colspan="2">#</th>
                 <th class="column-title">Dari</th>
                 <th class="column-title">Sampai</th>
                 <th class="column-title">Group Layanan</th>

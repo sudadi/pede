@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 17, 2017 at 07:02 PM
+-- Generation Time: Nov 20, 2017 at 10:44 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -62,7 +62,7 @@ SET @nilaik3 = 0;
     SET @totnilai = @nilai1+@nilai2+@nilai3;
     SELECT iki into @iki FROM reftiki where bawah<=@totnilai AND atas>=@totnilai;
     SELECT rupiah INTO @rppoin FROM trppoin WHERE tglberlaku <= _tglrp;
-    INSERT INTO tresult (idjp, idpeg, respoin, resiki, rppoin, resjp) VALUES (@idjp, @idpeg, @totnilai, @iki, @rppoin, @rppoin*@iki);
+    INSERT INTO tresult (idjp, idpeg, idxk1, idxk2, idxk3, respoin, resiki, rppoin, resjp, tgl, ket) VALUES (@idjp, @idpeg, _idxk1, _idxk2, _idxk3, @totnilai, @iki, @rppoin, @rppoin*@iki, now(), _nmjp);
     SET i = i+1;
 END WHILE;
 END$$
@@ -531,10 +531,15 @@ DROP TABLE IF EXISTS `tresult`;
 CREATE TABLE `tresult` (
   `idresult` int(11) NOT NULL,
   `idpeg` int(11) NOT NULL,
+  `idxk1` int(11) NOT NULL,
+  `idxk2` int(11) NOT NULL,
+  `idxk3` int(11) NOT NULL,
   `rppoin` float NOT NULL,
   `respoin` float NOT NULL,
   `resiki` float NOT NULL,
-  `resjp` float NOT NULL
+  `resjp` float NOT NULL,
+  `tgl` datetime NOT NULL,
+  `ket` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -890,7 +895,7 @@ ALTER TABLE `trkpkualitas`
 -- AUTO_INCREMENT for table `trkptindakan`
 --
 ALTER TABLE `trkptindakan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 --
 -- AUTO_INCREMENT for table `ttindakan`
 --
