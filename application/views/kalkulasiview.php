@@ -31,7 +31,7 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
     <div class="col-md-4 col-sm-4 col-xs-12">
         <div class="input-prepend input-group">
           <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-          <input type="text" style="width: 200px;" name="daterange1" id="rentang" class="form-control" value="<?=$dari.' - '.$sampai;?>" required="required" />
+          <input type="text" style="width: 200px;" name="daterange" id="rentang" class="form-control" value="<?=$dari.' - '.$sampai;?>" required="required" />
         </div>
     </div>
     <label class="control-label col-sm-2 col-xs-12" for="tahun1">Kualitas</label>
@@ -89,7 +89,8 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
     <div class="col-md-12 col-sm-offset-4">
         <div class="col-sm-2">
         <?php 
-        //echo form_hidden('idkw', $idkw);
+        echo form_hidden('mulai');
+        echo form_hidden('selesai');
         echo form_button(array('type'=>'submit', 'class'=>'btn btn-success btn-block', 'content'=>'Proses &nbsp;<i class="fa fa-retweet"></i>'));?>
         </div>
         <div class="col-sm-2">

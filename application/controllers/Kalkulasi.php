@@ -31,4 +31,24 @@ class Kalkulasi extends CI_Controller{
         $data['content']['result'] = $this->modkalkulasi->getdata($thn);
         $this->load->view('mainview', $data);
     }
+    
+    public function proses() {
+        if ($this->input->post()) {
+            $dari = $this->input->post('mulai');
+            $sampai = $this->input->post('selesai');
+            $row = $this->db->get_where('ttindakan', "tgl between '$dari' and '$sampai'")->result_array();
+            if ($row){
+                $this->db->query("CALL rekap_tindakan('$dari', '$sampai')");
+                if ($this->db->affected_rows()>0) {
+                    $this->session->set_flashdata('success', 'Rekap Data Berhasil');
+                }else {
+                    $this->session->set_flashdata('error', 'Rekap Data GAGAL');
+                }
+            }else {
+                $this->session->set_flashdata('error', 'Data pada rentang tersebut tidak ditemukan');
+            }
+        }
+        //print_r($row);
+        redirect('kuantitas/rekap');        
+    }
 }
