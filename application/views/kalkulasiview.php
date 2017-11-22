@@ -100,18 +100,22 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
 <hr />
 <?=form_close();?>
 <div class="table-responsive">
-    <table id="dtables" class="table table-striped table-bordered jambo_table bulk_action">
+    <table id="xtables" class="table table-striped table-bordered bulk_action">
         <thead>
-            <tr class="headings">
-                <th class="column-title" colspan="2">#</th>
-                <th class="column-title">Dari</th>
-                <th class="column-title">Sampai</th>
-                <th class="column-title">Group Layanan</th>
-                <th class="column-title">ID Dokter</th>
-                <th class="column-title">Nilai</th>
-                <th class="column-title">Capaian</th>
-                <th class="column-title">Jml</th>
-                <th class="column-title">Opsi</th>
+            <tr class="bg-primary">
+                <th class="column-title text-center" rowspan="2">#</th>
+                <th class="column-title text-center" rowspan="2">Tgl</th>
+                <th class="column-title text-center" rowspan="2">Keterangan</th>
+                <th class="column-title text-center" colspan="3">Periode</th>
+                <th class="column-title text-center" rowspan="2">Rp/Indek</th>
+                <th class="column-title text-center" rowspan="2">Tot. IKI</th>
+                <th class="column-title text-center" rowspan="2">Jml</th>
+                <th class="column-title text-center" rowspan="2">Opsi</th>
+            </tr>
+            <tr class="bg-blue">
+                <th class="column-title text-center">Kuantitas</th>
+                <th class="column-title text-center">Kualitas</th>
+                <th class="column-title text-center">Perilaku</th>
             </tr>
         </thead>
         <tbody>
