@@ -49,6 +49,6 @@ class Kalkulasi extends CI_Controller{
             }
         }
         //print_r($row);
-        redirect('kuantitas/rekap');        
+        //redirect('kuantitas/rekap');        
     }
 }
