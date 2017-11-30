@@ -25,17 +25,10 @@
  * THE SOFTWARE.
  */
 
-echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-validate');?>
+echo form_open($filaction, 'class="form-horizontal form-label-left"');?>
 <div class="form-group">
-    <label class="control-label col-sm-2 col-xs-12" for="daterange">Rentang Tindakan</label>
-    <div class="col-md-4 col-sm-4 col-xs-12">
-        <div class="input-prepend input-group">
-          <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-          <input type="text" style="width: 200px;" name="daterange" id="rentang" class="form-control" value="<?=$dari.' - '.$sampai;?>" required="required" />
-        </div>
-    </div>
-    <label class="control-label col-sm-2 col-xs-12" for="tahun1">Kualitas</label>
-    <div class="col-md-2 col-sm-2 col-xs-12">
+    <label class="control-label col-md-1" for="filteridxk">Tahun</label>
+    <div class="col-sm-2">
         <?php 
         $selisih = date('Y') - 2017;
         $option[''] = '-Tahun-';
@@ -43,44 +36,46 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
             $thn1 = 2017 + $i;
             $option[$thn1] = $thn1;
         }
-        echo form_dropdown('tahun1', $option, $thn1, 'class="form-control col-sm-12 col-xs-12" id="tahun1" required');?>
-    </div>
-    <div class="col-md-2 col-sm-2 col-xs-12">
-        <?php 
-        $option = '';
-        $option[''] = '-Bulan-';
-        for ($i = 0; $i <= 11; ++$i) {
-             $time = strtotime(sprintf('+%d months', $i-1));
-             $option[date('m', $time)] = date('F', $time);
-        }
-        echo form_dropdown('bulan1', $option, date('m', time()), 'class="form-control col-sm-12 col-xs-12" required');?>
+        echo form_dropdown('filteridxk', $option, $filtahun, 'class="form-control col-sm-12 col-xs-12" id="tahun1" required');?>
     </div>
 </div>
+<?=form_close();
+echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-validate');?>
 <div class="form-group">
-    <label class="control-label col-sm-2 col-xs-12" for="tahun2">Perilaku</label>
-    <div class="col-md-2 col-sm-2 col-xs-12">
+    <label class="control-label col-md-1 col-xs-12" for="daterange">Kuantitas</label>
+    <div class="col-sm-3 col-xs-12">
         <?php 
         $option = '';
-        $selisih = date('Y') - 2017;
-        $option[''] = '-Tahun-';
-        for ($i = 0; $i <= $selisih; $i++){
-            $thn2 = 2017 + $i;
-            $option[$thn2] = $thn2;
+        $option[''] = '-Periode-';
+        foreach ($idxk1 as $row) {
+            $option[$row['idxk1']] = $row['dari'].' s/d '.$row['sampai'];
         }
-        echo form_dropdown('tahun2', $option, $thn2, 'class="form-control col-sm-12 col-xs-12" id="tahun2" required');?>
+        echo form_dropdown('idxk1', $option, '', 'class="form-control col-sm-12 col-xs-12" id="tahun1" required');?>
     </div>
-    <div class="col-md-2 col-sm-2 col-xs-12">
+    <label class="control-label col-md-1 col-xs-12" for="idxk1">Kualitas</label>
+    <div class="col-sm-3 col-xs-12">
         <?php 
         $option = '';
-        $option[''] = '-Bulan-';
-        for ($i = 0; $i <= 11; ++$i) {
-             $time = strtotime(sprintf('+%d months', $i-1));
-             $option[date('m', $time)] = date('F', $time);
+        $option[''] = '-Periode-';
+        foreach ($idxk2 as $row) {
+            $option[$row['idxk2']] = $row['dari'].' - '.$row['sampai'];
         }
-        echo form_dropdown('bulan2', $option, date('m', time()), 'class="form-control col-sm-12 col-xs-12" required');?>
+        echo form_dropdown('idxk2', $option, '', 'class="form-control col-sm-12 col-xs-12" id="tahun1" required');?>
     </div>
-    <label class="control-label col-sm-2" for="ket">Keterangan</label>
-    <div class="col-sm-4">
+    <label class="control-label col-md-1 col-xs-12" for="tahun2">Perilaku</label>
+    <div class="col-sm-3 col-xs-12">
+        <?php 
+        $option = '';
+        $option[''] = '-Periode-';
+        foreach ($idxk3 as $row) {
+            $option[$row['idxk3']] = $row['dari'].' - '.$row['sampai'];
+        }
+        echo form_dropdown('idxk3', $option, '', 'class="form-control col-sm-12 col-xs-12" id="tahun1" required');?>
+    </div>
+    </div>
+<div class="form-group">
+    <label class="control-label col-md-1" for="ket">Keterangan</label>
+    <div class="col-sm-8">
         <input type="text" class="form-control" required="required" />
     </div>
 </div>

@@ -23,11 +23,19 @@ class Kalkulasi extends CI_Controller{
         $sampai = date("Y/m/t", strtotime("-1 month"));
         $data['content']['dari'] = $dari;
         $data['content']['sampai'] = $sampai;
+        if ($this->input->post()){
+            $thn = $this->input->post('thn');
+        }
         if (!$thn){
             $thn = date("Y");
         }
         $data['content']['action'] = site_url('kalkulasi/proses');
-        $data['content']['filtahun']=date('Y');
+        $data['content']['filaction'] = site_url('kalkulasi/index');
+        //$data['content']['thn'] = $thn;
+        $data['content']['filtahun']=$thn;
+        $data['content']['idxk1'] = $this->modkalkulasi->getidxk1($thn);
+        $data['content']['idxk2'] = $this->modkalkulasi->getidxk2($thn);
+        $data['content']['idxk3'] = $this->modkalkulasi->getidxk3($thn);
         $data['content']['result'] = $this->modkalkulasi->getdata($thn);
         $this->load->view('mainview', $data);
     }

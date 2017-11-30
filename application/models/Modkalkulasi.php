@@ -39,4 +39,15 @@ class Modkalkulasi extends CI_Model {
         return $this->db->get("tresult")->result_array();
     }
     
+    function getidxk1($thn) {
+        return $this->db->get_where("tidxk1", "year(sampai)='$thn'")->result_array();
+    }
+    
+    function getidxk2($thn) {
+        return $this->db->get_where("tidxk2", "year(sampai)='$thn'")->result_array();
+    }
+    
+    function getidxk3($thn) {
+        return $this->db->get_where("tidxk3", "year(sampai)='$thn'")->result_array();
+    }
 }
