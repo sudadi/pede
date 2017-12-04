@@ -36,7 +36,7 @@ echo form_open($filaction, 'class="form-horizontal form-label-left"');?>
             $thn1 = 2017 + $i;
             $option[$thn1] = $thn1;
         }
-        echo form_dropdown('filteridxk', $option, $filtahun, 'class="form-control col-sm-12 col-xs-12" id="tahun1" required');?>
+        echo form_dropdown('filteridxk', $option, $filtahun, 'class="form-control col-sm-12 col-xs-12" id="tahun1" onchange="this.form.submit()" required');?>
     </div>
 </div>
 <?=form_close();
@@ -140,6 +140,10 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
         </tbody>
     </table>
 </div>
+
+<script>
+    
+</script>
 <!--
 <div class="" role="tabpanel" data-example-id="togglable-tabs">
     <ul id="myTab1" class="nav nav-tabs bar_tabs left" role="tablist">
