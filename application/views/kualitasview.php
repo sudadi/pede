@@ -6,7 +6,6 @@
  * and open the template in the editor.
  */
 
-
 echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-validate');
 ?>
 <div class="form-group">

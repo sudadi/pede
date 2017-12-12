@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2017 at 10:44 PM
--- Server version: 10.1.21-MariaDB
+-- Generation Time: 12 Des 2017 pada 19.15
+-- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -22,7 +22,7 @@ SET time_zone = "+00:00";
 
 DELIMITER $$
 --
--- Procedures
+-- Prosedur
 --
 DROP PROCEDURE IF EXISTS `calc_result`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `calc_result` (IN `_nmjp` DATE, IN `_idxk1` INT, IN `_idxk2` INT, IN `_idxk3` INT)  NO SQL
@@ -91,7 +91,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `refakses`
+-- Struktur dari tabel `refakses`
 --
 
 DROP TABLE IF EXISTS `refakses`;
@@ -104,7 +104,7 @@ CREATE TABLE `refakses` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `refbehavior`
+-- Struktur dari tabel `refbehavior`
 --
 
 DROP TABLE IF EXISTS `refbehavior`;
@@ -116,7 +116,7 @@ CREATE TABLE `refbehavior` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `refbehavior`
+-- Dumping data untuk tabel `refbehavior`
 --
 
 INSERT INTO `refbehavior` (`idbhv`, `nmbhv`, `point`, `target`) VALUES
@@ -131,7 +131,7 @@ INSERT INTO `refbehavior` (`idbhv`, `nmbhv`, `point`, `target`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `refgrplayan`
+-- Struktur dari tabel `refgrplayan`
 --
 
 DROP TABLE IF EXISTS `refgrplayan`;
@@ -143,7 +143,7 @@ CREATE TABLE `refgrplayan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 --
--- Dumping data for table `refgrplayan`
+-- Dumping data untuk tabel `refgrplayan`
 --
 
 INSERT INTO `refgrplayan` (`idgrp`, `grouplayan`, `point`, `target`) VALUES
@@ -152,7 +152,7 @@ INSERT INTO `refgrplayan` (`idgrp`, `grouplayan`, `point`, `target`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `refjabatan`
+-- Struktur dari tabel `refjabatan`
 --
 
 DROP TABLE IF EXISTS `refjabatan`;
@@ -163,7 +163,7 @@ CREATE TABLE `refjabatan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
 --
--- Dumping data for table `refjabatan`
+-- Dumping data untuk tabel `refjabatan`
 --
 
 INSERT INTO `refjabatan` (`idjabatan`, `jabatan`, `level`) VALUES
@@ -300,7 +300,7 @@ INSERT INTO `refjabatan` (`idjabatan`, `jabatan`, `level`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `refkualitas`
+-- Struktur dari tabel `refkualitas`
 --
 
 DROP TABLE IF EXISTS `refkualitas`;
@@ -314,7 +314,7 @@ CREATE TABLE `refkualitas` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `reflayanan`
+-- Struktur dari tabel `reflayanan`
 --
 
 DROP TABLE IF EXISTS `reflayanan`;
@@ -327,7 +327,7 @@ CREATE TABLE `reflayanan` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `refmenu`
+-- Struktur dari tabel `refmenu`
 --
 
 DROP TABLE IF EXISTS `refmenu`;
@@ -341,7 +341,7 @@ CREATE TABLE `refmenu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `refmenu`
+-- Dumping data untuk tabel `refmenu`
 --
 
 INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`) VALUES
@@ -353,11 +353,11 @@ INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`) VALUES
 (6, 'Kalkulasi', 'kalkulasi', 'fa fa-calculator', 0, 1),
 (7, 'Laporan', 'report', 'fa fa-file-text', 0, 1),
 (8, 'Setting', '', 'fa fa-cogs', 0, 1),
-(9, 'Kelola User', 'user', 'fa fa-user', 8, 1),
-(10, 'Ref. Data Pegawai', 'pegawai', 'fa fa-users', 8, 1),
-(11, 'Ref. Group Layanan', 'grouplayan', 'fa fa-users', 8, 1),
-(12, 'Ref. Layanan', 'layanan', 'fa fa-user', 8, 1),
-(13, 'Target per Pegawai', 'target', 'fa fa-user', 8, 1),
+(9, 'Kelola User', 'user', '', 8, 1),
+(10, 'Ref. Data Pegawai', 'pegawai', '', 8, 1),
+(11, 'Ref. Group Layanan', 'grouplayan', '', 8, 1),
+(12, 'Ref. Layanan', 'layanan', '', 8, 1),
+(13, 'Target per Pegawai', 'target', '', 8, 1),
 (14, 'Upload Data', 'kuantitas', '', 1, 1),
 (15, 'Rekap Data', 'kuantitas/rekap', '', 1, 1),
 (16, 'Kalkulasi IKI', 'hitung/iki', '', 6, 0),
@@ -366,7 +366,7 @@ INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `refpegawai`
+-- Struktur dari tabel `refpegawai`
 --
 
 DROP TABLE IF EXISTS `refpegawai`;
@@ -386,7 +386,7 @@ CREATE TABLE `refpegawai` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `refpegawai`
+-- Dumping data untuk tabel `refpegawai`
 --
 
 INSERT INTO `refpegawai` (`idpeg`, `nip`, `nama`, `jk`, `alamat`, `tempatlhr`, `tgllhr`, `idjabatan`, `dokter`, `targetk1`, `targetk2`, `targetk3`) VALUES
@@ -395,7 +395,7 @@ INSERT INTO `refpegawai` (`idpeg`, `nip`, `nama`, `jk`, `alamat`, `tempatlhr`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `reftiki`
+-- Struktur dari tabel `reftiki`
 --
 
 DROP TABLE IF EXISTS `reftiki`;
@@ -409,7 +409,7 @@ CREATE TABLE `reftiki` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `refuser`
+-- Struktur dari tabel `refuser`
 --
 
 DROP TABLE IF EXISTS `refuser`;
@@ -425,7 +425,7 @@ CREATE TABLE `refuser` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `refuser`
+-- Dumping data untuk tabel `refuser`
 --
 
 INSERT INTO `refuser` (`iduser`, `username`, `password`, `realname`, `email`, `idsat`, `level`, `active`) VALUES
@@ -434,7 +434,7 @@ INSERT INTO `refuser` (`iduser`, `username`, `password`, `realname`, `email`, `i
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbobot`
+-- Struktur dari tabel `tbobot`
 --
 
 DROP TABLE IF EXISTS `tbobot`;
@@ -448,7 +448,7 @@ CREATE TABLE `tbobot` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tidjp`
+-- Struktur dari tabel `tidjp`
 --
 
 DROP TABLE IF EXISTS `tidjp`;
@@ -460,7 +460,7 @@ CREATE TABLE `tidjp` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tidxk1`
+-- Struktur dari tabel `tidxk1`
 --
 
 DROP TABLE IF EXISTS `tidxk1`;
@@ -472,22 +472,16 @@ CREATE TABLE `tidxk1` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tidxk1`
+-- Dumping data untuk tabel `tidxk1`
 --
 
 INSERT INTO `tidxk1` (`idxk1`, `dari`, `sampai`, `created`) VALUES
-(4, '2017-08-01', '2017-08-31', '2017-11-17 07:24:31'),
-(5, '2017-10-01', '2017-10-31', '2017-11-17 07:24:37'),
-(6, '2017-10-01', '2017-10-31', '2017-11-17 07:37:19'),
-(7, '2017-10-01', '2017-10-31', '2017-11-17 07:37:22'),
-(8, '2017-10-01', '2017-10-31', '2017-11-17 07:39:18'),
-(9, '2017-10-01', '2017-10-31', '2017-11-17 07:43:54'),
-(10, '2017-10-01', '2017-10-31', '2017-11-17 07:43:55');
+(1, '2017-08-01', '2017-08-31', '2017-12-11 02:34:36');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tidxk2`
+-- Struktur dari tabel `tidxk2`
 --
 
 DROP TABLE IF EXISTS `tidxk2`;
@@ -498,19 +492,10 @@ CREATE TABLE `tidxk2` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `tidxk2`
---
-
-INSERT INTO `tidxk2` (`idxk2`, `dari`, `sampai`, `created`) VALUES
-(1, '2017-11-01', '2017-11-30', '2017-11-14 11:31:39'),
-(2, '2017-11-01', '2017-11-30', '2017-11-14 11:32:51'),
-(3, '2017-10-01', '2017-10-30', '2017-11-17 03:32:55');
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tidxk3`
+-- Struktur dari tabel `tidxk3`
 --
 
 DROP TABLE IF EXISTS `tidxk3`;
@@ -524,7 +509,7 @@ CREATE TABLE `tidxk3` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tresult`
+-- Struktur dari tabel `tresult`
 --
 
 DROP TABLE IF EXISTS `tresult`;
@@ -545,7 +530,7 @@ CREATE TABLE `tresult` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `trkpbehavior`
+-- Struktur dari tabel `trkpbehavior`
 --
 
 DROP TABLE IF EXISTS `trkpbehavior`;
@@ -564,7 +549,7 @@ CREATE TABLE `trkpbehavior` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `trkpkualitas`
+-- Struktur dari tabel `trkpkualitas`
 --
 
 DROP TABLE IF EXISTS `trkpkualitas`;
@@ -581,15 +566,7 @@ CREATE TABLE `trkpkualitas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 --
--- Dumping data for table `trkpkualitas`
---
-
-INSERT INTO `trkpkualitas` (`idrkpkw`, `idkw`, `idxk2`, `dari`, `sampai`, `idpeg`, `capaian`, `point`, `jml`) VALUES
-(4, 1, 2, '2017-11-01', '2017-11-30', 1, 34, 0, 0),
-(5, 1, 3, '2017-10-01', '2017-10-30', 1, 12, 0, 0);
-
---
--- Triggers `trkpkualitas`
+-- Trigger `trkpkualitas`
 --
 DROP TRIGGER IF EXISTS `del_tidxk2`;
 DELIMITER $$
@@ -606,7 +583,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `trkptindakan`
+-- Struktur dari tabel `trkptindakan`
 --
 
 DROP TABLE IF EXISTS `trkptindakan`;
@@ -624,17 +601,21 @@ CREATE TABLE `trkptindakan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 --
--- Dumping data for table `trkptindakan`
+-- Dumping data untuk tabel `trkptindakan`
 --
 
 INSERT INTO `trkptindakan` (`id`, `idxk1`, `dari`, `sampai`, `idgrplayan`, `grplayan`, `idpeg`, `point`, `capaian`, `jml`) VALUES
 (37, 4, '2017-08-01', '2017-08-31', 1, 'gfg', 1, 2, 1, 2),
 (38, 4, '2017-08-01', '2017-08-31', 1, 'fgfg', 1, 2, 4, 8),
 (39, 4, '2017-08-01', '2017-08-31', 1, 'abd', 1, 2, 1, 2),
-(41, 4, '2017-08-01', '2017-08-31', 1, 'gfr', 1, 2, 1, 2);
+(41, 4, '2017-08-01', '2017-08-31', 1, 'gfr', 1, 2, 1, 2),
+(42, 1, '2017-08-01', '2017-08-31', 1, 'gfg', 1, 2, 1, 2),
+(43, 1, '2017-08-01', '2017-08-31', 1, 'fgfg', 1, 2, 4, 8),
+(44, 1, '2017-08-01', '2017-08-31', 1, 'abd', 1, 2, 1, 2),
+(46, 1, '2017-08-01', '2017-08-31', 1, 'gfr', 1, 2, 1, 2);
 
 --
--- Triggers `trkptindakan`
+-- Trigger `trkptindakan`
 --
 DROP TRIGGER IF EXISTS `del_tidxk1`;
 DELIMITER $$
@@ -651,7 +632,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `trppoin`
+-- Struktur dari tabel `trppoin`
 --
 
 DROP TABLE IF EXISTS `trppoin`;
@@ -663,7 +644,7 @@ CREATE TABLE `trppoin` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ttindakan`
+-- Struktur dari tabel `ttindakan`
 --
 
 DROP TABLE IF EXISTS `ttindakan`;
@@ -683,7 +664,7 @@ CREATE TABLE `ttindakan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 --
--- Dumping data for table `ttindakan`
+-- Dumping data untuk tabel `ttindakan`
 --
 
 INSERT INTO `ttindakan` (`id`, `tgl`, `norm`, `nmpasien`, `crbayar`, `tipelayan`, `layanan`, `idgrplayan`, `grplayan`, `iddokter`, `dokter`, `updlog`) VALUES
@@ -763,19 +744,22 @@ ALTER TABLE `tidjp`
 -- Indexes for table `tidxk1`
 --
 ALTER TABLE `tidxk1`
-  ADD PRIMARY KEY (`idxk1`);
+  ADD PRIMARY KEY (`idxk1`),
+  ADD UNIQUE KEY `dari` (`dari`,`sampai`);
 
 --
 -- Indexes for table `tidxk2`
 --
 ALTER TABLE `tidxk2`
-  ADD PRIMARY KEY (`idxk2`);
+  ADD PRIMARY KEY (`idxk2`),
+  ADD UNIQUE KEY `dari` (`dari`,`sampai`);
 
 --
 -- Indexes for table `tidxk3`
 --
 ALTER TABLE `tidxk3`
-  ADD PRIMARY KEY (`idxk3`);
+  ADD PRIMARY KEY (`idxk3`),
+  ADD UNIQUE KEY `dari` (`dari`,`sampai`);
 
 --
 -- Indexes for table `tresult`
@@ -865,12 +849,12 @@ ALTER TABLE `tidjp`
 -- AUTO_INCREMENT for table `tidxk1`
 --
 ALTER TABLE `tidxk1`
-  MODIFY `idxk1` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idxk1` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `tidxk2`
 --
 ALTER TABLE `tidxk2`
-  MODIFY `idxk2` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idxk2` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `tidxk3`
 --
@@ -890,12 +874,12 @@ ALTER TABLE `trkpbehavior`
 -- AUTO_INCREMENT for table `trkpkualitas`
 --
 ALTER TABLE `trkpkualitas`
-  MODIFY `idrkpkw` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idrkpkw` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `trkptindakan`
 --
 ALTER TABLE `trkptindakan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 --
 -- AUTO_INCREMENT for table `ttindakan`
 --

@@ -58,7 +58,7 @@ class Behavior extends CI_Controller{
             $capaian = $this->input->post('nilai');
             $idbhv = $this->input->post('idbhv');
             $start = date("$thn/$bln/01");
-            $stop = date("$thn/$bln/t");
+            $stop = date("Y/m/t", strtotime($start));
             $this->db->insert('tidxk3', array('dari'=>$start, 'sampai'=>$stop));
             $idxk3 = $this->db->insert_id();
             if ($idxk3){

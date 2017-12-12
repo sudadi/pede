@@ -50,7 +50,7 @@ class Kualitas extends CI_Controller{
         }
         $data['content']['bln'] = $bln;
         $data['content']['thn'] = $thn;
-        $data['content']['result'] = $this->modkualitas->getkw(1, $bln, $thn);        
+        $data['content']['result'] = $this->modkualitas->getkw(1, $bln, $thn); 
         $this->load->view('mainview', $data);
         //echo $this->db->last_query();
     }
@@ -72,20 +72,7 @@ class Kualitas extends CI_Controller{
         $this->load->view('mainview', $data);
     }
     
-    public function behavior($start=null, $stop=null) {
-        $data['banner'] = false;
-        $data['page'] = 'entryview';
-        $data['judul'] = 'Penilaian Perilaku';
-        if ($start == NULL || $stop == NULL) {
-            $start = date("01/m/Y");
-            $stop = date("t/m/Y");
-        }
-        $data['content']['jns'] = 3;
-        $data['content']['action'] = site_url('entry/save');
-        $data['content']['result'] = $this->modentry->getbehav($start, $stop);
-        $this->load->view('mainview', $data);
-    }
-    
+  
     public function save() {
         if ($this->input->post()) {
             $idpeg = $this->input->post('idpeg');
@@ -94,7 +81,7 @@ class Kualitas extends CI_Controller{
             $capaian = $this->input->post('nilai');
             $idkw = $this->input->post('idkw');
             $start = date("$thn/$bln/01");
-            $stop = date("$thn/$bln/t");
+            $stop = date("Y/m/t", strtotime($start));
             $this->db->insert('tidxk2', array('dari'=>$start, 'sampai'=>$stop));
             $idxk2 = $this->db->insert_id();
             if ($idxk2){
@@ -109,6 +96,7 @@ class Kualitas extends CI_Controller{
             }
             if($idkw == 1){
                 redirect(base_url("kualitas/dokrm/$bln/$thn"));
+                //echo $this->db->last_query();
             } else {
                 redirect("kualitas/fornas/$bln/$thn");
             }
@@ -117,7 +105,7 @@ class Kualitas extends CI_Controller{
     
     public function hapus($idkw, $idrkp, $bln=null, $thn=null) {
         if ($idkw && $idrkp) {
-            $this->db->where("idrkpkw='$idrkp' and idkw='$idkw'");
+            $this->db->where("idrkpkw='$idrkp' and idkw=192.168'$idkw'");
             $this->db->delete("trkpkualitas");
             if ($this->db->affected_rows() > 0) {
                 $this->session->set_flashdata('success', 'Data sudah dihapus');
