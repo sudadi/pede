@@ -15,7 +15,7 @@ class Kalkulasi extends CI_Controller{
                 
     }
     
-    public function index($thn=null) {
+    public function index($thn=null, $idjp=null) {
         $data['banner'] = false;
         $data['page'] = 'kalkulasiview';
         $data['judul'] = 'Kalkulasi - Proses Peritungan Kinerja';

@@ -96,12 +96,12 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
 <hr />
 <?=form_close();?>
 <div class="table-responsive">
-    <table id="xtables" class="table table-striped table-bordered bulk_action">
+    <table id="dtables" class="table table-striped table-bordered bulk_action">
         <thead>
             <tr class="bg-primary">
                 <th class="column-title text-center" rowspan="2">#</th>
                 <th class="column-title text-center" rowspan="2">Tgl</th>
-                <th class="column-title text-center" rowspan="2">Keterangan</th>
+                <th class="column-title text-center" rowspan="2">Pegawai</th>
                 <th class="column-title text-center" colspan="3">Periode</th>
                 <th class="column-title text-center" rowspan="2">Rp/Indek</th>
                 <th class="column-title text-center" rowspan="2">Tot. IKI</th>
@@ -116,18 +116,19 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
         </thead>
         <tbody>
         <?php 
-        $i = $result = 0;
+        $i = 0;
         if ($result){
             foreach ($result as $row){
                 $i++; ?>
             <tr>
                 <td><?=$i;?></td>
-                <td><?=$row['dari'];?></td>
-                <td><?=$row['sampai'];?></td>
-                <td><?=$row['grplayan'];?></td>
-                <td><?=$row['idpeg'];?></td>
-                <td><?=$row['point'];?></td>
-                <td><?=$row['capaian'];?></td>
+                <td><?=$row['tgl'];?></td>
+                <td><?=$row['ket'];?></td>
+                <td><?=$row['idxk1'];?></td>
+                <td><?=$row['idxk2'];?></td>
+                <td><?=$row['idxk3'];?></td>
+                <td><?=$row['rppoin'];?></td>
+                <td><?=$row['resiki'];?></td>
                 <td><?=$row['jml'];?></td>
                 <td class="text-center">
                     <a href="<?=base_url().'kuantitas/hapusrkp/'.$row['id'].'/'.date_format(date_create($dari), 'Y-m-d').'/'.date_format(date_create($sampai), 'Y-m-d');?>" 

@@ -31,12 +31,18 @@ class Modkalkulasi extends CI_Model {
         
     }
     
-    function getdata($thn) {
-        $this->db->where("year(tgl)", $thn);
-        $this->db->join("tidxk1", "tidxk1.idxk1=tresult.idxk1");
-        $this->db->join("tidxk2", "tidxk2.idxk2=tresult.idxk2");
-        $this->db->join("tidxk3", "tidxk3.idxk3=tresult.idxk3");
-        return $this->db->get("tresult")->result_array();
+    function getdata($idjp) {
+        if ($idjp){
+            $this->db->select("tresult.*, a.nama, b.dari as dr1, d.sampai as smp1, c.dari as dr2, c.sampai as smp12, d.dari as dr3, d.sampai as smp3");
+            $this->db->join("refpegawai a", "a.idpeg=tresult.idpeg");
+            $this->db->join("tidxk1 b", "b.idxk1=tresult.idxk1");
+            $this->db->join("tidxk2 c", "c.idxk2=tresult.idxk2");
+            $this->db->join("tidxk3 d", "d.idxk3=tresult.idxk3");
+            $this->db->where("idjp", $idjp);
+            return $this->db->get("tresult")->result_array();
+        } else {
+            return null;
+        }
     }
     
     function getidxk1($thn) {
