@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 12 Des 2017 pada 19.15
+-- Generation Time: 22 Jan 2018 pada 02.05
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -25,7 +25,7 @@ DELIMITER $$
 -- Prosedur
 --
 DROP PROCEDURE IF EXISTS `calc_result`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `calc_result` (IN `_nmjp` DATE, IN `_idxk1` INT, IN `_idxk2` INT, IN `_idxk3` INT)  NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `calc_result` (IN `_nmjp` VARCHAR(100), IN `_idxk1` INT, IN `_idxk2` INT, IN `_idxk3` INT)  NO SQL
 BEGIN
 DECLARE n INT DEFAULT 0;
 DECLARE i INT DEFAULT 0;
@@ -371,7 +371,7 @@ INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`) VALUES
 
 DROP TABLE IF EXISTS `refpegawai`;
 CREATE TABLE `refpegawai` (
-  `idpeg` int(11) NOT NULL,
+  `idpeg` int(4) NOT NULL,
   `nip` varchar(20) NOT NULL,
   `nama` varchar(150) NOT NULL,
   `jk` varchar(1) NOT NULL,
@@ -379,18 +379,27 @@ CREATE TABLE `refpegawai` (
   `tempatlhr` varchar(100) NOT NULL,
   `tgllhr` date NOT NULL,
   `idjabatan` int(11) NOT NULL,
-  `dokter` tinyint(1) NOT NULL,
-  `targetk1` float NOT NULL,
-  `targetk2` float NOT NULL,
-  `targetk3` float NOT NULL
+  `dokter` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `refpegawai`
 --
 
-INSERT INTO `refpegawai` (`idpeg`, `nip`, `nama`, `jk`, `alamat`, `tempatlhr`, `tgllhr`, `idjabatan`, `dokter`, `targetk1`, `targetk2`, `targetk3`) VALUES
-(1, '342536', 'kampret', 'L', 'solo', 'solo', '1970-08-27', 2, 1, 0, 0, 0);
+INSERT INTO `refpegawai` (`idpeg`, `nip`, `nama`, `jk`, `alamat`, `tempatlhr`, `tgllhr`, `idjabatan`, `dokter`) VALUES
+(1, '342536', 'kampret', 'L', 'solo', 'solo', '1970-08-27', 2, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `refsatker`
+--
+
+DROP TABLE IF EXISTS `refsatker`;
+CREATE TABLE `refsatker` (
+  `idsatker` smallint(3) NOT NULL,
+  `nmsatker` varchar(150) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -492,6 +501,13 @@ CREATE TABLE `tidxk2` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `tidxk2`
+--
+
+INSERT INTO `tidxk2` (`idxk2`, `dari`, `sampai`, `created`) VALUES
+(1, '2017-08-01', '2017-08-31', '2017-12-13 06:50:18');
+
 -- --------------------------------------------------------
 
 --
@@ -515,6 +531,7 @@ CREATE TABLE `tidxk3` (
 DROP TABLE IF EXISTS `tresult`;
 CREATE TABLE `tresult` (
   `idresult` int(11) NOT NULL,
+  `idjp` int(11) NOT NULL,
   `idpeg` int(11) NOT NULL,
   `idxk1` int(11) NOT NULL,
   `idxk2` int(11) NOT NULL,
@@ -564,6 +581,13 @@ CREATE TABLE `trkpkualitas` (
   `point` float NOT NULL,
   `jml` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data untuk tabel `trkpkualitas`
+--
+
+INSERT INTO `trkpkualitas` (`idrkpkw`, `idkw`, `idxk2`, `dari`, `sampai`, `idpeg`, `capaian`, `point`, `jml`) VALUES
+(1, 1, 1, '2017-08-01', '2017-08-31', 1, 100, 0, 0);
 
 --
 -- Trigger `trkpkualitas`
@@ -644,6 +668,20 @@ CREATE TABLE `trppoin` (
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `ttarget`
+--
+
+DROP TABLE IF EXISTS `ttarget`;
+CREATE TABLE `ttarget` (
+  `id` int(11) NOT NULL,
+  `idpeg` int(4) NOT NULL,
+  `idgrp` int(11) NOT NULL,
+  `target` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `ttindakan`
 --
 
@@ -715,6 +753,12 @@ ALTER TABLE `reflayanan`
 --
 ALTER TABLE `refmenu`
   ADD PRIMARY KEY (`idmenu`);
+
+--
+-- Indexes for table `refpegawai`
+--
+ALTER TABLE `refpegawai`
+  ADD KEY `idpeg` (`idpeg`);
 
 --
 -- Indexes for table `reftiki`
@@ -795,6 +839,12 @@ ALTER TABLE `trppoin`
   ADD PRIMARY KEY (`tglberlaku`);
 
 --
+-- Indexes for table `ttarget`
+--
+ALTER TABLE `ttarget`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `ttindakan`
 --
 ALTER TABLE `ttindakan`
@@ -831,6 +881,11 @@ ALTER TABLE `refkualitas`
 ALTER TABLE `refmenu`
   MODIFY `idmenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
+-- AUTO_INCREMENT for table `refpegawai`
+--
+ALTER TABLE `refpegawai`
+  MODIFY `idpeg` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT for table `refuser`
 --
 ALTER TABLE `refuser`
@@ -854,7 +909,7 @@ ALTER TABLE `tidxk1`
 -- AUTO_INCREMENT for table `tidxk2`
 --
 ALTER TABLE `tidxk2`
-  MODIFY `idxk2` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idxk2` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `tidxk3`
 --
@@ -874,12 +929,17 @@ ALTER TABLE `trkpbehavior`
 -- AUTO_INCREMENT for table `trkpkualitas`
 --
 ALTER TABLE `trkpkualitas`
-  MODIFY `idrkpkw` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idrkpkw` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `trkptindakan`
 --
 ALTER TABLE `trkptindakan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+--
+-- AUTO_INCREMENT for table `ttarget`
+--
+ALTER TABLE `ttarget`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `ttindakan`
 --
