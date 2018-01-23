@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 22 Jan 2018 pada 02.05
+-- Generation Time: 23 Jan 2018 pada 15.44
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -78,7 +78,10 @@ SELECT COUNT(*) INTO n FROM ttindakan WHERE tgl BETWEEN _from AND _to;
 SET i = 0;
 WHILE i < n DO
 	SELECT ttindakan.idgrplayan, ttindakan.grplayan, ttindakan.iddokter INTO @idgrp, @grp, @iddr FROM ttindakan WHERE ttindakan.tgl BETWEEN _from AND _to LIMIT i,1;
-	SET  @point = (SELECT point FROM refgrplayan WHERE refgrplayan.idgrp = @idgrp OR refgrplayan.grouplayan = @grp);
+	SELECT point, idgrp INTO @point, @idgrpfix FROM refgrplayan WHERE (refgrplayan.idgrp = @idgrp OR refgrplayan.grouplayan = @grp);
+	IF (@idgrpfix) THEN
+		SELECT target INTO @target FROM ttargetqtydr WHERE (ttargetqtydr.idpeg = @iddr and ttargetqtydr.idgrp = @idgrpfix);
+    END IF;
 IF (@point) THEN
 	INSERT INTO trkptindakan (idxk1, dari, sampai, idgrplayan, grplayan, idpeg, capaian, point, jml) VALUES (@idxk1, _from, _to, @idgrp, @grp, @iddr, 1, @point, @point) ON duplicate KEY UPDATE capaian=capaian+1, jml=capaian*point;
     END IF;
@@ -138,16 +141,15 @@ DROP TABLE IF EXISTS `refgrplayan`;
 CREATE TABLE `refgrplayan` (
   `idgrp` int(11) NOT NULL,
   `grouplayan` varchar(150) NOT NULL,
-  `point` int(11) NOT NULL,
-  `target` int(11) NOT NULL
+  `point` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data untuk tabel `refgrplayan`
 --
 
-INSERT INTO `refgrplayan` (`idgrp`, `grouplayan`, `point`, `target`) VALUES
-(1, 'khusus I', 2, 0);
+INSERT INTO `refgrplayan` (`idgrp`, `grouplayan`, `point`) VALUES
+(1, 'khusus I', 2);
 
 -- --------------------------------------------------------
 
@@ -314,6 +316,20 @@ CREATE TABLE `refkualitas` (
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `refkuantitas`
+--
+
+DROP TABLE IF EXISTS `refkuantitas`;
+CREATE TABLE `refkuantitas` (
+  `idqty` int(11) NOT NULL,
+  `nmqty` varchar(500) NOT NULL,
+  `idsatker` smallint(3) NOT NULL,
+  `point` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `reflayanan`
 --
 
@@ -337,31 +353,33 @@ CREATE TABLE `refmenu` (
   `link` varchar(100) NOT NULL,
   `icon` varchar(100) NOT NULL,
   `sub` tinyint(4) NOT NULL,
-  `active` tinyint(1) NOT NULL
+  `active` tinyint(1) NOT NULL,
+  `urutan` smallint(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `refmenu`
 --
 
-INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`) VALUES
-(1, 'Kuantitas Pelayanan', '', 'fa fa-dollar', 0, 1),
-(2, 'Kualitas Pelayanan', '', 'fa fa-thumbs-o-up', 0, 1),
-(3, 'Kelengkapan Dok.', 'kualitas/dokrm', '', 2, 1),
-(4, 'Kepatuhan FORNAS', 'kualitas/fornas', '', 2, 1),
-(5, 'Perilaku', 'behavior', 'fa fa-heart-o', 0, 1),
-(6, 'Kalkulasi', 'kalkulasi', 'fa fa-calculator', 0, 1),
-(7, 'Laporan', 'report', 'fa fa-file-text', 0, 1),
-(8, 'Setting', '', 'fa fa-cogs', 0, 1),
-(9, 'Kelola User', 'user', '', 8, 1),
-(10, 'Ref. Data Pegawai', 'pegawai', '', 8, 1),
-(11, 'Ref. Group Layanan', 'grouplayan', '', 8, 1),
-(12, 'Ref. Layanan', 'layanan', '', 8, 1),
-(13, 'Target per Pegawai', 'target', '', 8, 1),
-(14, 'Upload Data', 'kuantitas', '', 1, 1),
-(15, 'Rekap Data', 'kuantitas/rekap', '', 1, 1),
-(16, 'Kalkulasi IKI', 'hitung/iki', '', 6, 0),
-(17, 'Remunerasi', 'hitung/remun', '', 6, 0);
+INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`, `urutan`) VALUES
+(1, 'Nilai Kuantitas (dr)', '', 'fa fa-cubes', 0, 1, 1),
+(2, 'Nilai Kualitas', '', 'fa fa-thumbs-o-up', 0, 1, 3),
+(3, 'Kelengkapan Dok.', 'kualitas/dokrm', '', 2, 1, 4),
+(4, 'Kepatuhan FORNAS', 'kualitas/fornas', '', 2, 1, 5),
+(5, 'Nilai Perilaku', 'behavior', 'fa fa-heart-o', 0, 1, 6),
+(6, 'Kalkulasi', 'kalkulasi', 'fa fa-calculator', 0, 1, 7),
+(7, 'Laporan', 'report', 'fa fa-file-text', 0, 1, 8),
+(8, 'Setting', '', 'fa fa-cogs', 0, 1, 9),
+(9, 'Kelola User', 'user', '', 8, 1, 10),
+(10, 'Ref. Data Pegawai', 'pegawai', '', 8, 1, 11),
+(11, 'Ref. Group Layanan', 'grplayan', '', 8, 1, 12),
+(12, 'Ref. Layanan', 'layanan', '', 8, 1, 13),
+(13, 'Target per Pegawai', 'target', '', 8, 1, 14),
+(14, 'Upload Data', 'kuantitas', '', 1, 1, 15),
+(15, 'Rekap Data', 'kuantitas/rekap', '', 1, 1, 16),
+(16, 'Kalkulasi IKI', 'hitung/iki', '', 6, 0, 17),
+(17, 'Remunerasi', 'hitung/remun', '', 6, 0, 18),
+(18, 'Nilai Kuantitas (non dr)', 'kuantitas', 'fa fa-cubes', 0, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -682,6 +700,20 @@ CREATE TABLE `ttarget` (
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `ttargetqtydr`
+--
+
+DROP TABLE IF EXISTS `ttargetqtydr`;
+CREATE TABLE `ttargetqtydr` (
+  `id` int(11) NOT NULL,
+  `idpeg` int(5) NOT NULL,
+  `idgrp` int(11) NOT NULL,
+  `target` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `ttindakan`
 --
 
@@ -741,6 +773,12 @@ ALTER TABLE `refjabatan`
 --
 ALTER TABLE `refkualitas`
   ADD PRIMARY KEY (`idrefkw`);
+
+--
+-- Indexes for table `refkuantitas`
+--
+ALTER TABLE `refkuantitas`
+  ADD PRIMARY KEY (`idqty`);
 
 --
 -- Indexes for table `reflayanan`
@@ -845,6 +883,12 @@ ALTER TABLE `ttarget`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `ttargetqtydr`
+--
+ALTER TABLE `ttargetqtydr`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `ttindakan`
 --
 ALTER TABLE `ttindakan`
@@ -876,10 +920,15 @@ ALTER TABLE `refjabatan`
 ALTER TABLE `refkualitas`
   MODIFY `idrefkw` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `refkuantitas`
+--
+ALTER TABLE `refkuantitas`
+  MODIFY `idqty` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `refmenu`
 --
 ALTER TABLE `refmenu`
-  MODIFY `idmenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `idmenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT for table `refpegawai`
 --
@@ -939,6 +988,11 @@ ALTER TABLE `trkptindakan`
 -- AUTO_INCREMENT for table `ttarget`
 --
 ALTER TABLE `ttarget`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `ttargetqtydr`
+--
+ALTER TABLE `ttargetqtydr`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `ttindakan`

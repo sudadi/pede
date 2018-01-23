@@ -24,7 +24,7 @@ class Kalkulasi extends CI_Controller{
         $data['content']['dari'] = $dari;
         $data['content']['sampai'] = $sampai;
         if ($this->input->post()){
-            $thn = $this->input->post('thn');
+            $thn = $this->input->post('filtahun');
         }
         if (!$thn){
             $thn = date("Y");

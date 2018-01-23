@@ -21,6 +21,7 @@ class Modref extends CI_Model {
     
     function getmenu($sub) {
         $this->db->where('sub', $sub);
+        $this->db->order_by('urutan', 'asc');
         return $this->db->get('refmenu')->result_arraY();
     }
     
@@ -28,5 +29,8 @@ class Modref extends CI_Model {
         return $this->db->get('refbehavior')->result_array();
     }
     
+    function getgrplayan() {
+        return $this->db->get('refgrplayan')->result_array();
+    }
 }
 ?>

@@ -1,10 +1,9 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-
 /* 
  * The MIT License
  *
- * Copyright 2017 DotKom <sudadi.kom@yahoo.com>.
+ * Copyright 2018 DotKom <sudadi.kom@yahoo.com>.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,76 +24,25 @@
  * THE SOFTWARE.
  */
 
-echo form_open($filaction, 'class="form-horizontal form-label-left"');?>
+echo form_open_multipart($action, 'class="form-horizontal form-label-left" data-parsley-validate');?>
 <div class="form-group">
-    <label class="control-label col-md-1" for="filtahun">Tahun</label>
-    <div class="col-sm-2">
-        <?php 
-        $selisih = date('Y') - 2017;
-        $option[''] = '-Tahun-';
-        for ($i = 0; $i <= $selisih; $i++){
-            $thn1 = 2017 + $i;
-            $option[$thn1] = $thn1;
-        }
-        echo form_dropdown('filtahun', $option, $filtahun, 'class="form-control col-sm-12 col-xs-12" id="tahun1" onchange="this.form.submit()" required');?>
-    </div>
-</div>
-<?=form_close();
-echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-validate');?>
-<div class="form-group">
-    <label class="control-label col-md-1 col-xs-12" for="daterange">Kuantitas</label>
-    <div class="col-sm-3 col-xs-12">
-        <?php 
-        $option = '';
-        $option[''] = '-Periode-';
-        foreach ($idxk1 as $row) {
-            $option[$row['idxk1']] = $row['dari'].' s/d '.$row['sampai'];
-        }
-        echo form_dropdown('idxk1', $option, '', 'class="form-control col-sm-12 col-xs-12" id="tahun1" required');?>
-    </div>
-    <label class="control-label col-md-1 col-xs-12" for="idxk1">Kualitas</label>
-    <div class="col-sm-3 col-xs-12">
-        <?php 
-        $option = '';
-        $option[''] = '-Periode-';
-        foreach ($idxk2 as $row) {
-            $option[$row['idxk2']] = $row['dari'].' - '.$row['sampai'];
-        }
-        echo form_dropdown('idxk2', $option, '', 'class="form-control col-sm-12 col-xs-12" id="tahun1" required');?>
-    </div>
-    <label class="control-label col-md-1 col-xs-12" for="tahun2">Perilaku</label>
-    <div class="col-sm-3 col-xs-12">
-        <?php 
-        $option = '';
-        $option[''] = '-Periode-';
-        foreach ($idxk3 as $row) {
-            $option[$row['idxk3']] = $row['dari'].' - '.$row['sampai'];
-        }
-        echo form_dropdown('idxk3', $option, '', 'class="form-control col-sm-12 col-xs-12" id="tahun1" required');?>
-    </div>
-    </div>
-<div class="form-group">
-    <label class="control-label col-md-1" for="ket">Keterangan</label>
-    <div class="col-sm-8">
-        <input type="text" class="form-control" required="required" />
-    </div>
-</div>
-<br />
+    <label class="control-label col-sm-2 col-xs-12" for="nmgrp">Nama Group</label>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+            <input type="text" name="nmgroup" id="nmgroup" size="20" class="form-control" required="required"/>
+        </div>
+    <label class="control-label col-sm-2 col-xs-12" for="point">Poin/Bobot</label>
+        <div class="col-sm-2 col-xs-12">
+            <input type="number" name="point" id="point" size="20" class="form-control" required="required"/>
+        </div>
+</div><br/>
 <div class="form-group">
     <div class="col-md-12 col-sm-offset-4">
-        <div class="col-sm-2">
-        <?php 
-        echo form_hidden('mulai');
-        echo form_hidden('selesai');
-        echo form_button(array('type'=>'submit', 'class'=>'btn btn-success btn-block', 'content'=>'Proses &nbsp;<i class="fa fa-retweet"></i>'));?>
-        </div>
-        <div class="col-sm-2">
-            <a href="<?=current_url();?>" class="btn btn-warning btn-block">Batal &nbsp;<i class="fa fa-undo"></i></a>
-        </div>
+       <?php echo form_button(array('type'=>'submit', 'class'=>'btn btn-success', 'content'=>'Upload &nbsp;<i class="fa fa-save"></i>'));?>
+       <a href="<?=current_url();?>" class="btn btn-warning">Batal &nbsp;<i class="fa fa-undo"></i></a>
     </div>
 </div>
-<hr />
 <?=form_close();?>
+
 <div class="table-responsive">
     <table id="dtables" class="table table-striped table-bordered bulk_action">
         <thead>
@@ -116,7 +64,7 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
         </thead>
         <tbody>
         <?php 
-        $i = 0;
+        $i = $result = 0;
         if ($result){
             foreach ($result as $row){
                 $i++; ?>
