@@ -44,22 +44,13 @@ echo form_open_multipart($action, 'class="form-horizontal form-label-left" data-
 <?=form_close();?>
 
 <div class="table-responsive">
-    <table id="dtables" class="table table-striped table-bordered bulk_action">
+    <table id="dtables" class="table table-striped table-bordered jambo_table bulk_action">
         <thead>
-            <tr class="bg-primary">
-                <th class="column-title text-center" rowspan="2">#</th>
-                <th class="column-title text-center" rowspan="2">Tgl</th>
-                <th class="column-title text-center" rowspan="2">Pegawai</th>
-                <th class="column-title text-center" colspan="3">Periode</th>
-                <th class="column-title text-center" rowspan="2">Rp/Indek</th>
-                <th class="column-title text-center" rowspan="2">Tot. IKI</th>
-                <th class="column-title text-center" rowspan="2">Jml</th>
-                <th class="column-title text-center" rowspan="2">Opsi</th>
-            </tr>
-            <tr class="bg-blue">
-                <th class="column-title text-center">Kuantitas</th>
-                <th class="column-title text-center">Kualitas</th>
-                <th class="column-title text-center">Perilaku</th>
+            <tr class="headings">
+                <th class="column-title text-center">#</th>
+                <th class="column-title text-center">Nama Kelompok Layanan</th>
+                <th class="column-title text-center">Poin/Bobot</th>
+                <th class="column-title text-center">Opsi</th>
             </tr>
         </thead>
         <tbody>
