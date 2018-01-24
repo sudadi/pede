@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 23 Jan 2018 pada 15.44
+-- Generation Time: 24 Jan 2018 pada 18.41
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -149,7 +149,8 @@ CREATE TABLE `refgrplayan` (
 --
 
 INSERT INTO `refgrplayan` (`idgrp`, `grouplayan`, `point`) VALUES
-(1, 'khusus I', 2);
+(1, 'khusus I', 2),
+(2, 'KHUSUS II', 12);
 
 -- --------------------------------------------------------
 
@@ -335,7 +336,7 @@ CREATE TABLE `refkuantitas` (
 
 DROP TABLE IF EXISTS `reflayanan`;
 CREATE TABLE `reflayanan` (
-  `idlayan` varchar(100) NOT NULL,
+  `idlayan` int(11) NOT NULL,
   `idgrp` int(11) NOT NULL,
   `nmlayan` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -368,12 +369,12 @@ INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`, `uruta
 (4, 'Kepatuhan FORNAS', 'kualitas/fornas', '', 2, 1, 5),
 (5, 'Nilai Perilaku', 'behavior', 'fa fa-heart-o', 0, 1, 6),
 (6, 'Kalkulasi', 'kalkulasi', 'fa fa-calculator', 0, 1, 7),
-(7, 'Laporan', 'report', 'fa fa-file-text', 0, 1, 8),
+(7, 'Data Referensi', '', 'fa fa-file-text-o', 0, 1, 8),
 (8, 'Setting', '', 'fa fa-cogs', 0, 1, 9),
 (9, 'Kelola User', 'user', '', 8, 1, 10),
 (10, 'Ref. Data Pegawai', 'pegawai', '', 8, 1, 11),
-(11, 'Ref. Group Layanan', 'grplayan', '', 8, 1, 12),
-(12, 'Ref. Layanan', 'layanan', '', 8, 1, 13),
+(11, 'Ref. Group Layanan', 'grplayan', '', 7, 1, 12),
+(12, 'Ref. Layanan', 'reflayan', '', 7, 1, 13),
 (13, 'Target per Pegawai', 'target', '', 8, 1, 14),
 (14, 'Upload Data', 'kuantitas', '', 1, 1, 15),
 (15, 'Rekap Data', 'kuantitas/rekap', '', 1, 1, 16),
@@ -908,7 +909,7 @@ ALTER TABLE `refbehavior`
 -- AUTO_INCREMENT for table `refgrplayan`
 --
 ALTER TABLE `refgrplayan`
-  MODIFY `idgrp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idgrp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `refjabatan`
 --
@@ -925,10 +926,15 @@ ALTER TABLE `refkualitas`
 ALTER TABLE `refkuantitas`
   MODIFY `idqty` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `reflayanan`
+--
+ALTER TABLE `reflayanan`
+  MODIFY `idlayan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT for table `refmenu`
 --
 ALTER TABLE `refmenu`
-  MODIFY `idmenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `idmenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT for table `refpegawai`
 --
