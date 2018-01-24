@@ -54,4 +54,16 @@ class Reflayan extends CI_Controller {
         redirect('reflayan');
     }
     
+    public function hapus($id) {
+        if ($id) {
+            $this->db->delete('reflayanan', 'idlayan='.$id);
+            if ($this->db->affected_rows()>0) {
+                $this->session->set_flashdata('success', 'Data sudah dihapus');
+            } else {
+                $this->session->set_flashdata('error', 'Data tidak dapat dihapus');
+            }
+        }
+        redirect('reflayan');
+    }
+    
 }
