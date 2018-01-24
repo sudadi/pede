@@ -32,5 +32,10 @@ class Modref extends CI_Model {
     function getgrplayan() {
         return $this->db->get('refgrplayan')->result_array();
     }
+    
+    function getlayan() {
+        $this->db->join('refgrplayan', 'reflayanan.idgrp=refgrplayan.idgrp');
+        return $this->db->get('reflayanan')->result_array();
+    }
 }
 ?>

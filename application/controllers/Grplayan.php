@@ -42,10 +42,28 @@ class Grplayan extends CI_Controller {
     
     public function save() {
         if ($this->input->post()) {
-            $nmgrp = $this->input->post('nmgrp');
+            $nmgrp = $this->input->post('nmgroup');
             $point = $this->input->post('point');
-            $target = $this->input->post('taget');
+            $this->db->insert('refgrplayan', array('grouplayan'=>$nmgrp, 'point'=>$point));
+            if ($this->db->affected_rows()>0) {
+                $this->session->set_flashdata('success', 'Data sudah tersimpan');
+            } else {
+                $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
+            }
         }
+        redirect('grplayan');
+    }
+    
+    public function hapus($id) {
+        if ($id) {
+            $this->db->delete('refgrplayan', 'idgrp='.$id);
+            if ($this->db->affected_rows()>0) {
+                $this->session->set_flashdata('success', 'Data sudah dihapus');
+            } else {
+                $this->session->set_flashdata('error', 'Data tidak dapat dihapus');
+            }
+        }
+        redirect('grplayan');
     }
     
 }

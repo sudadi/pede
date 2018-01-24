@@ -28,21 +28,21 @@ echo form_open_multipart($action, 'class="form-horizontal form-label-left" data-
 <div class="form-group">
     <label class="control-label col-sm-2 col-xs-12" for="nmgrp">Nama Group</label>
         <div class="col-md-4 col-sm-4 col-xs-12">
-            <input type="text" name="nmgroup" id="nmgroup" size="20" class="form-control" required="required"/>
+            <input type="text" name="nmgroup" id="nmgroup" class="form-control" required="required"/>
         </div>
     <label class="control-label col-sm-2 col-xs-12" for="point">Poin/Bobot</label>
         <div class="col-sm-2 col-xs-12">
-            <input type="number" name="point" id="point" size="20" class="form-control" required="required"/>
+            <input type="number" name="point" id="point" class="form-control" required="required"/>
         </div>
 </div><br/>
 <div class="form-group">
     <div class="col-md-12 col-sm-offset-4">
-       <?php echo form_button(array('type'=>'submit', 'class'=>'btn btn-success', 'content'=>'Upload &nbsp;<i class="fa fa-save"></i>'));?>
+       <?php echo form_button(array('type'=>'submit', 'class'=>'btn btn-success', 'content'=>'Simpan &nbsp;<i class="fa fa-save"></i>'));?>
        <a href="<?=current_url();?>" class="btn btn-warning">Batal &nbsp;<i class="fa fa-undo"></i></a>
     </div>
 </div>
 <?=form_close();?>
-
+<br/><hr />
 <div class="table-responsive">
     <table id="dtables" class="table table-striped table-bordered jambo_table bulk_action">
         <thead>
@@ -55,22 +55,16 @@ echo form_open_multipart($action, 'class="form-horizontal form-label-left" data-
         </thead>
         <tbody>
         <?php 
-        $i = $result = 0;
+        $i = 0;
         if ($result){
             foreach ($result as $row){
                 $i++; ?>
             <tr>
                 <td><?=$i;?></td>
-                <td><?=$row['tgl'];?></td>
-                <td><?=$row['ket'];?></td>
-                <td><?=$row['idxk1'];?></td>
-                <td><?=$row['idxk2'];?></td>
-                <td><?=$row['idxk3'];?></td>
-                <td><?=$row['rppoin'];?></td>
-                <td><?=$row['resiki'];?></td>
-                <td><?=$row['jml'];?></td>
+                <td><?=$row['grouplayan'];?></td>
+                <td><?=$row['point'];?></td>
                 <td class="text-center">
-                    <a href="<?=base_url().'kuantitas/hapusrkp/'.$row['id'].'/'.date_format(date_create($dari), 'Y-m-d').'/'.date_format(date_create($sampai), 'Y-m-d');?>" 
+                    <a href="<?=base_url().'grplayan/hapus/'.$row['idgrp'];?>" 
                        class="btn btn-xs btn-danger" onclick="return confirm('Yakin hapus data tersebut..?')">
                         <i class="fa fa-trash-o"></i> Hapus</a>
                 </td>

@@ -36,15 +36,22 @@ class Reflayan extends CI_Controller {
         $data['judul'] = 'Data Referensi Layanan';
         $data['content']['action'] = site_url('reflayan/save');
         //$data['content']['filaction'] = site_url('');
-        $data['content']['result'] = $this->modref->getreflayan();        
+        $data['content']['result'] = $this->modref->getlayan();        
         $this->load->view('mainview', $data);
     }
     
     public function save() {
         if ($this->input->post()) {
             $nmlayan = $this->input->post('nmlayan');
-            $idgrp = $this->input->post('idgrp');
+            $idgrp = $this->input->post('idgrp');   
+            $this->db->insert('reflayanan', array('nmlayan'=>$nmlayan, 'idgrp'=>$idgrp));
+            if ($this->db->affected_rows()>0){
+                $this->session->set_flashdata('success', 'Data sudah tersimpan');
+            } else {
+                $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
+            }
         }
+        redirect('reflayan');
     }
     
 }
