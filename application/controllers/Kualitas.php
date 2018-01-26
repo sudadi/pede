@@ -33,8 +33,22 @@ class Kualitas extends CI_Controller{
         $this->load->model('modref');
     }
     
-    function index() {
-        redirect('main');
+    function index($bln=null, $thn=null) {
+        $data['banner'] = false;
+        $data['page'] = 'kualitasview';
+        $data['judul'] = 'Kualitas - Kelengkapan Dokumen Rekam Medis';
+        $data['content']['action'] = site_url('kualitas/save');
+        $data['content']['filaction'] = site_url('kualitas');
+        $data['content']['idkw'] = 1;
+        if ($this->input->post()){
+            $bln = $this->input->post('bulan');
+            $thn = $this->input->post('tahun');
+        }
+        $data['content']['bln'] = $bln;
+        $data['content']['thn'] = $thn;
+        $data['content']['result'] = $this->modkualitas->getkw($bln, $thn); 
+        $this->load->view('mainview', $data);
+        
     }
     
     public function dokrm($bln=null, $thn=null) {
@@ -79,15 +93,14 @@ class Kualitas extends CI_Controller{
             $thn = $this->input->post('tahun');
             $bln = $this->input->post('bulan');
             $capaian = $this->input->post('nilai');
-            $idkw = $this->input->post('idkw');
+            $idqly = $this->input->post('idqly');
             $start = date("$thn/$bln/01");
             $stop = date("Y/m/t", strtotime($start));
             //$this->db->insert('tidxk2', array('dari'=>$start, 'sampai'=>$stop));
             $this->db->query("insert into tidxk2 (dari, sampai) values ('$start', '$stop') ON DUPLICATE KEY UPDATE idxk2=idxk2");
             $idxk2 = $this->db->insert_id();
-            echo $idxk2;
             if ($idxk2){
-                $this->db->insert('trkpkualitas', array('dari'=>$start, 'sampai'=>$stop, 'idkw'=>$idkw, 
+                $this->db->insert('trkpkualitas', array('dari'=>$start, 'sampai'=>$stop, 'idqly'=>$idqly, 
                     'capaian'=>$capaian, 'idpeg'=>$idpeg, 'idxk2'=>$idxk2));
                 if ($this->db->affected_rows()>0){
                     $this->session->set_flashdata('success', 'Data sudah tersimpan');
@@ -96,31 +109,28 @@ class Kualitas extends CI_Controller{
                     $this->db->delete('tidxk2', array('idxk2'=>$idxk2));
                 }
             }
-            if($idkw == 1){
-                //redirect(base_url("kualitas/dokrm/$bln/$thn"));
-                //echo $this->db->last_query();
-            } else {
-                //redirect("kualitas/fornas/$bln/$thn");
-            }
         }
+            redirect('kualitas/index/'.$bln.'/'.$thn);
     }
     
-    public function hapus($idkw, $idrkp, $bln=null, $thn=null) {
-        if ($idkw && $idrkp) {
-            $this->db->where("idrkpkw='$idrkp' and idkw='$idkw'");
+    public function hapus($idrkp, $bln=null, $thn=null) {
+        if ($idrkp) {
+            $this->db->where("idrkpqly='$idrkp'");
             $this->db->delete("trkpkualitas");
             if ($this->db->affected_rows() > 0) {
                 $this->session->set_flashdata('success', 'Data sudah dihapus');
             } else {
                 $this->session->set_flashdata('error', 'Hapus data GAGAL');
             }
+            /*
             switch ($idkw) {
                 case 1 : redirect("kualitas/dokrm/$bln/$thn");
                     break;
                 case 2 : redirect("kualitas/fornas/$bln/$thn");
                     break;
-            }
+            }*/
         }
+        redirect('kualitas/index/'.$bln.'/'.$thn);
     }
     
 }

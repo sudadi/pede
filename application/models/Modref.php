@@ -20,6 +20,7 @@ class Modref extends CI_Model {
     }
     
     function getmenu($sub) {
+        $this->db->where('active', '1');
         $this->db->where('sub', $sub);
         $this->db->order_by('urutan', 'asc');
         return $this->db->get('refmenu')->result_arraY();
@@ -36,6 +37,10 @@ class Modref extends CI_Model {
     function getlayan() {
         $this->db->join('refgrplayan', 'reflayanan.idgrp=refgrplayan.idgrp');
         return $this->db->get('reflayanan')->result_array();
+    }
+    
+    function getkualitas() {
+        return $this->db->get('refkualitas')->result_array();
     }
 }
 ?>

@@ -20,7 +20,7 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
         }
         echo form_dropdown('tahun', $option, $thn, 'class="form-control col-sm-12 col-xs-12" id="tahun" required');?>
     </div>
-    <label class="control-label col-sm-2 col-sm-offset-2 col-xs-12" for="bulan">Bulan</label>
+    <label class="control-label col-sm-2 col-sm-offset-1 col-xs-12" for="bulan">Bulan</label>
     <div class="col-md-3 col-sm-3 col-xs-12">
         <?php 
         $option = '';
@@ -34,7 +34,7 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
 </div>
 <div class="form-group">
     <label class="control-label col-sm-2 col-xs-12" for="idpeg">Dokter</label>
-    <div class="col-md-5 col-sm-5 col-xs-12">
+    <div class="col-md-4 col-sm-4 col-xs-12">
         <?php 
             $option='';
             $option['']='--Pilih Dokter--';
@@ -43,27 +43,44 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
                 $option[$value['idpeg']] = $value['nama'];
                 
             }
-            echo form_dropdown('idpeg', $option, '', 'class="js-select2 form-control col-sm-12" required');
+            echo form_dropdown('idpeg', $option, '', 'class="js-select2 col-sm-12" required');
         ?>
     </div>
+    <label class="control-label col-sm-2 col-xs-12" for="idqly">Indikator</label>
+    <div class="col-md-4 col-sm-4 col-xs-12">
+        <?php 
+            $option='';
+            $option['']='--Pilih Indikator--';
+            $kualitas = $this->modref->getkualitas();
+            foreach ($kualitas as $key => $value) {
+                $option[$value['idqly']] = $value['nmqly'];
+                
+            }
+            echo form_dropdown('idqly', $option, '', 'class="js-select2 form-control col-sm-12" required');
+        ?>
+    </div>
+</div>
+<div class="form-group">
     <label class="control-label col-sm-2 col-xs-12" for="nilai">Capaian </label>
     <div class="col-sm-2 col-xs-12">
         <?php $attribut = array('name'=>'nilai', 'type'=>'number', 'class'=>'form-control col-sm-12 col-xs-12', 'required'=>'required');
         echo form_input($attribut);?>
     </div>
+    
 </div>
 <br>
 <div class="form-group">
     <div class="col-md-12 col-sm-offset-4">
         <div class="col-sm-2">
         <?php 
-        echo form_hidden('idkw', $idkw);
+        //echo form_hidden('idkw', $idkw);
         echo form_button(array('type'=>'submit', 'class'=>'btn btn-success btn-block', 'content'=>'Simpan &nbsp;<i class="fa fa-save"></i>'));?>
         </div>
         <div class="col-sm-2">
             <a href="<?=current_url();?>" class="btn btn-warning btn-block">Batal &nbsp;<i class="fa fa-undo"></i></a>
         </div>
     </div>
+    
 </div>
 <?=form_close();?>
 <br />
@@ -126,7 +143,7 @@ echo form_open($action, 'class="form-horizontal form-label-left" data-parsley-va
                 <td><?=$row['point'];?></td>
                 <td><?=$row['jml'];?></td>
                 <td class="text-center">
-                    <a href="<?=base_url().'kualitas/hapus/'.$idkw.'/'.$row['idrkpkw'].'/'.$bln.'/'.$thn;?>" 
+                    <a href="<?=base_url().'kualitas/hapus/'.$row['idrkpqly'].'/'.$bln.'/'.$thn;?>" 
                        class="btn btn-xs btn-danger" onclick="return confirm('Yakin hapus data tersebut..?')">
                         <i class="fa fa-trash-o"></i> Hapus</a>
                 </td>
