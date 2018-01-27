@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 24 Jan 2018 pada 18.41
+-- Generation Time: 27 Jan 2018 pada 22.17
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -308,11 +308,18 @@ INSERT INTO `refjabatan` (`idjabatan`, `jabatan`, `level`) VALUES
 
 DROP TABLE IF EXISTS `refkualitas`;
 CREATE TABLE `refkualitas` (
-  `idrefkw` int(11) NOT NULL,
-  `nmkw` varchar(100) NOT NULL,
-  `point` int(11) NOT NULL,
-  `target` int(11) NOT NULL
+  `idqly` int(11) NOT NULL,
+  `nmqly` varchar(100) NOT NULL,
+  `point` float NOT NULL,
+  `target` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `refkualitas`
+--
+
+INSERT INTO `refkualitas` (`idqly`, `nmqly`, `point`, `target`) VALUES
+(2, 'Data Referensi Kualitas', 10, 10);
 
 -- --------------------------------------------------------
 
@@ -364,9 +371,9 @@ CREATE TABLE `refmenu` (
 
 INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`, `urutan`) VALUES
 (1, 'Nilai Kuantitas (dr)', '', 'fa fa-cubes', 0, 1, 1),
-(2, 'Nilai Kualitas', '', 'fa fa-thumbs-o-up', 0, 1, 3),
-(3, 'Kelengkapan Dok.', 'kualitas/dokrm', '', 2, 1, 4),
-(4, 'Kepatuhan FORNAS', 'kualitas/fornas', '', 2, 1, 5),
+(2, 'Nilai Kualitas', 'kualitas', 'fa fa-thumbs-o-up', 0, 1, 3),
+(3, 'Kelengkapan Dok.', 'kualitas/dokrm', '', 2, 0, 4),
+(4, 'Kepatuhan FORNAS', 'kualitas/fornas', '', 2, 0, 5),
 (5, 'Nilai Perilaku', 'behavior', 'fa fa-heart-o', 0, 1, 6),
 (6, 'Kalkulasi', 'kalkulasi', 'fa fa-calculator', 0, 1, 7),
 (7, 'Data Referensi', '', 'fa fa-file-text-o', 0, 1, 8),
@@ -380,7 +387,8 @@ INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`, `uruta
 (15, 'Rekap Data', 'kuantitas/rekap', '', 1, 1, 16),
 (16, 'Kalkulasi IKI', 'hitung/iki', '', 6, 0, 17),
 (17, 'Remunerasi', 'hitung/remun', '', 6, 0, 18),
-(18, 'Nilai Kuantitas (non dr)', 'kuantitas', 'fa fa-cubes', 0, 1, 2);
+(18, 'Nilai Kuantitas (non dr)', 'kuantitas', 'fa fa-cubes', 0, 0, 2),
+(21, 'Ref. Kualitas', 'refkualitas', '', 7, 1, 13);
 
 -- --------------------------------------------------------
 
@@ -525,7 +533,9 @@ CREATE TABLE `tidxk2` (
 --
 
 INSERT INTO `tidxk2` (`idxk2`, `dari`, `sampai`, `created`) VALUES
-(1, '2017-08-01', '2017-08-31', '2017-12-13 06:50:18');
+(1, '2017-08-01', '2017-08-31', '2017-12-13 06:50:18'),
+(3, '2018-12-01', '2018-12-31', '2018-01-25 07:38:07'),
+(7, '2018-01-01', '2018-01-31', '2018-01-25 09:16:55');
 
 -- --------------------------------------------------------
 
@@ -540,6 +550,13 @@ CREATE TABLE `tidxk3` (
   `sampai` date NOT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tidxk3`
+--
+
+INSERT INTO `tidxk3` (`idxk3`, `dari`, `sampai`, `created`) VALUES
+(1, '2018-01-01', '2018-01-31', '2018-01-26 04:24:08');
 
 -- --------------------------------------------------------
 
@@ -582,6 +599,13 @@ CREATE TABLE `trkpbehavior` (
   `jml` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `trkpbehavior`
+--
+
+INSERT INTO `trkpbehavior` (`idrkpbhv`, `idbhv`, `idxk3`, `dari`, `sampai`, `idpeg`, `capaian`, `point`, `jml`) VALUES
+(1, 1, 1, '2018-01-01', '2018-01-31', 1, 23, 0, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -590,8 +614,8 @@ CREATE TABLE `trkpbehavior` (
 
 DROP TABLE IF EXISTS `trkpkualitas`;
 CREATE TABLE `trkpkualitas` (
-  `idrkpkw` int(11) NOT NULL,
-  `idkw` int(11) NOT NULL,
+  `idrkpqly` int(11) NOT NULL,
+  `idqly` int(11) NOT NULL,
   `idxk2` int(11) NOT NULL,
   `dari` date NOT NULL,
   `sampai` date NOT NULL,
@@ -605,8 +629,9 @@ CREATE TABLE `trkpkualitas` (
 -- Dumping data untuk tabel `trkpkualitas`
 --
 
-INSERT INTO `trkpkualitas` (`idrkpkw`, `idkw`, `idxk2`, `dari`, `sampai`, `idpeg`, `capaian`, `point`, `jml`) VALUES
-(1, 1, 1, '2017-08-01', '2017-08-31', 1, 100, 0, 0);
+INSERT INTO `trkpkualitas` (`idrkpqly`, `idqly`, `idxk2`, `dari`, `sampai`, `idpeg`, `capaian`, `point`, `jml`) VALUES
+(1, 1, 1, '2017-08-01', '2017-08-31', 1, 100, 0, 0),
+(5, 2, 7, '2018-01-01', '2018-01-31', 1, 22, 0, 0);
 
 --
 -- Trigger `trkpkualitas`
@@ -773,7 +798,7 @@ ALTER TABLE `refjabatan`
 -- Indexes for table `refkualitas`
 --
 ALTER TABLE `refkualitas`
-  ADD PRIMARY KEY (`idrefkw`);
+  ADD PRIMARY KEY (`idqly`);
 
 --
 -- Indexes for table `refkuantitas`
@@ -861,8 +886,8 @@ ALTER TABLE `trkpbehavior`
 -- Indexes for table `trkpkualitas`
 --
 ALTER TABLE `trkpkualitas`
-  ADD PRIMARY KEY (`idrkpkw`),
-  ADD UNIQUE KEY `idkw` (`idkw`,`idxk2`,`idpeg`);
+  ADD PRIMARY KEY (`idrkpqly`),
+  ADD UNIQUE KEY `idkw` (`idqly`,`idxk2`,`idpeg`);
 
 --
 -- Indexes for table `trkptindakan`
@@ -919,7 +944,7 @@ ALTER TABLE `refjabatan`
 -- AUTO_INCREMENT for table `refkualitas`
 --
 ALTER TABLE `refkualitas`
-  MODIFY `idrefkw` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idqly` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `refkuantitas`
 --
@@ -934,7 +959,7 @@ ALTER TABLE `reflayanan`
 -- AUTO_INCREMENT for table `refmenu`
 --
 ALTER TABLE `refmenu`
-  MODIFY `idmenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `idmenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT for table `refpegawai`
 --
@@ -964,12 +989,12 @@ ALTER TABLE `tidxk1`
 -- AUTO_INCREMENT for table `tidxk2`
 --
 ALTER TABLE `tidxk2`
-  MODIFY `idxk2` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idxk2` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `tidxk3`
 --
 ALTER TABLE `tidxk3`
-  MODIFY `idxk3` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idxk3` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `tresult`
 --
@@ -979,12 +1004,12 @@ ALTER TABLE `tresult`
 -- AUTO_INCREMENT for table `trkpbehavior`
 --
 ALTER TABLE `trkpbehavior`
-  MODIFY `idrkpbhv` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idrkpbhv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `trkpkualitas`
 --
 ALTER TABLE `trkpkualitas`
-  MODIFY `idrkpkw` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idrkpqly` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `trkptindakan`
 --
