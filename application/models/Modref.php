@@ -42,5 +42,11 @@ class Modref extends CI_Model {
     function getkualitas() {
         return $this->db->get('refkualitas')->result_array();
     }
+
+function getkualitas($id=null) {
+if ($id) $this->DB->where('idsat', $idsat);
+        return $this->db->get('refsatker')->result_array();
+    }
+
 }
 ?>
