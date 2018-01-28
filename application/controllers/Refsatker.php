@@ -39,7 +39,7 @@ class Refsatker extends CI_Controller {
         }
         $data['content']['action'] = site_url('refsatker/save');
         //$data['content']['filaction'] = site_url('');
-        $data['content']['result'] = $this->modref->getrefsatker();        
+        $data['content']['result'] = $this->modref->getsatker();        
         $this->load->view('mainview', $data);
     }
     

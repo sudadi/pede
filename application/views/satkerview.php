@@ -44,8 +44,8 @@ echo form_open_multipart($action, 'class="form-horizontal form-label-left" data-
         <thead>
             <tr class="headings">
                 <th class="column-title text-center">#</th>
-                <th class="column-title text-center">Nama Kelompok Layanan</th>
-                <th class="column-title text-center">Poin/Bobot</th>
+                <th class="column-title text-center">Nama Satuan Kerja</th>
+                <th class="column-title text-center">ID Satker</th>
                 <th class="column-title text-center">Opsi</th>
             </tr>
         </thead>
@@ -60,7 +60,7 @@ echo form_open_multipart($action, 'class="form-horizontal form-label-left" data-
                 <td><?=$row['nmsatker'];?></td>
 <td><?=$row['idsat'];?></td>
                 <td class="text-center">
-                    <a href="<?=base_url().'refsatker/hapus/'.$row['idgrp'];?>" 
+                    <a href="<?=base_url().'refsatker/hapus/'.$row['idsat'];?>" 
                        class="btn btn-xs btn-danger" onclick="return confirm('Yakin hapus data tersebut..?')">
                         <i class="fa fa-trash-o"></i> Hapus</a>
                 </td>
