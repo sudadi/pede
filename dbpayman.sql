@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 27 Jan 2018 pada 22.17
+-- Generation Time: 28 Jan 2018 pada 08.18
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -19,77 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `dbpayman`
 --
-
-DELIMITER $$
---
--- Prosedur
---
-DROP PROCEDURE IF EXISTS `calc_result`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `calc_result` (IN `_nmjp` VARCHAR(100), IN `_idxk1` INT, IN `_idxk2` INT, IN `_idxk3` INT)  NO SQL
-BEGIN
-DECLARE n INT DEFAULT 0;
-DECLARE i INT DEFAULT 0;
-INSERT INTO tidjp (nmjp) VALUES (_nmjp);
-SET @idjp = (SELECT LAST_INSERT_ID());
-SELECT COUNT(*) INTO n FROM refpegawai;
-SELECT tbobot.bobot into @bobotk1 FROM tbobot WHERE tbobot.jnsnilai=1 and tbobot.berlaku <= date(now());
-SELECT tbobot.bobot into @bobotk2 FROM tbobot WHERE tbobot.jnsnilai=2 and tbobot.berlaku <= date(now());
-SELECT tbobot.bobot into @bobotk3 FROM tbobot WHERE tbobot.jnsnilai=3 and tbobot.berlaku <= date(now());
-SET i = 0;
-WHILE i < n DO
-SET @nilaik1 = 0;
-SET @nilaik2 = 0;
-SET @nilaik3 = 0;
-	SELECT idpeg, targetk1, targetk2, targetk3 INTO @idpeg, @targetk1, @targetk2, @targetk3 FROM refpegawai LIMIT i,1;
-	SELECT COUNT(jml) INTO @jmlk1 from trkptindakan WHERE idpeg=@idpeg and idxk1=_idxk1 GROUP BY idpeg;
-    IF (@targetk1 and @bobotk1 AND @jmlki) THEN
-    	SET @nilaik1 = (@jmlk1/@targetk1)*@bobotk1;
-    ELSEIF (@jmlk1 and @bobotk1) THEN
-    	SET @nilaik1 = @jmlk1*@bobotk1;
-    END IF;
-	SELECT COUNT(jml) INTO @jmlk2 from trkpkualitas WHERE idpeg=@idpeg and idxk2=_idxk2  GROUP BY idpeg;
-    IF (@targetk2 and @bobotk2 AND @jmlk2) THEN
-    	SET @nilaik2 = (@jmlk2/@targetk2)*@bobotk2;
-    ELSEIF (@jmlk2 and @bobotk2) THEN
-    	SET @nilaik2 = @jmlk2*@bobotk2;
-    END IF;
-    SELECT COUNT(jml) INTO @jmlk3 from trkpbehavior WHERE idpeg=@idpeg and idxk3=_idxk3 GROUP BY idpeg;
-    IF (@targetk3 and @bobotk3 AND @jmlk3) THEN
-    	SET @nilaik3 = (@jmlk3/@targetk3)*@bobotk3;
-    ELSEIF (@jmlk3 and @bobotk3) THEN
-    	SET @nilaik3 = @jmlk3*@bobotk3;
-    END IF;
-    SET @totnilai = @nilai1+@nilai2+@nilai3;
-    SELECT iki into @iki FROM reftiki where bawah<=@totnilai AND atas>=@totnilai;
-    SELECT rupiah INTO @rppoin FROM trppoin WHERE tglberlaku <= _tglrp;
-    INSERT INTO tresult (idjp, idpeg, idxk1, idxk2, idxk3, respoin, resiki, rppoin, resjp, tgl, ket) VALUES (@idjp, @idpeg, _idxk1, _idxk2, _idxk3, @totnilai, @iki, @rppoin, @rppoin*@iki, now(), _nmjp);
-    SET i = i+1;
-END WHILE;
-END$$
-
-DROP PROCEDURE IF EXISTS `rekap_tindakan`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `rekap_tindakan` (IN `_from` DATE, IN `_to` DATE)  NO SQL
-BEGIN
-DECLARE n INT DEFAULT 0;
-DECLARE i INT DEFAULT 0;
-INSERT INTO tidxk1 (dari, sampai) VALUES (_from, _to);
-SET @idxk1 = (SELECT LAST_INSERT_ID());
-SELECT COUNT(*) INTO n FROM ttindakan WHERE tgl BETWEEN _from AND _to;
-SET i = 0;
-WHILE i < n DO
-	SELECT ttindakan.idgrplayan, ttindakan.grplayan, ttindakan.iddokter INTO @idgrp, @grp, @iddr FROM ttindakan WHERE ttindakan.tgl BETWEEN _from AND _to LIMIT i,1;
-	SELECT point, idgrp INTO @point, @idgrpfix FROM refgrplayan WHERE (refgrplayan.idgrp = @idgrp OR refgrplayan.grouplayan = @grp);
-	IF (@idgrpfix) THEN
-		SELECT target INTO @target FROM ttargetqtydr WHERE (ttargetqtydr.idpeg = @iddr and ttargetqtydr.idgrp = @idgrpfix);
-    END IF;
-IF (@point) THEN
-	INSERT INTO trkptindakan (idxk1, dari, sampai, idgrplayan, grplayan, idpeg, capaian, point, jml) VALUES (@idxk1, _from, _to, @idgrp, @grp, @iddr, 1, @point, @point) ON duplicate KEY UPDATE capaian=capaian+1, jml=capaian*point;
-    END IF;
-    SET i = i+1;
-END WHILE;
-END$$
-
-DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -388,7 +317,8 @@ INSERT INTO `refmenu` (`idmenu`, `menu`, `link`, `icon`, `sub`, `active`, `uruta
 (16, 'Kalkulasi IKI', 'hitung/iki', '', 6, 0, 17),
 (17, 'Remunerasi', 'hitung/remun', '', 6, 0, 18),
 (18, 'Nilai Kuantitas (non dr)', 'kuantitas', 'fa fa-cubes', 0, 0, 2),
-(21, 'Ref. Kualitas', 'refkualitas', '', 7, 1, 13);
+(21, 'Ref. Kualitas', 'refkualitas', '', 7, 1, 13),
+(22, 'Ref. Satker', 'refsatker', '', 7, 1, 19);
 
 -- --------------------------------------------------------
 
@@ -424,7 +354,7 @@ INSERT INTO `refpegawai` (`idpeg`, `nip`, `nama`, `jk`, `alamat`, `tempatlhr`, `
 
 DROP TABLE IF EXISTS `refsatker`;
 CREATE TABLE `refsatker` (
-  `idsatker` smallint(3) NOT NULL,
+  `idsat` smallint(3) NOT NULL,
   `nmsatker` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -825,6 +755,12 @@ ALTER TABLE `refpegawai`
   ADD KEY `idpeg` (`idpeg`);
 
 --
+-- Indexes for table `refsatker`
+--
+ALTER TABLE `refsatker`
+  ADD PRIMARY KEY (`idsat`);
+
+--
 -- Indexes for table `reftiki`
 --
 ALTER TABLE `reftiki`
@@ -959,12 +895,17 @@ ALTER TABLE `reflayanan`
 -- AUTO_INCREMENT for table `refmenu`
 --
 ALTER TABLE `refmenu`
-  MODIFY `idmenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `idmenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT for table `refpegawai`
 --
 ALTER TABLE `refpegawai`
   MODIFY `idpeg` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `refsatker`
+--
+ALTER TABLE `refsatker`
+  MODIFY `idsat` smallint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `refuser`
 --
