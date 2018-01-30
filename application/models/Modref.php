@@ -43,9 +43,23 @@ class Modref extends CI_Model {
         return $this->db->get('refkualitas')->result_array();
     }
 
-function getsatker($id=null) {
-if ($id) $this->DB->where('idsat', $idsat);
+    function getsatker($id=null) {
+    if ($id) $this->DB->where('idsat', $idsat);
         return $this->db->get('refsatker')->result_array();
+    }
+    
+    function getbehavior() {
+        return $this->db->get('refbehavior')->result_array();
+    }
+    
+    function getpegawai() {
+        $this->db->join('refsatker', 'refpegawai.idsat=refsatker.idsat');
+        $this->db->join('refjabatan', 'refpegawai.idjabatan=refjabatan.idjabatan');
+        return $this->db->get('refpegawai')->result_array();
+    }
+    
+    function getjabatan() {
+        return $this->db->get('refjabatan')->result_array();
     }
 
 }

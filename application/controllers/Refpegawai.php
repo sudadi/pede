@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-class Refkualitas extends CI_Controller {
+class Refpegawai extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('modref');
@@ -32,40 +32,46 @@ class Refkualitas extends CI_Controller {
     
     public function index() {
         $data['banner'] = false;
-        $data['page'] = 'refkualitasview';
-        $data['judul'] = 'Data Referensi Kualitas';
-        $data['content']['action'] = site_url('refkualitas/save');
+        $data['page'] = 'pegawaiview';
+        $data['judul'] = 'Data Referensi Pegawai';
+        $data['content']['action'] = site_url('refpegawai/save');
         //$data['content']['filaction'] = site_url('');
-        $data['content']['result'] = $this->modref->getkualitas();        
+        $data['content']['result'] = $this->modref->getpegawai();        
         $this->load->view('mainview', $data);
     }
     
     public function save() {
         if ($this->input->post()) {
-            $nmqly = $this->input->post('nmqly');
-            $point = $this->input->post('point');
-            $target = $this->input->post('target');     
-            //$this->db->insert('refkualitas', array('nmqly'=>$nmqly, 'point'=>$point, 'target'=>$target));
-            $this->db->insert('refkualitas', array('nmqly'=>$nmqly, 'point'=>$point));
+            $nmpeg = $this->input->post('nmpeg');
+            $nip = $this->input->post('nip'); 
+            $jk = $this->input->post('jk');
+            $tmplahir = $this->input->post('tmplahir');
+            $tgllahir = $this->input->post('tgllahir');
+            $alamat = $this->input->post('alamat');
+            $idjab = $this->input->post('jab');
+            $idsat = $this->input->post('satker');
+            $dokter = $this->input->post('dokter');
+            $this->db->insert('refpegawai', array('nama'=>$nmpeg, 'nip'=>$nip, 'jk'=>$jk, 'alamat'=>$alamat, 'tempatlhr'=>$tmplahir,
+                'tgllhr'=>$tgllahir, 'idjabatan'=>$idjab, 'idsat'=>$idsat, 'dokter'=>$dokter));
             if ($this->db->affected_rows()>0){
                 $this->session->set_flashdata('success', 'Data sudah tersimpan');
             } else {
                 $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
             }
         }
-        redirect('refkualitas');
+        redirect('refpegawai');
     }
     
     public function hapus($id) {
         if ($id) {
-            $this->db->delete('refkualitas', 'idqly='.$id);
+            $this->db->delete('refpegawai', 'idpeg='.$id);
             if ($this->db->affected_rows()>0) {
                 $this->session->set_flashdata('success', 'Data sudah dihapus');
             } else {
                 $this->session->set_flashdata('error', 'Data tidak dapat dihapus');
             }
         }
-        redirect('refkualitas');
+        redirect('refpegawai');
     }
     
 }

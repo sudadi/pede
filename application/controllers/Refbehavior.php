@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-class Refkualitas extends CI_Controller {
+class Refbehavior extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('modref');
@@ -32,40 +32,38 @@ class Refkualitas extends CI_Controller {
     
     public function index() {
         $data['banner'] = false;
-        $data['page'] = 'refkualitasview';
-        $data['judul'] = 'Data Referensi Kualitas';
-        $data['content']['action'] = site_url('refkualitas/save');
+        $data['page'] = 'refbehaviorview';
+        $data['judul'] = 'Data Referensi Perilaku';
+        $data['content']['action'] = site_url('refbehavior/save');
         //$data['content']['filaction'] = site_url('');
-        $data['content']['result'] = $this->modref->getkualitas();        
+        $data['content']['result'] = $this->modref->getbehavior();        
         $this->load->view('mainview', $data);
     }
     
     public function save() {
         if ($this->input->post()) {
-            $nmqly = $this->input->post('nmqly');
-            $point = $this->input->post('point');
-            $target = $this->input->post('target');     
-            //$this->db->insert('refkualitas', array('nmqly'=>$nmqly, 'point'=>$point, 'target'=>$target));
-            $this->db->insert('refkualitas', array('nmqly'=>$nmqly, 'point'=>$point));
+            $nmbhv = $this->input->post('nmbhv');
+            $point = $this->input->post('point');   
+            $this->db->insert('refbehavior', array('nmbhv'=>$nmbhv, 'point'=>$point));
             if ($this->db->affected_rows()>0){
                 $this->session->set_flashdata('success', 'Data sudah tersimpan');
             } else {
                 $this->session->set_flashdata('error', 'Data tidak dapat di simpan');
             }
         }
-        redirect('refkualitas');
+        redirect('refbehavior');
     }
     
     public function hapus($id) {
         if ($id) {
-            $this->db->delete('refkualitas', 'idqly='.$id);
+            $this->db->delete('refbehavior', 'idbhv='.$id);
             if ($this->db->affected_rows()>0) {
                 $this->session->set_flashdata('success', 'Data sudah dihapus');
             } else {
                 $this->session->set_flashdata('error', 'Data tidak dapat dihapus');
             }
         }
-        redirect('refkualitas');
+        redirect('refbehavior');
     }
     
 }

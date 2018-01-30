@@ -26,20 +26,14 @@
 
 echo form_open_multipart($action, 'class="form-horizontal form-label-left" data-parsley-validate');?>
 <div class="form-group">
-    <label class="control-label col-sm-2 col-xs-12" for="nmqly">Nama Indikator</label>
-        <div class="col-md-6 col-sm-6 col-xs-12">
-            <input type="text" name="nmqly" id="nmqly" class="form-control" required="required"/>
-        </div>
-</div>
-<div class="form-group">
+    <label class="control-label col-sm-2 col-xs-12" for="nmbhv">Nama Indikator</label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <input type="text" name="nmbhv" id="vmbhv" class="form-control" required="required"/>
+    </div>
     <label class="control-label col-sm-2 col-xs-12" for="point">Bobot</label>
-        <div class="col-md-4 col-sm-4 col-xs-12">
-            <input type="number" name="point" id="point" class="form-control" required="required"/>
-        </div>
-<!--    <label class="control-label col-sm-2 col-xs-12" for="target">Target</label>
-        <div class="col-md-4 col-sm-4 col-xs-12">
-            <input type="number" name="target" id="target" class="form-control" required="required"/>
-        </div>-->
+    <div class="col-md-2 col-sm-2 col-xs-12">
+        <input type="number" name="point" id="point" class="form-control" required="required"/>
+    </div>
 </div><br/>
 <div class="form-group">
     <div class="col-md-12 col-sm-offset-4">
@@ -54,9 +48,8 @@ echo form_open_multipart($action, 'class="form-horizontal form-label-left" data-
         <thead>
             <tr class="headings">
                 <th class="column-title text-center">#</th>
-                <th class="column-title text-center">Nama Indikator Kualitas</th>
+                <th class="column-title text-center">Nama Indikator</th>
                 <th class="column-title text-center">Bobot</th>
-                <!--<th class="column-title text-center">Target</th>-->
                 <th class="column-title text-center">Opsi</th>
             </tr>
         </thead>
@@ -68,11 +61,10 @@ echo form_open_multipart($action, 'class="form-horizontal form-label-left" data-
                 $i++; ?>
             <tr>
                 <td><?=$i;?></td>
-                <td><?=$row['nmqly'];?></td>
+                <td><?=$row['nmbhv'];?></td>
                 <td><?=$row['point'];?></td>
-                <!--<td><?=$row['target'];?></td>-->
                 <td class="text-center">
-                    <a href="<?=base_url().'refkualitas/hapus/'.$row['idqly'];?>" 
+                    <a href="<?=base_url().'refbehavior/hapus/'.$row['idbhv'];?>" 
                        class="btn btn-xs btn-danger" onclick="return confirm('Yakin hapus data tersebut..?')">
                         <i class="fa fa-trash-o"></i> Hapus</a>
                 </td>
